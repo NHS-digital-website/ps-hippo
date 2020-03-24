@@ -1,6 +1,7 @@
 package uk.nhs.digital.externalstorage.s3;
 
 import java.io.InputStream;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -14,6 +15,12 @@ public interface PooledS3Connector {
      * {@linkplain uk.nhs.digital.externalstorage.s3.S3SdkConnector#publishResource} method.
      */
     void publishResource(String objectPath);
+
+    /**
+     * Instantly sets tags on the given S3 file by delegating the call directly to
+     * {@linkplain uk.nhs.digital.externalstorage.s3.S3SdkConnector#tagResource} method.
+     */
+    void tagResource(String objectPath, Map<String, String> tags);
 
     /**
      * Instantly triggers permissions on the given S3 file to be set to 'restricted' by delegating the call directly to

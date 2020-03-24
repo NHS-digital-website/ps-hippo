@@ -6,9 +6,6 @@ definitions:
         /date:
           hipposys:relPath: publicationsystem:NominalDate
           jcr:primaryType: hipposys:relativepropertyreference
-        /publiclyAccessible:
-          hipposys:relPath: publicationsystem:PubliclyAccessible
-          jcr:primaryType: hipposys:relativepropertyreference
         jcr:primaryType: hipposys:propertyreferences
       /hipposys:derived:
         /orderedSearchDate:

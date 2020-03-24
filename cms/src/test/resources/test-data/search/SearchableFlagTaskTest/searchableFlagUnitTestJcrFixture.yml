@@ -11,19 +11,19 @@
   properties:
     common:searchable: true
     hippostd:state: published
-    publicationsystem:PubliclyAccessible: false
+    publicationsystem:NominalDate: 2018-02-20T00:00:00Z
 - path: /content/documents/corporate-website/publication-system/publication-with-datasets/content/content[2]
   primaryType: publicationsystem:publication
   properties:
     common:searchable: true
     hippostd:state: draft
-    publicationsystem:PubliclyAccessible: false
+    publicationsystem:NominalDate: 2018-02-20T00:00:00Z
 - path: /content/documents/corporate-website/publication-system/publication-with-datasets/content/content[3]
   primaryType: publicationsystem:publication
   properties:
     common:searchable: true
     hippostd:state: unpublished
-    publicationsystem:PubliclyAccessible: false
+    publicationsystem:NominalDate: 2018-02-20T00:00:00Z
 
 # Dataset
 - path: /content/documents/corporate-website/publication-system/publication-with-datasets/dataset
@@ -75,19 +75,19 @@
   properties:
     common:searchable: true
     hippostd:state: published
-    publicationsystem:PubliclyAccessible: true
+    publicationsystem:NominalDate: 2016-02-20T00:00:00Z
 - path: /content/documents/corporate-website/publication-system/accessible-publication-with-datasets/content/content[2]
   primaryType: publicationsystem:publication
   properties:
     common:searchable: true
     hippostd:state: draft
-    publicationsystem:PubliclyAccessible: true
+    publicationsystem:NominalDate: 2016-02-20T00:00:00Z
 - path: /content/documents/corporate-website/publication-system/accessible-publication-with-datasets/content/content[3]
   primaryType: publicationsystem:publication
   properties:
     common:searchable: true
     hippostd:state: unpublished
-    publicationsystem:PubliclyAccessible: true
+    publicationsystem:NominalDate: 2016-02-20T00:00:00Z
 
 # Dataset
 - path: /content/documents/corporate-website/publication-system/accessible-publication-with-datasets/dataset

@@ -1,6 +1,8 @@
 package uk.nhs.digital.ps.workflow.searchableFlag;
 
 import static uk.nhs.digital.ps.PublicationSystemConstants.INDEX_FILE_NAME;
+import static uk.nhs.digital.ps.PublicationSystemConstants.LONDON_ZONE_ID;
+import static uk.nhs.digital.ps.PublicationSystemConstants.PROPERTY_PUBLICATION_DATE;
 
 import org.hippoecm.repository.HippoStdNodeType;
 import org.hippoecm.repository.util.WorkflowUtils;
@@ -11,6 +13,9 @@ import org.slf4j.LoggerFactory;
 import uk.nhs.digital.JcrQueryHelper;
 import uk.nhs.digital.ps.PublicationSystemConstants;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
@@ -29,6 +34,13 @@ public class SearchableFlagTask extends AbstractDocumentTask {
     private DocumentVariant variant;
     private boolean depublishing;
     private Session session;
+
+    private final transient Clock clock;
+
+    public SearchableFlagTask(Clock clock) {
+        super();
+        this.clock = clock;
+    }
 
     @Override
     protected Object doExecute() throws RepositoryException {
@@ -53,7 +65,7 @@ public class SearchableFlagTask extends AbstractDocumentTask {
 
             QueryResult res = JcrQueryHelper.findDescendantVariants(folder, PublicationSystemConstants.NODE_TYPE_DATASET, variant.getState());
             NodeIterator nodes = res.getNodes();
-            boolean searchable = !depublishing && publication.getProperty("publicationsystem:PubliclyAccessible").getBoolean();
+            boolean searchable = !depublishing && isPublic(publication.getProperty(PROPERTY_PUBLICATION_DATE).getDate());
 
             while (nodes.hasNext()) {
                 nodes.nextNode().setProperty(SEARCHABLE_FLAG, searchable);
@@ -79,9 +91,8 @@ public class SearchableFlagTask extends AbstractDocumentTask {
         }
 
         // get common:searchable value
-        boolean searchable = parentPublication
-            .getProperty("publicationsystem:PubliclyAccessible")
-            .getBoolean();
+        boolean searchable = isPublic(parentPublication
+            .getProperty(PROPERTY_PUBLICATION_DATE).getDate());
 
         // apply it to dataset document(s)
         dataset.setProperty(SEARCHABLE_FLAG, searchable);
@@ -125,5 +136,17 @@ public class SearchableFlagTask extends AbstractDocumentTask {
 
     public void setDepublishing(boolean depublishing) {
         this.depublishing = depublishing;
+    }
+
+    public boolean isPublic(Calendar publicationDate) {
+        LocalDateTime publicationDateTime = publicationDate.toInstant()
+            .atZone(LONDON_ZONE_ID).toLocalDateTime()
+            .withHour(PublicationSystemConstants.HOUR_OF_PUBLICATION_RELEASE).withMinute(
+                PublicationSystemConstants.MINUTE_OF_PUBLICATION_RELEASE)
+            .withSecond(0);
+
+        LocalDateTime currentDateTime = LocalDateTime.now(clock);
+
+        return !currentDateTime.isBefore(publicationDateTime);
     }
 }

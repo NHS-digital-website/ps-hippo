@@ -1,10 +1,13 @@
 package uk.nhs.digital.externalstorage.s3;
 
 import java.io.InputStream;
+import java.util.Map;
 
 public interface S3Connector {
 
     void publishResource(String objectPath);
+
+    void tagResource(String objectPath, Map<String, String> tags);
 
     void unpublishResource(String objectPath);
 

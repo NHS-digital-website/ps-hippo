@@ -12,7 +12,12 @@
 
     <#assign hasLinks = section.items?? && section.items?size gt 0 />
 
-    <div id="${slugify(section.heading)}" class="${(section.headingLevel == 'Main heading')?then('article-section navigationMarker', 'article-header__detail-lines navigationMarker-sub')}">
+<div id="${slugify(section.heading)}" class="${(section.headingLevel == 'Main heading')?then('article-section', 'article-header__detail-lines')}">
+        <#if section.heading?? && section.headingLevel??>
+        <div id="${slugify(section.heading)}" class="${(section.headingLevel == 'Main heading')?then('article-section navigationMarker', 'article-header__detail-lines navigationMarker-sub')}">
+        <#else>
+        <div class="article-header__detail-lines">
+        </#if>
 
         <#if section.headingLevel == 'Main heading'>
             <#assign mainHeadingTag = "h" + mainHeadingLevel />
@@ -84,7 +89,5 @@
                 </div>
             </div>
         </#if>
-
-
     </div>
 </#macro>

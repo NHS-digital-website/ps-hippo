@@ -19,6 +19,12 @@
         jcr:primaryType: externalstorage:resource
       jcr:primaryType: publicationsystem:extattachment
       publicationsystem:displayName: ''
+    /publicationsystem:KeyFactsHead:
+      hippostd:content: ''
+      jcr:primaryType: hippostd:html
+    /publicationsystem:KeyFactsTail:
+      hippostd:content: ''
+      jcr:primaryType: hippostd:html
     /publicationsystem:RelatedLinks:
       jcr:primaryType: publicationsystem:relatedlink
       publicationsystem:linkText: Test google.com link
@@ -27,19 +33,22 @@
       jcr:primaryType: publicationsystem:relatedlink
       publicationsystem:linkText: Related resource link
       publicationsystem:linkUrl: http://google.com
+    /publicationsystem:seosummary:
+      hippostd:content: ''
+      jcr:primaryType: hippostd:html
     common:FacetType: publication
     common:FullTaxonomy:
     - people,-patients-and-geography
     common:SearchableTags:
     - People, patients and geography
-    common:orderedSearchDate: 1602374400000
+    common:orderedSearchDate: 1577923200000
     common:searchRank: 4
     common:searchable: true
     hippo:availability: []
     hippostd:state: draft
     hippostdpubwf:createdBy: admin
     hippostdpubwf:creationDate: 2017-11-03T13:35:36.812Z
-    hippostdpubwf:lastModificationDate: 2018-01-17T12:53:36.117Z
+    hippostdpubwf:lastModificationDate: 2020-03-18T09:53:05.812Z
     hippostdpubwf:lastModifiedBy: admin
     hippotaxonomy:keys:
     - people,-patients-and-geography
@@ -49,6 +58,7 @@
     - hippotaxonomy:classifiable
     - mix:referenceable
     jcr:primaryType: publicationsystem:publication
+    jcr:uuid: 30542d29-67d4-4c11-8af0-07c0a4351fc0
     publicationsystem:AdministrativeSources: Admin sources
     publicationsystem:CoverageEnd: 2018-02-01T00:00:00Z
     publicationsystem:CoverageStart: 2017-11-01T00:00:00Z
@@ -64,7 +74,7 @@
       mollis aliquet, ligula ipsum tincidunt ante, nec imperdiet sapien neque a nibh.
       In porta suscipit mauris. Suspendisse sit amet vestibulum neque, at aliquet
       nibh. Aenean sed ante quam.
-    publicationsystem:NominalDate: 2020-10-11T00:00:00Z
+    publicationsystem:NominalDate: 2020-01-02T00:00:00Z
     publicationsystem:PubliclyAccessible: true
     publicationsystem:Summary: "Lorem ipsum dolor sit amet, consectetur adipiscing\
       \ elit. Duis convallis non massa vel dictum. In vel ex sapien. Donec sit amet\
@@ -87,6 +97,7 @@
       \ auctor. Fusce rutrum lorem non tincidunt efficitur. Cras in maximus justo,\
       \ sed finibus turpis."
     publicationsystem:Title: publication with datasets
+    publicationsystem:earlyaccesskey: ''
   /content[2]:
     /publicationsystem:Attachments-v3:
       /publicationsystem:attachmentResource:
@@ -106,6 +117,12 @@
         jcr:primaryType: externalstorage:resource
       jcr:primaryType: publicationsystem:extattachment
       publicationsystem:displayName: ''
+    /publicationsystem:KeyFactsHead:
+      hippostd:content: ''
+      jcr:primaryType: hippostd:html
+    /publicationsystem:KeyFactsTail:
+      hippostd:content: ''
+      jcr:primaryType: hippostd:html
     /publicationsystem:RelatedLinks:
       jcr:primaryType: publicationsystem:relatedlink
       publicationsystem:linkText: Test google.com link
@@ -114,12 +131,15 @@
       jcr:primaryType: publicationsystem:relatedlink
       publicationsystem:linkText: Related resource link
       publicationsystem:linkUrl: http://google.com
+    /publicationsystem:seosummary:
+      hippostd:content: ''
+      jcr:primaryType: hippostd:html
     common:FacetType: publication
     common:FullTaxonomy:
     - people,-patients-and-geography
     common:SearchableTags:
     - People, patients and geography
-    common:orderedSearchDate: 1602374400000
+    common:orderedSearchDate: 1577923200000
     common:searchRank: 4
     common:searchable: true
     hippo:availability:
@@ -127,7 +147,7 @@
     hippostd:state: unpublished
     hippostdpubwf:createdBy: admin
     hippostdpubwf:creationDate: 2017-11-03T13:35:36.812Z
-    hippostdpubwf:lastModificationDate: 2018-01-17T12:53:59.751Z
+    hippostdpubwf:lastModificationDate: 2020-03-18T09:53:18.283Z
     hippostdpubwf:lastModifiedBy: admin
     hippotaxonomy:keys:
     - people,-patients-and-geography
@@ -138,6 +158,7 @@
     - mix:referenceable
     - mix:versionable
     jcr:primaryType: publicationsystem:publication
+    jcr:uuid: 0cf8c60a-e7a8-4528-9fc4-6daecea2ddd8
     publicationsystem:AdministrativeSources: Admin sources
     publicationsystem:CoverageEnd: 2018-02-01T00:00:00Z
     publicationsystem:CoverageStart: 2017-11-01T00:00:00Z
@@ -153,7 +174,7 @@
       mollis aliquet, ligula ipsum tincidunt ante, nec imperdiet sapien neque a nibh.
       In porta suscipit mauris. Suspendisse sit amet vestibulum neque, at aliquet
       nibh. Aenean sed ante quam.
-    publicationsystem:NominalDate: 2020-10-11T00:00:00Z
+    publicationsystem:NominalDate: 2020-01-02T00:00:00Z
     publicationsystem:PubliclyAccessible: true
     publicationsystem:Summary: "Lorem ipsum dolor sit amet, consectetur adipiscing\
       \ elit. Duis convallis non massa vel dictum. In vel ex sapien. Donec sit amet\
@@ -176,6 +197,7 @@
       \ auctor. Fusce rutrum lorem non tincidunt efficitur. Cras in maximus justo,\
       \ sed finibus turpis."
     publicationsystem:Title: publication with datasets
+    publicationsystem:earlyaccesskey: ''
   /content[3]:
     /publicationsystem:Attachments-v3:
       /publicationsystem:attachmentResource:
@@ -195,6 +217,12 @@
         jcr:primaryType: externalstorage:resource
       jcr:primaryType: publicationsystem:extattachment
       publicationsystem:displayName: ''
+    /publicationsystem:KeyFactsHead:
+      hippostd:content: ''
+      jcr:primaryType: hippostd:html
+    /publicationsystem:KeyFactsTail:
+      hippostd:content: ''
+      jcr:primaryType: hippostd:html
     /publicationsystem:RelatedLinks:
       jcr:primaryType: publicationsystem:relatedlink
       publicationsystem:linkText: Test google.com link
@@ -203,12 +231,15 @@
       jcr:primaryType: publicationsystem:relatedlink
       publicationsystem:linkText: Related resource link
       publicationsystem:linkUrl: http://google.com
+    /publicationsystem:seosummary:
+      hippostd:content: ''
+      jcr:primaryType: hippostd:html
     common:FacetType: publication
     common:FullTaxonomy:
     - people,-patients-and-geography
     common:SearchableTags:
     - People, patients and geography
-    common:orderedSearchDate: 1602374400000
+    common:orderedSearchDate: 1577923200000
     common:searchRank: 4
     common:searchable: true
     hippo:availability:
@@ -216,9 +247,9 @@
     hippostd:state: published
     hippostdpubwf:createdBy: admin
     hippostdpubwf:creationDate: 2017-11-03T13:35:36.812Z
-    hippostdpubwf:lastModificationDate: 2018-01-17T12:53:59.751Z
+    hippostdpubwf:lastModificationDate: 2020-03-18T09:53:18.283Z
     hippostdpubwf:lastModifiedBy: admin
-    hippostdpubwf:publicationDate: 2018-01-17T12:54:04.104Z
+    hippostdpubwf:publicationDate: 2020-03-18T09:53:21.565Z
     hippotaxonomy:keys:
     - people,-patients-and-geography
     hippotranslation:id: 00000000-0000-0000-0000-000000000000
@@ -227,6 +258,7 @@
     - hippotaxonomy:classifiable
     - mix:referenceable
     jcr:primaryType: publicationsystem:publication
+    jcr:uuid: 124c53fa-afe3-4189-84ba-84b5132863db
     publicationsystem:AdministrativeSources: Admin sources
     publicationsystem:CoverageEnd: 2018-02-01T00:00:00Z
     publicationsystem:CoverageStart: 2017-11-01T00:00:00Z
@@ -242,7 +274,7 @@
       mollis aliquet, ligula ipsum tincidunt ante, nec imperdiet sapien neque a nibh.
       In porta suscipit mauris. Suspendisse sit amet vestibulum neque, at aliquet
       nibh. Aenean sed ante quam.
-    publicationsystem:NominalDate: 2020-10-11T00:00:00Z
+    publicationsystem:NominalDate: 2020-01-02T00:00:00Z
     publicationsystem:PubliclyAccessible: true
     publicationsystem:Summary: "Lorem ipsum dolor sit amet, consectetur adipiscing\
       \ elit. Duis convallis non massa vel dictum. In vel ex sapien. Donec sit amet\
@@ -265,6 +297,10 @@
       \ auctor. Fusce rutrum lorem non tincidunt efficitur. Cras in maximus justo,\
       \ sed finibus turpis."
     publicationsystem:Title: publication with datasets
+    publicationsystem:earlyaccesskey: ''
+  hippo:versionHistory: 4feaeb18-5b33-4477-8bbf-01860c90bbf2
   jcr:mixinTypes:
+  - hippo:versionInfo
   - mix:referenceable
   jcr:primaryType: hippo:handle
+  jcr:uuid: 3b8fbe1e-b985-418b-ba28-a4cbe5a8bfdb

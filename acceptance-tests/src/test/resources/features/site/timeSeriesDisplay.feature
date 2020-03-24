@@ -66,24 +66,24 @@ Feature: Display of publications forming a series
     Scenario: Ordering of publications by date
         When I navigate to the "valid publication series" page
         Then I should see the "Series Latest Publication" list containing:
-            | Lorem Ipsum Dolor 2014 ... |
+            | 2020 - Upcoming ... |
         And I should see the "Series Previous Publications" list containing:
+            | 2019 - Upcoming ... |
+            | 2018 - Upcoming ... |
+            | Lorem Ipsum Dolor 2014 ... |
             | Lorem Ipsum Dolor 2013 ... |
             | Lorem Ipsum Dolor 2012 ... |
         And I should see the "Series Upcoming Publications" list containing:
-            | 2018 - Upcoming ... |
-            | 2019 - Upcoming ... |
-            | 2020 - Upcoming ... |
             | 2021 - Upcoming ... |
+            | 2022 - Upcoming ... |
 
     Scenario: Ordering of publications by title
         When I navigate to the "series without latest" page
         Then I should see the "Series Publications" list containing:
+            | 2020 Upcoming ... |
             | A publication 2018 ... |
             | Latest 2019 ...        |
             | Publication 2017 ...   |
-        And I should see the "Series Upcoming Publications" list containing:
-            | 2020 Upcoming ... |
 
     Scenario: List attachments and Links added to the series
         Given I navigate to the "valid publication series" page

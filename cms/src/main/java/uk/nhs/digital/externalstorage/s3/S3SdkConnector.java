@@ -8,9 +8,13 @@ import com.amazonaws.services.s3.model.GroupGrantee;
 import com.amazonaws.services.s3.model.InitiateMultipartUploadRequest;
 import com.amazonaws.services.s3.model.InitiateMultipartUploadResult;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.ObjectTagging;
 import com.amazonaws.services.s3.model.PartETag;
 import com.amazonaws.services.s3.model.Permission;
+import com.amazonaws.services.s3.model.SetObjectTaggingRequest;
+import com.amazonaws.services.s3.model.Tag;
 import com.amazonaws.services.s3.model.UploadPartRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +23,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Implement S3Connector to allow uploading files to S3 and managing ACL.
@@ -51,6 +57,18 @@ public class S3SdkConnector implements S3Connector {
         s3.setObjectAcl(bucketName, objectPath, acl);
 
         reportAction("S3 resource is now public: {}", objectPath);
+    }
+
+    @Override
+    public void tagResource(String objectPath, Map<String, String> tags) {
+        reportAction("Tagging S3 resource: {}", objectPath);
+        List<Tag> tagList = tags.entrySet().stream()
+            .map(entry -> new Tag(entry.getKey(), entry.getValue()))
+            .collect(Collectors.toList());
+
+        s3.setObjectTagging(new SetObjectTaggingRequest(bucketName, objectPath,
+            new ObjectTagging(tagList)));
+        reportAction("S3 resource is now tagged: {}", objectPath);
     }
 
     @Override

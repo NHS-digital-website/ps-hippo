@@ -26,6 +26,8 @@
 <#assign hasResourceLinks = dataset.resourceLinks?has_content />
 <#assign hasResources = hasFiles || hasResourceLinks />
 
+<#assign earlyAccessKey=hstRequest.request.getParameter("key") />
+
 <#macro publicationDate>
 <dl class="detail-list">
     <dt class="detail-list__key"><@fmt.message key="headers.publication-date"/></dt>
@@ -54,7 +56,18 @@
                         <meta itemprop="url" content="<@hst.link hippobean=dataset.selfLinkBean/>"/>
                         <meta itemprop="license" content="https://digital.nhs.uk/about-nhs-digital/terms-and-conditions" />
                         <#if dataset.parentPublication??>
-                            <span class="article-header__label"><@fmt.message key="labels.dataset"/>, Part of <a itemprop="url" href="<@hst.link hippobean=dataset.parentPublication.selfLinkBean/>" title="${dataset.parentPublication.title}"><span itemprop="name">${dataset.parentPublication.title}</span></a></span>
+                            <span class="article-header__label">
+                                <@fmt.message key="labels.dataset"/>,
+                                Part of
+                                <a itemprop="url"
+                                   title="${dataset.parentPublication.title}"
+                                   href=<@hst.link hippobean=dataset.parentPublication.selfLinkBean>
+                                    <#if earlyAccessKey?has_content><@hst.param name="key" value="${earlyAccessKey}"/></#if>
+                                    </@hst.link>"
+                                   >
+                                    <span itemprop="name">${dataset.parentPublication.title}</span>
+                                </a>
+                            </span>
                         <#else>
                             <span class="article-header__label"><@fmt.message key="labels.dataset"/></span>
                         </#if>
@@ -143,7 +156,7 @@
                         <ul data-uipath="ps.dataset.resources" class="list">
                             <#list dataset.files as attachment>
                                 <li class="attachment" itemprop="distribution" itemscope itemtype="http://schema.org/DataDownload">
-                                    <@externalstorageLink attachment.resource; url>
+                                    <@externalstorageLink item=attachment.resource earlyAccessKey=earlyAccessKey; url>
                                       <a itemprop="contentUrl" title="${attachment.text}" href="${url}" onClick="logGoogleAnalyticsEvent('Download attachment','Data set','${attachment.resource.filename}');" onKeyUp="return vjsu.onKeyUp(event)"><span itemprop="name">${attachment.text}</span></a>
                                       <meta itemprop="license" content="https://digital.nhs.uk/about-nhs-digital/terms-and-conditions" />
                                       <meta itemprop="encodingFormat" content="${attachment.resource.mimeType}" />

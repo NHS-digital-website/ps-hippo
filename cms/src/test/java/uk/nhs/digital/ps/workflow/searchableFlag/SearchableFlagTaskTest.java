@@ -21,6 +21,11 @@ import org.onehippo.repository.documentworkflow.DocumentHandle;
 import org.onehippo.repository.documentworkflow.DocumentVariant;
 import uk.nhs.digital.test.util.MockJcrRepoProvider;
 
+import java.io.FileInputStream;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import javax.jcr.Node;
@@ -30,7 +35,7 @@ import javax.jcr.Session;
 @RunWith(DataProviderRunner.class)
 public class SearchableFlagTaskTest {
 
-    private SearchableFlagTask searchableFlagTask = new SearchableFlagTask();
+    private SearchableFlagTask searchableFlagTask;
     private Session session;
     private Node rootNode = null;
 
@@ -38,6 +43,10 @@ public class SearchableFlagTaskTest {
 
     @Before
     public void setUp() throws Exception {
+        Clock clock = Clock
+                .fixed(LocalDateTime.of(2017, 3, 2, 0, 0).toInstant(ZoneOffset.UTC),
+                        ZoneId.systemDefault());
+        searchableFlagTask = new SearchableFlagTask(clock);
         session = MockJcrRepoProvider.repoFromYaml("/test-data/search/SearchableFlagTaskTest/searchableFlagUnitTestJcrFixture.yml");
         rootNode = session.getRootNode();
 
@@ -129,7 +138,7 @@ public class SearchableFlagTaskTest {
 
     @DataProvider
     public static Object[][] datasetDocumentState() {
-        return new Object[][] {
+        return new Object[][]{
             {
                 "draft",
                 asList(
@@ -169,7 +178,7 @@ public class SearchableFlagTaskTest {
 
     @DataProvider
     public static Object[][] unpublishDocuments() {
-        return new Object[][] {
+        return new Object[][]{
             {
                 asList(
                     RPS_ROOT_FOLDER + "/accessible-publication-with-datasets/dataset/dataset"
@@ -190,7 +199,7 @@ public class SearchableFlagTaskTest {
 
     @DataProvider
     public static Object[][] datasetInSubfolder() {
-        return new Object[][] {
+        return new Object[][]{
             {
                 "draft",
                 asList(

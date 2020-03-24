@@ -1,15 +1,24 @@
 ---
 /content/documents/corporate-website/publication-system/acceptance-tests/upcoming-publication/content:
   /content[1]:
+    /publicationsystem:KeyFactsHead:
+      hippostd:content: ''
+      jcr:primaryType: hippostd:html
+    /publicationsystem:KeyFactsTail:
+      hippostd:content: ''
+      jcr:primaryType: hippostd:html
+    /publicationsystem:seosummary:
+      hippostd:content: ''
+      jcr:primaryType: hippostd:html
     common:FacetType: publication
-    common:orderedSearchDate: -1507593600000
+    common:orderedSearchDate: -1791586800000
     common:searchRank: 4
     common:searchable: true
     hippo:availability: []
     hippostd:state: draft
     hippostdpubwf:createdBy: admin
     hippostdpubwf:creationDate: 2017-11-03T13:35:36.812Z
-    hippostdpubwf:lastModificationDate: 2018-02-21T11:33:37.217Z
+    hippostdpubwf:lastModificationDate: 2020-03-20T13:07:17.501Z
     hippostdpubwf:lastModifiedBy: admin
     hippotranslation:id: 00000000-0000-0000-0000-000000000000
     hippotranslation:locale: en
@@ -17,6 +26,7 @@
     - hippotaxonomy:classifiable
     - mix:referenceable
     jcr:primaryType: publicationsystem:publication
+    jcr:uuid: 54a7ac3d-f70e-478e-a27e-0205c48b5406
     publicationsystem:AdministrativeSources: ''
     publicationsystem:CoverageEnd: 0001-01-01T12:00:00Z
     publicationsystem:CoverageStart: 0001-01-01T12:00:00Z
@@ -32,7 +42,7 @@
       mollis aliquet, ligula ipsum tincidunt ante, nec imperdiet sapien neque a nibh.
       In porta suscipit mauris. Suspendisse sit amet vestibulum neque, at aliquet
       nibh. Aenean sed ante quam.
-    publicationsystem:NominalDate: 2017-10-10T00:00:00Z
+    publicationsystem:NominalDate: 2026-10-09T23:00:00Z
     publicationsystem:PubliclyAccessible: false
     publicationsystem:Summary: Lorem ipsum dolor sit amet, consectetur adipiscing
       elit. Duis convallis non massa vel dictum. In vel ex sapien. Donec sit amet
@@ -42,9 +52,19 @@
       erat elit, quis facilisis neque eleifend id. Maecenas convallis vel mi nec bibendum.
       Donec ut erat dictum, molestie dolor non, aliquet nibh.
     publicationsystem:Title: Upcoming Publication
+    publicationsystem:earlyaccesskey: ''
   /content[2]:
+    /publicationsystem:KeyFactsHead:
+      hippostd:content: ''
+      jcr:primaryType: hippostd:html
+    /publicationsystem:KeyFactsTail:
+      hippostd:content: ''
+      jcr:primaryType: hippostd:html
+    /publicationsystem:seosummary:
+      hippostd:content: ''
+      jcr:primaryType: hippostd:html
     common:FacetType: publication
-    common:orderedSearchDate: -1507593600000
+    common:orderedSearchDate: -1791586800000
     common:searchRank: 4
     common:searchable: true
     hippo:availability:
@@ -52,7 +72,7 @@
     hippostd:state: unpublished
     hippostdpubwf:createdBy: admin
     hippostdpubwf:creationDate: 2017-11-03T13:35:36.812Z
-    hippostdpubwf:lastModificationDate: 2018-02-21T11:33:44.259Z
+    hippostdpubwf:lastModificationDate: 2020-03-20T13:07:56.377Z
     hippostdpubwf:lastModifiedBy: admin
     hippotranslation:id: 00000000-0000-0000-0000-000000000000
     hippotranslation:locale: en
@@ -61,6 +81,7 @@
     - mix:referenceable
     - mix:versionable
     jcr:primaryType: publicationsystem:publication
+    jcr:uuid: 95010e00-89d2-44b9-9eff-86e539e9af7a
     publicationsystem:AdministrativeSources: ''
     publicationsystem:CoverageEnd: 0001-01-01T12:00:00Z
     publicationsystem:CoverageStart: 0001-01-01T12:00:00Z
@@ -76,7 +97,7 @@
       mollis aliquet, ligula ipsum tincidunt ante, nec imperdiet sapien neque a nibh.
       In porta suscipit mauris. Suspendisse sit amet vestibulum neque, at aliquet
       nibh. Aenean sed ante quam.
-    publicationsystem:NominalDate: 2017-10-10T00:00:00Z
+    publicationsystem:NominalDate: 2026-10-09T23:00:00Z
     publicationsystem:PubliclyAccessible: false
     publicationsystem:Summary: Lorem ipsum dolor sit amet, consectetur adipiscing
       elit. Duis convallis non massa vel dictum. In vel ex sapien. Donec sit amet
@@ -86,9 +107,19 @@
       erat elit, quis facilisis neque eleifend id. Maecenas convallis vel mi nec bibendum.
       Donec ut erat dictum, molestie dolor non, aliquet nibh.
     publicationsystem:Title: Upcoming Publication
+    publicationsystem:earlyaccesskey: ''
   /content[3]:
+    /publicationsystem:KeyFactsHead:
+      hippostd:content: ''
+      jcr:primaryType: hippostd:html
+    /publicationsystem:KeyFactsTail:
+      hippostd:content: ''
+      jcr:primaryType: hippostd:html
+    /publicationsystem:seosummary:
+      hippostd:content: ''
+      jcr:primaryType: hippostd:html
     common:FacetType: publication
-    common:orderedSearchDate: -1507593600000
+    common:orderedSearchDate: -1791586800000
     common:searchRank: 4
     common:searchable: true
     hippo:availability:
@@ -96,15 +127,16 @@
     hippostd:state: published
     hippostdpubwf:createdBy: admin
     hippostdpubwf:creationDate: 2017-11-03T13:35:36.812Z
-    hippostdpubwf:lastModificationDate: 2018-02-21T11:33:44.259Z
+    hippostdpubwf:lastModificationDate: 2020-03-20T13:07:56.377Z
     hippostdpubwf:lastModifiedBy: admin
-    hippostdpubwf:publicationDate: 2018-02-21T11:33:47.137Z
+    hippostdpubwf:publicationDate: 2020-03-20T13:07:58.888Z
     hippotranslation:id: 00000000-0000-0000-0000-000000000000
     hippotranslation:locale: en
     jcr:mixinTypes:
     - hippotaxonomy:classifiable
     - mix:referenceable
     jcr:primaryType: publicationsystem:publication
+    jcr:uuid: 0bddd378-0dd1-4053-bf16-f4aebf05a871
     publicationsystem:AdministrativeSources: ''
     publicationsystem:CoverageEnd: 0001-01-01T12:00:00Z
     publicationsystem:CoverageStart: 0001-01-01T12:00:00Z
@@ -120,7 +152,7 @@
       mollis aliquet, ligula ipsum tincidunt ante, nec imperdiet sapien neque a nibh.
       In porta suscipit mauris. Suspendisse sit amet vestibulum neque, at aliquet
       nibh. Aenean sed ante quam.
-    publicationsystem:NominalDate: 2017-10-10T00:00:00Z
+    publicationsystem:NominalDate: 2026-10-09T23:00:00Z
     publicationsystem:PubliclyAccessible: false
     publicationsystem:Summary: Lorem ipsum dolor sit amet, consectetur adipiscing
       elit. Duis convallis non massa vel dictum. In vel ex sapien. Donec sit amet
@@ -130,6 +162,10 @@
       erat elit, quis facilisis neque eleifend id. Maecenas convallis vel mi nec bibendum.
       Donec ut erat dictum, molestie dolor non, aliquet nibh.
     publicationsystem:Title: Upcoming Publication
+    publicationsystem:earlyaccesskey: ''
+  hippo:versionHistory: 784ac875-5cbe-4a88-becc-348df20cd4a8
   jcr:mixinTypes:
+  - hippo:versionInfo
   - mix:referenceable
   jcr:primaryType: hippo:handle
+  jcr:uuid: 0d70bbae-a448-4ec1-b3c8-9e18b1d6dd5b

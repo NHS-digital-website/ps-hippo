@@ -3,6 +3,7 @@ package uk.nhs.digital.externalstorage.s3;
 import org.apache.commons.lang3.time.StopWatch;
 
 import java.io.InputStream;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
@@ -66,6 +67,21 @@ public class BlockingPooledS3Connector implements PooledS3Connector {
         }
 
         logger.reportAction("S3 file is now public: {}", s3FileReference);
+    }
+
+    /**
+     * See {@linkplain PooledS3Connector#tagResource(String, Map)}.
+     */
+    @Override
+    public void tagResource(String s3FileReference, Map<String, String> tags) {
+        logger.reportAction("Tagging S3 resource: {}", s3FileReference);
+        try {
+            s3Connector.tagResource(s3FileReference, tags);
+        } catch (final Exception ex) {
+            logger.reportError("Failed to tag S3 resource: " + s3FileReference, ex);
+            throw ex;
+        }
+        logger.reportAction("S3 resource is now tagged: {}", s3FileReference);
     }
 
     /**

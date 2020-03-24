@@ -9,7 +9,9 @@ import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static uk.nhs.digital.ps.beans.PublicationBase.EARLY_ACCESS_KEY_QUERY_PARAM;
 import static uk.nhs.digital.ps.beans.RestrictableDateTest.assertRestrictableDate;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
@@ -24,6 +26,7 @@ import org.hippoecm.hst.content.beans.standard.HippoFolder;
 import org.hippoecm.hst.core.request.HstRequestContext;
 import org.hippoecm.hst.mock.core.request.MockHstRequestContext;
 import org.hippoecm.hst.provider.jcr.JCRValueProvider;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +36,7 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
+import uk.nhs.digital.ps.directives.DateFormatterDirective;
 import uk.nhs.digital.ps.site.exceptions.DataRestrictionViolationException;
 import uk.nhs.digital.ps.test.util.ReflectionHelper;
 
@@ -41,19 +45,21 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.servlet.http.HttpServletRequest;
 
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({"javax.management.*", "javax.script.*"})
 @PowerMockRunnerDelegate(DataProviderRunner.class)
-@PrepareForTest(HstQueryBuilder.class)
+@PrepareForTest({HstQueryBuilder.class, Publication.class, RequestContextProvider.class})
 public class PublicationTest {
 
     private static final String NOMINAL_DATE_PROPERTY_KEY = "publicationsystem:NominalDate";
-    private static final String PUBLICLY_ACCESSIBLE_PROPERTY_KEY = "publicationsystem:PubliclyAccessible";
     private static final String ATTACHMENTS_PROPERTY_KEY = "publicationsystem:Attachments-v3";
     private static final String RELATED_LINKS_PROPERTY_KEY = "publicationsystem:RelatedLinks";
     private static final String RESOURCE_LINKS_PROPERTY_KEY = "publicationsystem:ResourceLinks";
@@ -62,6 +68,7 @@ public class PublicationTest {
     private static final String KEY_FACT_INFOGRAPHICS = "publicationsystem:keyFactInfographics";
     private static final String INTERACTIVE_TOOL_KEY = "publicationsystem:interactivetool";
     private static final String CHANGE_NOTICE_KEY = "publicationsystem:changenotice";
+    private static final String EARLY_ACCESS_KEY = "publicationsystem:earlyaccesskey";
 
     @Mock private JCRValueProvider valueProvider;
     @Mock private Node node;
@@ -74,6 +81,9 @@ public class PublicationTest {
     @Mock private HstQueryBuilder queryBuilder;
     @Mock private HstQuery query;
     @Mock private HstQueryResult queryResult;
+
+    @Mock private HstRequestContext hstRequestContext;
+    @Mock private HttpServletRequest httpServletRequest;
 
     private final Map<String, Object> beanProperties = new HashMap<>();
     private Publication publication;
@@ -111,6 +121,16 @@ public class PublicationTest {
         // Mock this static method so we can simulate the building and execution of a query
         PowerMockito.mockStatic(HstQueryBuilder.class);
         PowerMockito.when(HstQueryBuilder.create(folder)).thenReturn(queryBuilder);
+
+        PowerMockito.mockStatic(LocalDateTime.class);
+        PowerMockito.when(LocalDateTime.now(any(ZoneId.class))).thenReturn(
+            ZonedDateTime.of(2010, 3, 31, 9, 20, 0, 0, ZoneId.systemDefault())
+                .toLocalDateTime());
+
+        // mocks for early access key
+        PowerMockito.mockStatic(RequestContextProvider.class);
+        PowerMockito.when(RequestContextProvider.get()).thenReturn(hstRequestContext);
+        when(hstRequestContext.getServletRequest()).thenReturn(httpServletRequest);
 
         given(queryBuilder.ofTypes(any(Class.class))).willReturn(queryBuilder);
         given(queryBuilder.orderByDescending(anyString())).willReturn(queryBuilder);
@@ -181,7 +201,8 @@ public class PublicationTest {
         final Method forbiddenGetter) throws Exception {
 
         // given
-        setBeanProperty(PUBLICLY_ACCESSIBLE_PROPERTY_KEY, false);
+        setBeanProperty(NOMINAL_DATE_PROPERTY_KEY, new Calendar.Builder()
+            .setDate(2010, Calendar.JUNE, 3).setTimeOfDay(0, 0, 0).build());
 
         try {
             // when
@@ -208,7 +229,8 @@ public class PublicationTest {
     public void permitsAllGetters_whenPublicationFlaggedAsPubliclyAvailable(final Method permittedGetter) throws Exception {
 
         // given
-        setBeanProperty(PUBLICLY_ACCESSIBLE_PROPERTY_KEY, true);
+        setBeanProperty(NOMINAL_DATE_PROPERTY_KEY, new Calendar.Builder()
+            .setDate(2010, Calendar.MARCH, 3).setTimeOfDay(0, 0, 0).build());
 
         // some getters have arguments so we need to construct mocked instances and pass them in as parameters
         Object[] args = Arrays.stream(permittedGetter.getParameterTypes())
@@ -230,6 +252,69 @@ public class PublicationTest {
         }
     }
 
+    // Using power mock for setting current time in test.
+    // Don't want to add a calendar instance to each Publication object.
+    // No DI framework to allow injected + easy mocking of singleton .
+    @Test
+    public void returnsTrueBefore930amOnPublicationDate() {
+        PowerMockito.mockStatic(LocalDateTime.class);
+        PowerMockito
+            .when(LocalDateTime.now(DateFormatterDirective.TIME_ZONE.toZoneId()))
+            .thenReturn(ZonedDateTime.of(2020, 1, 10, 9, 29, 59, 0,
+                DateFormatterDirective.TIME_ZONE.toZoneId()).toLocalDateTime());
+
+        Calendar publicationDate = new Calendar.Builder()
+            .setDate(2020, Calendar.JANUARY, 10).build();
+        setBeanProperty(NOMINAL_DATE_PROPERTY_KEY, publicationDate);
+
+        final boolean beforePublicationDate = publication
+            .getBeforePublicationDate();
+
+        Assert.assertTrue(beforePublicationDate);
+    }
+
+    @Test
+    public void returnsFalseFrom930amOnPublicationDate() {
+        PowerMockito.mockStatic(LocalDateTime.class);
+        PowerMockito
+            .when(LocalDateTime.now(DateFormatterDirective.TIME_ZONE.toZoneId()))
+            .thenReturn(ZonedDateTime.of(2020, 1, 10, 9, 30, 0, 0,
+                DateFormatterDirective.TIME_ZONE.toZoneId()).toLocalDateTime());
+
+        Calendar publicationDate = new Calendar.Builder()
+            .setDate(2020, Calendar.JANUARY, 10).build();
+        setBeanProperty(NOMINAL_DATE_PROPERTY_KEY, publicationDate);
+
+        final boolean beforePublicationDate = publication
+            .getBeforePublicationDate();
+
+        Assert.assertFalse(beforePublicationDate);
+    }
+
+    @Test
+    public void returnsFalseWhenNoAccessKeySet() {
+        when(httpServletRequest.getParameter(EARLY_ACCESS_KEY_QUERY_PARAM)).thenReturn("123");
+
+        Assert.assertFalse(publication.isCorrectAccessKey());
+    }
+
+    @Test
+    public void returnsFalseWhenIncorrectAccessKey() {
+        setBeanProperty(EARLY_ACCESS_KEY, "923hrjfshd8998fjHUHUFD283747JSZKFJSsdfsdDJ");
+        when(httpServletRequest.getParameter(EARLY_ACCESS_KEY_QUERY_PARAM)).thenReturn("123");
+
+        Assert.assertFalse(publication.isCorrectAccessKey());
+    }
+
+    @Test
+    public void returnsTrueWhenCorrectAccessKey() {
+        final String accessKey = "923hrjfshd8998fjHUHUFD283747JSZKFJSsdfsdDJ";
+        setBeanProperty(EARLY_ACCESS_KEY, accessKey);
+        when(httpServletRequest.getParameter(EARLY_ACCESS_KEY_QUERY_PARAM)).thenReturn(accessKey);
+
+        Assert.assertTrue(publication.isCorrectAccessKey());
+    }
+
     /**
      * Create an instance of a class that we can pass as a parameter in our calls to the getters
      * Currently only implemented for HstRequestContext
@@ -237,6 +322,8 @@ public class PublicationTest {
     private static <R> R newInstanceForClass(Class<R> cls) {
         if (cls.equals(HstRequestContext.class)) {
             return (R) new MockHstRequestContext();
+        } else if (cls.equals(String.class)) {
+            return (R) "";
         } else {
             throw new RuntimeException("Don't know how to construct class " + cls);
         }
@@ -259,8 +346,10 @@ public class PublicationTest {
         final List<String> gettersPermittedWhenUpcoming = asList(
             "getTitle",
             "getNominalPublicationDate",
+            "getBeforePublicationDate",
             "isPubliclyAccessible",
-            "getSelfLinkBean"
+            "getSelfLinkBean",
+            "isCorrectAccessKey"
         );
 
         return allPublicGetters().stream()
@@ -273,11 +362,7 @@ public class PublicationTest {
     }
 
     private static LocalDate toLocalDate(final Calendar calendar) {
-        return LocalDate.from(
-            LocalDateTime.ofInstant(
-                calendar.toInstant(),
-                calendar.getTimeZone().toZoneId()
-            )
-        );
+        return LocalDate
+            .from(calendar.toInstant().atZone(calendar.getTimeZone().toZoneId()));
     }
 }

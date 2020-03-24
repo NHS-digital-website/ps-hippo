@@ -2,10 +2,15 @@ package uk.nhs.digital.test.util;
 
 import static java.util.Collections.emptyMap;
 
+import org.apache.jackrabbit.util.ISO8601;
 import org.apache.sling.testing.mock.jcr.MockJcr;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 import javax.jcr.Node;
@@ -47,6 +52,10 @@ public class MockJcrRepoProvider {
                 for (Map.Entry<String, Object> entry : node.properties.entrySet()) {
                     if (entry.getValue() instanceof Boolean) {
                         secondaryNode.setProperty(entry.getKey(), (Boolean) entry.getValue());
+                    } else if (entry.getValue() instanceof Date) {
+                        Calendar myCal = new GregorianCalendar();
+                        myCal.setTime((Date) entry.getValue());
+                        secondaryNode.setProperty(entry.getKey(), ISO8601.format(myCal));
                     } else {
                         secondaryNode.setProperty(entry.getKey(), entry.getValue().toString());
                     }

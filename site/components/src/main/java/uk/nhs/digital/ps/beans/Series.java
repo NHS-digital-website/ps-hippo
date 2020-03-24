@@ -1,7 +1,7 @@
 package uk.nhs.digital.ps.beans;
 
 import static org.hippoecm.hst.content.beans.query.builder.ConstraintBuilder.constraint;
-import static uk.nhs.digital.ps.beans.PublicationBase.PropertyKeys.PUBLICLY_ACCESSIBLE;
+import static uk.nhs.digital.ps.beans.PublicationBase.PropertyKeys.NOMINAL_DATE;
 
 import org.hippoecm.hst.content.beans.Node;
 import org.hippoecm.hst.content.beans.query.builder.HstQueryBuilder;
@@ -9,9 +9,13 @@ import org.hippoecm.hst.content.beans.query.exceptions.QueryException;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.content.beans.standard.HippoBeanIterator;
 import org.hippoecm.hst.core.component.HstComponentException;
+import org.hippoecm.repository.util.DateTools.Resolution;
 import org.onehippo.cms7.essentials.dashboard.annotations.HippoEssentialsGenerated;
 import uk.nhs.digital.ps.beans.structuredText.StructuredText;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 @HippoEssentialsGenerated(internalName = "publicationsystem:series")
@@ -56,7 +60,11 @@ public class Series extends BaseDocument {
 
         HippoBeanIterator hippoBeans = HstQueryBuilder.create(folder)
             .ofTypes(Publication.class)
-            .where(constraint(PUBLICLY_ACCESSIBLE).equalTo(true))
+            .where(constraint(NOMINAL_DATE).lessOrEqualThan(
+                GregorianCalendar.from(ZonedDateTime.now(ZoneId.of("UTC"))
+                    .minusHours(Publication.HOUR_OF_PUBLIC_RELEASE)
+                    .minusMinutes(Publication.MINUTE_OF_PUBLIC_RELEASE)),
+                Resolution.SECOND))
             .orderByDescending("publicationsystem:NominalDate")
             .limit(1)
             .build()

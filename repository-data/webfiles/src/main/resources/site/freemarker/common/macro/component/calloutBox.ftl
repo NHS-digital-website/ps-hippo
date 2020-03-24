@@ -18,7 +18,7 @@
 
     <div class="callout-box callout-box--${severity}${modYellowIcon}" role="complementary" aria-labelledby="callout-box-heading-${calloutBoxId}">
         <div class="callout-box__icon-wrapper">
-            <svg class="callout-box__icon${modNarrowIcon}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" preserveAspectRatio="xMidYMid meet" role="presentation" focusable="false">
+            <svg class="callout-box__icon${modNarrowIcon}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
                 <#if callout.severity == "important">
                     <#if survey>
                         <path d="M160,39.3H83.8c-34.6,0-62.7,28.3-62.7,63.1v12c0,19.6,8.9,37.1,22.7,48.6c-8,14.9-17.7,29.7-25.2,31.8c0,0,31.1-5.2,51.8-18.8c4.3,0.9,8.7,1.5,13.3,1.5H160c34.6,0,62.7-28.3,62.7-63.1v-12C222.7,67.6,194.6,39.3,160,39.3z"/>

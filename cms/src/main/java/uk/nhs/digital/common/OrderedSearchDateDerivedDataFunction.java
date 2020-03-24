@@ -2,12 +2,14 @@ package uk.nhs.digital.common;
 
 import static java.util.Collections.emptyMap;
 import static org.apache.commons.lang3.ArrayUtils.isEmpty;
+import static uk.nhs.digital.ps.PublicationSystemConstants.*;
 
 import org.apache.jackrabbit.value.LongValue;
 import org.hippoecm.repository.ext.DerivedDataFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Map;
 import javax.jcr.Value;
@@ -30,13 +32,10 @@ public class OrderedSearchDateDerivedDataFunction extends DerivedDataFunction {
                 return emptyMap();
             }
 
-            Value[] publiclyAccessibleValues = parameters.get("publiclyAccessible");
-
             Calendar date = dateValues[0].getDate();
-            boolean publiclyAccessible = isEmpty(publiclyAccessibleValues) || publiclyAccessibleValues[0].getBoolean();
 
             long orderedSearchDate = date.getTimeInMillis();
-            if (!publiclyAccessible) {
+            if (!isPublic(date)) {
                 orderedSearchDate *= -1;
             }
 
@@ -48,5 +47,17 @@ public class OrderedSearchDateDerivedDataFunction extends DerivedDataFunction {
 
             return emptyMap();
         }
+    }
+
+    private boolean isPublic(Calendar publicationDate) {
+        LocalDateTime publicationDateTime = publicationDate.toInstant()
+            .atZone(LONDON_ZONE_ID).toLocalDateTime()
+            .withHour(HOUR_OF_PUBLICATION_RELEASE)
+            .withMinute(MINUTE_OF_PUBLICATION_RELEASE)
+            .withSecond(0);
+
+        LocalDateTime currentDateTime = LocalDateTime.now(LONDON_ZONE_ID);
+
+        return !currentDateTime.isBefore(publicationDateTime);
     }
 }

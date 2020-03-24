@@ -352,12 +352,14 @@ public class SiteSteps extends AbstractSpringSteps {
 
     @Then("^I should see the \"([^\"]*)\" list (containing|(?:not )?including):$")
     public void thenIShouldSeeTheListWith(String title, String qualifier, DataTable listItems) throws Throwable {
+        System.out.println("that");
         List<String> items = listItems.asList(String.class);
         listMatchesItems(qualifier, items, sitePage.findPageElement(title));
     }
 
     @Then("^I should see the list with title \"([^\"]*)\" (containing|(?:not )?including):$")
     public void thenIShouldSeeTheListWithTitle(String title, String qualifier, DataTable listItems) throws Throwable {
+        System.out.println("this");
         List<String> items = listItems.asList(String.class);
         listMatchesItems(qualifier, items, sitePage.findElementWithTitle(title));
     }

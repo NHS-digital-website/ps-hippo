@@ -2,15 +2,24 @@ package uk.nhs.digital.externalstorage.workflow.externalFilePublish;
 
 import static org.hippoecm.repository.HippoStdNodeType.PUBLISHED;
 import static uk.nhs.digital.ps.PublicationSystemConstants.INDEX_FILE_NAME;
+import static uk.nhs.digital.ps.PublicationSystemConstants.LONDON_ZONE_ID;
 
 import org.hippoecm.repository.api.WorkflowException;
 import org.onehippo.repository.documentworkflow.DocumentHandle;
 import org.onehippo.repository.documentworkflow.DocumentVariant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.nhs.digital.externalstorage.ExternalStorageConstants;
 import uk.nhs.digital.externalstorage.s3.PooledS3Connector;
 import uk.nhs.digital.externalstorage.workflow.AbstractExternalFileTask;
 import uk.nhs.digital.ps.PublicationSystemConstants;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
@@ -18,7 +27,19 @@ import javax.jcr.RepositoryException;
 public class ExternalFilePublishTask extends AbstractExternalFileTask {
 
     private static final String DOCUMENTS_ROOT_FOLDER = "/content/documents";
+    static final String TAG_PUBLICATION_DATE = "PUBLICATION_DATE";
+    static final String TAG_EARLY_ACCESS_KEY = "EARLY_ACCESS_KEY";
 
+    private final transient Clock clock;
+
+    private static final Logger LOG = LoggerFactory.getLogger(ExternalFilePublishTask.class);
+
+    ExternalFilePublishTask(Clock clock) {
+        super();
+        this.clock = clock;
+    }
+
+    @Override
     protected void processResourceNodes(final PooledS3Connector s3Connector, final NodeIterator resourceNodes) throws RepositoryException, WorkflowException {
         Node variantNode = getVariant().getNode(getWorkflowContext().getInternalWorkflowSession());
 
@@ -27,14 +48,14 @@ public class ExternalFilePublishTask extends AbstractExternalFileTask {
             setResourcePermissionOnPublication(s3Connector, resourceNodes);
         } else if (isDataset(variantNode)) {
             // when publishing dataset, we need to check parent LIVE publication state
-            publishResources(s3Connector, resourceNodes, isParentPublicationFinalised(variantNode));
+            publishResources(resourceNodes, getS3JobForDataset(s3Connector, variantNode));
         } else {
             // no additional logic for other document types. Published == public attachments
-            publishResources(s3Connector, resourceNodes, true);
+            publishResources(resourceNodes, s3Connector::publishResource);
         }
     }
 
-    private void publishResources(PooledS3Connector s3Connector, NodeIterator resourceNodes, boolean shouldBePublic) throws RepositoryException {
+    private void publishResources(NodeIterator resourceNodes, Consumer<String> s3Job) throws RepositoryException {
         for (Node node; resourceNodes.hasNext(); ) {
             node = resourceNodes.nextNode();
             if (node.hasProperty(ExternalStorageConstants.PROPERTY_EXTERNAL_STORAGE_REFERENCE)) {
@@ -42,42 +63,93 @@ public class ExternalFilePublishTask extends AbstractExternalFileTask {
                     .getProperty(ExternalStorageConstants.PROPERTY_EXTERNAL_STORAGE_REFERENCE)
                     .getString();
 
-                if (shouldBePublic) {
-                    s3Connector.publishResource(externalResource);
-                } else {
-                    s3Connector.unpublishResource(externalResource);
+                try {
+                    s3Job.accept(externalResource);
+                } catch (Exception ex) {
+                    LOG.error("Error while publishing S3 resource: {}", externalResource);
                 }
             }
         }
     }
 
-    private void setResourcePermissionOnPublication(PooledS3Connector s3Connector, NodeIterator resourceNodes) throws RepositoryException {
-        Node variantNode = getVariant().getNode(getWorkflowContext().getInternalWorkflowSession());
+    private void setResourcePermissionOnPublication(PooledS3Connector s3Connector,
+        NodeIterator resourceNodes) throws RepositoryException {
+        Node variantNode = getVariant()
+            .getNode(getWorkflowContext().getInternalWorkflowSession());
 
-        publishResources(s3Connector, resourceNodes, isPublicationFinalised(variantNode));
+        Consumer<String> s3Job = getS3JobBasedOnPublicationDate(s3Connector,
+            variantNode);
+
+        publishResources(resourceNodes, s3Job);
 
         // now find all datasets and publish resources
         // only if publication name is "content"
         if (INDEX_FILE_NAME.equals(variantNode.getName())) {
-            NodeIterator nodes = findPublicationDatasetsVariant(variantNode, PUBLISHED);
+            NodeIterator nodes = findPublicationDatasetsVariant(variantNode,
+                PUBLISHED);
 
             while (nodes.hasNext()) {
-                publishResources(s3Connector, findResourceNodes(nodes.nextNode()), isPublicationFinalised(variantNode));
+                publishResources(findResourceNodes(nodes.nextNode()), s3Job);
             }
         }
     }
 
-    private boolean isParentPublicationFinalised(Node datasetVariant) throws RepositoryException, WorkflowException {
-        DocumentVariant parentPublication = findPublicationInFolder(datasetVariant.getParent().getParent());
-
+    private Consumer<String> getS3JobForDataset(PooledS3Connector s3Connector,
+        Node datasetVariant)
+        throws RepositoryException, WorkflowException {
+        DocumentVariant parentPublication = findPublicationInFolder(
+            datasetVariant.getParent().getParent());
         if (parentPublication == null) {
             // no parent publication found
-            return false;
+            return s3Connector::unpublishResource;
         }
 
-        return parentPublication.getNode(getWorkflowContext().getInternalWorkflowSession())
-            .getProperty(PublicationSystemConstants.PROPERTY_PUBLICLY_ACCESSIBLE)
-            .getBoolean();
+        return getS3JobBasedOnPublicationDate(s3Connector, parentPublication
+            .getNode(getWorkflowContext().getInternalWorkflowSession()));
+    }
+
+    private Consumer<String> getS3JobBasedOnPublicationDate(
+        PooledS3Connector s3Connector, Node publicationNode)
+        throws RepositoryException {
+
+        final Consumer<String> s3Job;
+        final Map<String, String> tags = new HashMap<>();
+        long publicationDateEpoch = getPublicationDateEpoch(publicationNode);
+        tags.put(TAG_PUBLICATION_DATE, String.valueOf(publicationDateEpoch));
+        tags.put(TAG_EARLY_ACCESS_KEY, getEarlyAccessKey(publicationNode));
+
+        if (publicationDateEpoch <= Instant.now(clock).getEpochSecond()) {
+            s3Job = ref -> {
+                s3Connector.publishResource(ref);
+                s3Connector.tagResource(ref, tags);
+            };
+        } else {
+            s3Job = ref -> {
+                s3Connector.unpublishResource(ref);
+                s3Connector.tagResource(ref, tags);
+            };
+        }
+
+        return s3Job;
+    }
+
+    private long getPublicationDateEpoch(Node publicationNode)
+        throws RepositoryException {
+        Calendar pubDate = publicationNode
+            .getProperty(PublicationSystemConstants.PROPERTY_PUBLICATION_DATE)
+            .getDate();
+        return pubDate.toInstant().atZone(LONDON_ZONE_ID)
+            .toOffsetDateTime().withHour(
+                PublicationSystemConstants.HOUR_OF_PUBLICATION_RELEASE)
+            .withMinute(PublicationSystemConstants.MINUTE_OF_PUBLICATION_RELEASE).withSecond(0)
+            .toEpochSecond();
+    }
+
+    private String getEarlyAccessKey(Node publicationNode)
+        throws RepositoryException {
+        return publicationNode
+            .getProperty(PublicationSystemConstants.PROPERTY_EARLY_ACCESS_KEY)
+            .getString();
     }
 
     private DocumentVariant findPublicationInFolder(Node folder) throws RepositoryException, WorkflowException {
@@ -102,10 +174,6 @@ public class ExternalFilePublishTask extends AbstractExternalFileTask {
     private boolean isContentHandle(Node node) throws RepositoryException {
         return node.isNodeType("hippo:handle")
             && INDEX_FILE_NAME.equals(node.getName());
-    }
-
-    private boolean isPublicationFinalised(Node publicationVariant) throws RepositoryException {
-        return publicationVariant.getProperty(PublicationSystemConstants.PROPERTY_PUBLICLY_ACCESSIBLE).getBoolean();
     }
 
     private boolean isDataset(Node variantNode) throws RepositoryException {

@@ -1,10 +1,13 @@
 package uk.nhs.digital.ps.workflow.searchableFlag;
 
 import static java.lang.Boolean.parseBoolean;
+import static uk.nhs.digital.ps.PublicationSystemConstants.LONDON_ZONE_ID;
 
 import org.apache.commons.scxml2.SCXMLExpressionException;
 import org.apache.commons.scxml2.model.ModelException;
 import org.onehippo.repository.documentworkflow.action.AbstractDocumentTaskAction;
+
+import java.time.Clock;
 
 public class SearchableFlagAction extends AbstractDocumentTaskAction<SearchableFlagTask> {
 
@@ -13,7 +16,7 @@ public class SearchableFlagAction extends AbstractDocumentTaskAction<SearchableF
 
     @Override
     protected SearchableFlagTask createWorkflowTask() {
-        return new SearchableFlagTask();
+        return new SearchableFlagTask(Clock.system(LONDON_ZONE_ID));
     }
 
     public String getVariant() {

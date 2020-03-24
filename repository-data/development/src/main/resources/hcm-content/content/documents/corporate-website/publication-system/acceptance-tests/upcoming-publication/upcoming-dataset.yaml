@@ -2,14 +2,14 @@
 /content/documents/corporate-website/publication-system/acceptance-tests/upcoming-publication/upcoming-dataset:
   /upcoming-dataset[1]:
     common:FacetType: dataset
-    common:orderedSearchDate: 1507593600000
+    common:orderedSearchDate: -1773878400000
     common:searchRank: 3
     common:searchable: false
     hippo:availability: []
     hippostd:state: draft
     hippostdpubwf:createdBy: admin
     hippostdpubwf:creationDate: 2017-11-03T13:38:20.323Z
-    hippostdpubwf:lastModificationDate: 2017-12-07T22:14:24.650Z
+    hippostdpubwf:lastModificationDate: 2020-03-20T13:08:02.343Z
     hippostdpubwf:lastModifiedBy: admin
     hippotranslation:id: 00000000-0000-0000-0000-000000000000
     hippotranslation:locale: en
@@ -24,7 +24,7 @@
     publicationsystem:Granularity:
     - GP practices
     publicationsystem:NextPublicationDate: 0001-01-01T12:00:00Z
-    publicationsystem:NominalDate: 2017-10-10T00:00:00Z
+    publicationsystem:NominalDate: 2026-03-19T00:00:00Z
     publicationsystem:Summary: Sed et nunc risus. In hac habitasse platea dictumst.
       Proin ultrices, velit vitae mollis aliquet, ligula ipsum tincidunt ante, nec
       imperdiet sapien neque a nibh. In porta suscipit mauris. Suspendisse sit amet
@@ -32,7 +32,7 @@
     publicationsystem:Title: Upcoming Dataset
   /upcoming-dataset[2]:
     common:FacetType: dataset
-    common:orderedSearchDate: 1507593600000
+    common:orderedSearchDate: -1773878400000
     common:searchRank: 3
     common:searchable: false
     hippo:availability:
@@ -40,7 +40,7 @@
     hippostd:state: unpublished
     hippostdpubwf:createdBy: admin
     hippostdpubwf:creationDate: 2017-11-03T13:38:20.323Z
-    hippostdpubwf:lastModificationDate: 2017-11-03T13:41:03.545Z
+    hippostdpubwf:lastModificationDate: 2020-03-20T13:08:08.110Z
     hippostdpubwf:lastModifiedBy: admin
     hippotranslation:id: 00000000-0000-0000-0000-000000000000
     hippotranslation:locale: en
@@ -56,7 +56,7 @@
     publicationsystem:Granularity:
     - GP practices
     publicationsystem:NextPublicationDate: 0001-01-01T12:00:00Z
-    publicationsystem:NominalDate: 2017-10-10T00:00:00Z
+    publicationsystem:NominalDate: 2026-03-19T00:00:00Z
     publicationsystem:Summary: Sed et nunc risus. In hac habitasse platea dictumst.
       Proin ultrices, velit vitae mollis aliquet, ligula ipsum tincidunt ante, nec
       imperdiet sapien neque a nibh. In porta suscipit mauris. Suspendisse sit amet
@@ -64,7 +64,7 @@
     publicationsystem:Title: Upcoming Dataset
   /upcoming-dataset[3]:
     common:FacetType: dataset
-    common:orderedSearchDate: 1507593600000
+    common:orderedSearchDate: -1773878400000
     common:searchRank: 3
     common:searchable: false
     hippo:availability:
@@ -72,9 +72,9 @@
     hippostd:state: published
     hippostdpubwf:createdBy: admin
     hippostdpubwf:creationDate: 2017-11-03T13:38:20.323Z
-    hippostdpubwf:lastModificationDate: 2017-11-03T13:41:03.545Z
+    hippostdpubwf:lastModificationDate: 2020-03-20T13:08:08.110Z
     hippostdpubwf:lastModifiedBy: admin
-    hippostdpubwf:publicationDate: 2017-11-03T13:47:00.597Z
+    hippostdpubwf:publicationDate: 2020-03-20T13:08:10.175Z
     hippotranslation:id: 00000000-0000-0000-0000-000000000000
     hippotranslation:locale: en
     jcr:mixinTypes:
@@ -88,14 +88,16 @@
     publicationsystem:Granularity:
     - GP practices
     publicationsystem:NextPublicationDate: 0001-01-01T12:00:00Z
-    publicationsystem:NominalDate: 2017-10-10T00:00:00Z
+    publicationsystem:NominalDate: 2026-03-19T00:00:00Z
     publicationsystem:Summary: Sed et nunc risus. In hac habitasse platea dictumst.
       Proin ultrices, velit vitae mollis aliquet, ligula ipsum tincidunt ante, nec
       imperdiet sapien neque a nibh. In porta suscipit mauris. Suspendisse sit amet
       vestibulum neque, at aliquet nibh. Aenean sed ante quam.
     publicationsystem:Title: Upcoming Dataset
   hippo:name: Upcoming Dataset
+  hippo:versionHistory: f96fc5c5-05f1-4654-9b25-c2ae483fca2d
   jcr:mixinTypes:
   - hippo:named
+  - hippo:versionInfo
   - mix:referenceable
   jcr:primaryType: hippo:handle
