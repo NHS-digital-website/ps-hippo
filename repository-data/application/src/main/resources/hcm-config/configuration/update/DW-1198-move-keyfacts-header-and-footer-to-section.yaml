@@ -1,0 +1,15 @@
+---
+definitions:
+  config:
+    /hippo:configuration/hippo:update/hippo:registry/DW-1198-move-keyfacts-header-and-footer-to-section:
+      hipposys:batchsize: 10
+      hipposys:description: A example script to migrate keyfacts from publication/legacypublication
+        to highlights.
+      hipposys:dryrun: false
+      hipposys:parameters: '{}'
+      hipposys:query: //*[(@jcr:primaryType='publicationsystem:publication') or (@jcr:primaryType='publicationsystem:legacypublication')]
+      hipposys:script:
+        resource: /configuration/update/DW-1198-move-keyfacts-header-and-footer-to-section.groovy
+        type: string
+      hipposys:throttle: 1000
+      jcr:primaryType: hipposys:updaterinfo

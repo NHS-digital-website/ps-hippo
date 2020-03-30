@@ -1,6 +1,7 @@
 package uk.nhs.digital.ps.beans;
 
 import org.hippoecm.hst.content.beans.Node;
+import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.content.beans.standard.HippoHtml;
 import org.onehippo.cms7.essentials.dashboard.annotations.HippoEssentialsGenerated;
 
@@ -32,5 +33,10 @@ public class LegacyPublication extends PublicationBase {
     @HippoEssentialsGenerated(internalName = "publicationsystem:gossid")
     public Long getGossid() {
         return getSingleProperty("publicationsystem:gossid");
+    }
+
+    @HippoEssentialsGenerated(internalName = "publicationsystem:highlights")
+    public List<HippoBean> getHighlights() {
+        return getChildBeansByName("publicationsystem:highlights");
     }
 }
