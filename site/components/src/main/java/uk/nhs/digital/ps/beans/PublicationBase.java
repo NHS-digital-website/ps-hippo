@@ -278,7 +278,7 @@ public abstract class PublicationBase extends BaseDocument {
         String RELATED_LINKS = "publicationsystem:RelatedLinks";
         String RESOURCE_LINKS = "publicationsystem:ResourceLinks";
         String ATTACHMENTS_V3 = "publicationsystem:Attachments-v3";
-        String HIGHLIGHTS = "publicationsystem:highlights";
+        String HIGHLIGHTS = "publicationsystem:Highlights";
 
         String PARENT_BEAN = "PARENT_BEAN";
         String PARENT_SERIES = "PARENT_SERIES";
