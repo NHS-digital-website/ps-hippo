@@ -37,6 +37,6 @@ public class LegacyPublication extends PublicationBase {
 
     @HippoEssentialsGenerated(internalName = PropertyKeys.HIGHLIGHTS)
     public List<HippoBean> getHighlights() {
-        return getChildBeansByName(PropertyKeys.HIGHLIGHTS);
+        return getChildBeansIfPermitted(PropertyKeys.HIGHLIGHTS, HippoBean.class);
     }
 }
