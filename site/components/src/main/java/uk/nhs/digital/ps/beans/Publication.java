@@ -56,7 +56,7 @@ public class Publication extends PublicationBase implements Paginated {
 
     @HippoEssentialsGenerated(internalName = PropertyKeys.HIGHLIGHTS)
     public List<HippoBean> getHighlights() {
-        return getChildBeansIfPermitted(PropertyKeys.HIGHLIGHTS, HippoBean.class);
+        return getChildBeansByName(PropertyKeys.HIGHLIGHTS);
     }
 
     public List<PublicationPage> getPages() {
