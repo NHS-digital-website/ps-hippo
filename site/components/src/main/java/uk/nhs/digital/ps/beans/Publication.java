@@ -1,5 +1,6 @@
 package uk.nhs.digital.ps.beans;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.hippoecm.hst.content.beans.Node;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.content.beans.standard.HippoHtml;
@@ -10,6 +11,7 @@ import uk.nhs.digital.ps.beans.structuredText.StructuredText;
 import uk.nhs.digital.website.beans.Infographic;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @HippoEssentialsGenerated(internalName = "publicationsystem:publication")
@@ -56,7 +58,11 @@ public class Publication extends PublicationBase implements Paginated {
 
     @HippoEssentialsGenerated(internalName = PropertyKeys.HIGHLIGHTS)
     public List<HippoBean> getHighlights() {
-        return getChildBeansByName(PropertyKeys.HIGHLIGHTS);
+        if (CollectionUtils.isEmpty(getChildBeansByName(PropertyKeys.HIGHLIGHTS))) {
+            return Collections.emptyList();
+        } else {
+            return getChildBeansByName(PropertyKeys.HIGHLIGHTS);
+        }
     }
 
     public List<PublicationPage> getPages() {
