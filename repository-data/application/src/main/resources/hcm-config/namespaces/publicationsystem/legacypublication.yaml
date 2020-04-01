@@ -424,9 +424,6 @@ definitions:
         jcr:primaryType: hippo:handle
       /hipposysedit:prototypes:
         /hipposysedit:prototype:
-          /publicationsystem:KeyFacts:
-            hippostd:content: ''
-            jcr:primaryType: hippostd:html
           /publicationsystem:Summary:
             hippostd:content: ''
             jcr:primaryType: hippostd:html
