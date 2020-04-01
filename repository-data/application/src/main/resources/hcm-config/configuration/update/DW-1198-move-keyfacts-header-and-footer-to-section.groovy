@@ -1,7 +1,9 @@
 package org.hippoecm.frontend.plugins.cms.admin.updater
 
+import org.apache.commons.lang.StringUtils
 import org.hippoecm.repository.util.JcrUtils
 import org.onehippo.repository.update.BaseNodeUpdateVisitor
+import org.onehippo.repository.util.NodeTypeUtils
 
 import javax.jcr.Node
 import javax.jcr.NodeIterator
@@ -35,25 +37,27 @@ class MoveKeyfactsToSection extends BaseNodeUpdateVisitor {
 
         log.info("attempting to update node: " + path + " => current node type: " + nodeType)
 
-            subNodes.eachWithIndex{ String subNode, i ->
+        subNodes.eachWithIndex{ String subNode, i ->
 
-                if (publicationNode.hasNode(subNode)) {
+            if (publicationNode.hasNode(subNode)) {
 
-                    if (subNode.equals("publicationsystem:keyFactInfographics")) {
+                if (subNode.equals("publicationsystem:keyFactInfographics")) {
 
-                        NodeIterator it = publicationNode.getNodes(subNode)
-                        while (it.hasNext()) {
-                            Node infoGraphicNode = publicationNode.addNode("publicationsystem:highlights", "website:infographic")
-                            JcrUtils.copyTo(it.nextNode(), infoGraphicNode)
-                        }
-                        NodeIterator it2 = publicationNode.getNodes(subNode)
-                        while (it2.hasNext()) {
-                            it2.nextNode().remove()
-                        }
-
+                    NodeIterator it = publicationNode.getNodes(subNode)
+                    while (it.hasNext()) {
+                        Node infoGraphicNode = publicationNode.addNode("publicationsystem:highlights", "website:infographic")
+                        JcrUtils.copyTo(it.nextNode(), infoGraphicNode)
                     }
-                    else if (subNode.equals("publicationsystem:keyFactsHead") || subNode.equals("publicationsystem:keyFactsTail")) {
+                    NodeIterator it2 = publicationNode.getNodes(subNode)
+                    while (it2.hasNext()) {
+                        it2.nextNode().remove()
+                    }
 
+                }
+
+                if (subNode.equals("publicationsystem:KeyFactsHead") || subNode.equals("publicationsystem:KeyFactsTail") || subNode.equals("publicationsystem:KeyFacts")) {
+
+                    if(StringUtils.isNotEmpty(publicationNode.getNode(subNode).getProperty("hippostd:content").toString())) {
                         def body = publicationNode.getNode(subNode)
                         Node section = publicationNode.addNode("publicationsystem:highlights","website:section")
                         Node bodyNode = section.addNode("website:html", "hippostd:html")
@@ -62,20 +66,12 @@ class MoveKeyfactsToSection extends BaseNodeUpdateVisitor {
 
                         body.remove();
                     }
-                    else {
 
-                        def body1 = publicationNode.getNode(subNode)
-                        Node section1 = publicationNode.addNode("publicationsystem:highlights","website:section")
-                        Node bodyNode = section1.addNode("website:html", "hippostd:html")
-                        String bodyContent = body1.getProperty("hippostd:content").getString();
-                        bodyNode.setProperty("hippostd:content", bodyContent)
-
-                        body1.remove();
-                    }
-
-                    log.info("  UPDATED: test")
                 }
+
+                log.info("  UPDATED: test")
             }
+        }
 
         return false
     }

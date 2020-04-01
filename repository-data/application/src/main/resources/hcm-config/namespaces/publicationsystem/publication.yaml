@@ -530,12 +530,6 @@ definitions:
         jcr:primaryType: hippo:handle
       /hipposysedit:prototypes:
         /hipposysedit:prototype:
-          /publicationsystem:KeyFactsHead:
-            hippostd:content: ''
-            jcr:primaryType: hippostd:html
-          /publicationsystem:KeyFactsTail:
-            hippostd:content: ''
-            jcr:primaryType: hippostd:html
           /publicationsystem:seosummary:
             hippostd:content: ''
             jcr:primaryType: hippostd:html
