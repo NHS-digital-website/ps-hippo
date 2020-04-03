@@ -61,8 +61,13 @@ class MoveKeyfactsToSection extends BaseNodeUpdateVisitor {
                         def body = publicationNode.getNode(subNode)
                         Node section = publicationNode.addNode("publicationsystem:highlights","website:section")
                         Node bodyNode = section.addNode("website:html", "hippostd:html")
-                        String bodyContent = body.getProperty("hippostd:content").getString();
-                        bodyNode.setProperty("hippostd:content", bodyContent)
+
+                        String property = body.getProperty("hippostd:content").toString()
+                        bodyNode.setProperty("hippostd:content", JcrUtils.getStringProperty(body, "hippostd:content", ""))
+
+                        if(body.getNodes().hasNext()) {
+                            JcrUtils.copy(body.getNodes().nextNode(), body.getNodes().nextNode().getName(), bodyNode)
+                        }
 
                         body.remove();
                     }
