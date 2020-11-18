@@ -19,5 +19,5 @@
     </#list>
     </ol>
 
-    <a href="/news-and-events/latest-news" class="button">${buttonLabel}</a>
+    <a href="/news" class="button">${buttonLabel}</a>
 </#if>

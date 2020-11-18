@@ -23,7 +23,7 @@
       /inferenceengine:parameter[1]:
         inferenceengine:name: goal.uri.mapping.1
         inferenceengine:value:
-        - 'news : /news-and-events/news'
+        - 'news : /news'
         jcr:primaryType: inferenceengine:parameter
       /inferenceengine:parameter[2]:
         inferenceengine:name: goal.uri.mapping.2
@@ -98,7 +98,7 @@
       /inferenceengine:parameter[1]:
         inferenceengine:name: goal.uri.mapping.1
         inferenceengine:value:
-        - 'news : /news-and-events/news'
+        - 'news : /news'
         jcr:primaryType: inferenceengine:parameter
       /inferenceengine:parameter[2]:
         inferenceengine:name: goal.uri.mapping.2
@@ -175,7 +175,7 @@
       /inferenceengine:parameter[1]:
         inferenceengine:name: goal.uri.mapping.1
         inferenceengine:value:
-        - 'news : /news-and-events/news'
+        - 'news : /news'
         jcr:primaryType: inferenceengine:parameter
       /inferenceengine:parameter[2]:
         inferenceengine:name: goal.uri.mapping.2

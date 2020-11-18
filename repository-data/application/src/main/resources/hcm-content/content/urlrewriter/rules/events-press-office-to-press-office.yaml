@@ -1,0 +1,52 @@
+---
+/content/urlrewriter/rules/events-press-office-to-press-office:
+  /events-press-office-to-press-office[1]:
+    hippo:availability:
+    - preview
+    hippostd:state: unpublished
+    hippostdpubwf:createdBy: admin
+    hippostdpubwf:creationDate: 2018-03-14T21:41:31.456Z
+    hippostdpubwf:lastModificationDate: 2018-03-15T14:31:46.997Z
+    hippostdpubwf:lastModifiedBy: admin
+    jcr:mixinTypes:
+    - mix:versionable
+    jcr:primaryType: urlrewriter:rule
+    urlrewriter:ruledescription: Redirect from /news-and-events/press-office to /press-office
+    urlrewriter:rulefrom: /news-and-events/press-office
+    urlrewriter:ruleto: /site/press-office/$1
+    urlrewriter:ruletype: permanent-redirect
+  /events-press-office-to-press-office[2]:
+    hippo:availability:
+    - live
+    hippostd:state: published
+    hippostdpubwf:createdBy: admin
+    hippostdpubwf:creationDate: 2018-03-14T21:41:31.456Z
+    hippostdpubwf:lastModificationDate: 2018-03-15T14:31:46.997Z
+    hippostdpubwf:lastModifiedBy: admin
+    hippostdpubwf:publicationDate: 2018-03-15T14:31:52.182Z
+    jcr:mixinTypes:
+    - mix:referenceable
+    jcr:primaryType: urlrewriter:rule
+    urlrewriter:ruledescription: Redirect from /news-and-events/press-office to /press-office
+    urlrewriter:rulefrom: /news-and-events/press-office
+    urlrewriter:ruleto: /site/press-office/$1
+    urlrewriter:ruletype: permanent-redirect
+  /events-press-office-to-press-office[3]:
+    hippo:availability: []
+    hippostd:state: draft
+    hippostdpubwf:createdBy: admin
+    hippostdpubwf:creationDate: 2018-03-14T21:41:31.456Z
+    hippostdpubwf:lastModificationDate: 2018-03-15T14:31:42.293Z
+    hippostdpubwf:lastModifiedBy: admin
+    jcr:mixinTypes:
+    - mix:referenceable
+    jcr:primaryType: urlrewriter:rule
+    urlrewriter:ruledescription: Redirect from /news-and-events/press-office to /press-office
+    urlrewriter:rulefrom: /news-and-events/press-office
+    urlrewriter:ruleto: /site/press-office/$1
+    urlrewriter:ruletype: permanent-redirect
+  hippo:name: /news-and-events/press-office to /press-office
+  jcr:mixinTypes:
+  - hippo:named
+  - mix:referenceable
+  jcr:primaryType: hippo:handle

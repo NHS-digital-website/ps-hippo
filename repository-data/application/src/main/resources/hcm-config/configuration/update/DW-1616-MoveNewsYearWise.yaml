@@ -1,0 +1,17 @@
+---
+definitions:
+  config:
+    /hippo:configuration/hippo:update/hippo:registry/DW-1616-MoveNewsYearWise:
+      hipposys:batchsize: 100
+      hipposys:description: Move News Year Wise
+      hipposys:dryrun: true
+      hipposys:loglevel: DEBUG
+      hipposys:parameters: '{"baseDestinationPath": "/content/documents/corporate-website/news"
+        , "moveDocFromPath": "/content/documents/corporate-website/news/latest-news",
+        "baseURL":"http://localhost:8080/site/" , "ruleFolder":"newsrules"}'
+      hipposys:query: /jcr:root/content/documents/corporate-website/news//*[@jcr:primaryType='website:news']
+      hipposys:script:
+        resource: /configuration/update/DW-1616-MoveNewsYearWise.groovy
+        type: string
+      hipposys:throttle: 10
+      jcr:primaryType: hipposys:updaterinfo

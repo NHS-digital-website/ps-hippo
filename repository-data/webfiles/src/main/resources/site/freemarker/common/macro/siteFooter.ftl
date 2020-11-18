@@ -33,7 +33,7 @@
                                     <nav class="site-footer__menu site-footer__menu--3">
                                         <ul class="list list--reset list--close">
                                             <li><a href="/about-nhs-digital/contact-us">Contact us</a></li>
-                                            <li><a href="/news-and-events/press-office">Press office</a></li>
+                                            <li><a href="/press-office">Press office</a></li>
                                             <li><a href="/about-nhs-digital/contact-us/freedom-of-information">Freedom of information</a></li>
                                             <li><a href="/about-nhs-digital/careers">Careers</a></li>
                                             <li class="last-item"><a href="/about-nhs-digital/tell-us-what-you-think-of-our-website" title="Provide website feedback">Tell us what you think of our website</a></li>

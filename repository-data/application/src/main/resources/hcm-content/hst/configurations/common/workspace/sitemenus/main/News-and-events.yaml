@@ -4,9 +4,6 @@
   /Events:
     hst:referencesitemapitem: news-and-events/events
     jcr:primaryType: hst:sitemenuitem
-  /News:
-    hst:referencesitemapitem: news-and-events/news
-    jcr:primaryType: hst:sitemenuitem
   hst:referencesitemapitem: news-and-events
   hst:repobased: false
   jcr:primaryType: hst:sitemenuitem
