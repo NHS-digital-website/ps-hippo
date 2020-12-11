@@ -1,0 +1,8 @@
+---
+definitions:
+  config:
+    /hst:hst/hst:configurations/common/hst:sitemap/static-ui:
+      /static-ui-adapt-learning:
+        hst:componentconfigurationid: hst:pages/static-ui-adaptlearning
+        hst:relativecontentpath: adapt-learning
+        jcr:primaryType: hst:sitemapitem

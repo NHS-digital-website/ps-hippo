@@ -1,0 +1,10 @@
+---
+definitions:
+  config:
+    /hst:hst/hst:configurations/common/hst:templates:
+      /static-ui-adapt-learning:
+        hst:renderpath: webfile:/freemarker/common/static-ui/adapt-learning.ftl
+        jcr:primaryType: hst:template
+      /static-ui-component:
+        hst:renderpath: webfile:/freemarker/common/static-ui/component/index.ftl
+        jcr:primaryType: hst:template

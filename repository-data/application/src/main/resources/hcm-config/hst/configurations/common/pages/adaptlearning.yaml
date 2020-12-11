@@ -1,0 +1,10 @@
+---
+definitions:
+  config:
+    /hst:hst/hst:configurations/common/hst:pages/static-ui-adaptlearning:
+      /main:
+        hst:componentclassname: ''
+        hst:template: static-ui-adapt-learning
+        jcr:primaryType: hst:component
+      hst:referencecomponent: hst:abstractpages/staticuipage
+      jcr:primaryType: hst:component
