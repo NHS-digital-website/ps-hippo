@@ -1,0 +1,96 @@
+{
+  "_defaultLanguage": "en",
+  "_defaultDirection": "ltr",
+  "_questionWeight": 1,
+  "_generateSourcemap": false,
+  "_forceRouteLocking": true,
+  "_disableAnimationFor": [],
+  "_id": "5f3669ce17438903a62618f9",
+  "_courseId": "5f3669ce17438903a62618f5",
+  "_drawer": {
+    "_showEasing": "easeOutQuart",
+    "_hideEasing": "easeInQuart",
+    "_duration": 400
+  },
+  "_accessibility": {
+    "_isEnabled": true,
+    "_isTextProcessorEnabled": true,
+    "_isSkipNavigationEnabled": true,
+    "_ariaLevels": {
+      "_menu": 1,
+      "_menuItem": 2,
+      "_page": 1,
+      "_article": 2,
+      "_block": 3,
+      "_component": 4,
+      "_componentItem": 5,
+      "_notify": 1
+    }
+  },
+  "screenSize": {
+    "small": 519,
+    "medium": 759,
+    "large": 1024
+  },
+  "__v": 0,
+  "_completionCriteria": {
+    "_requireContentCompleted": false,
+    "_requireAssessmentCompleted": true
+  },
+  "_logging": {
+    "_isEnabled": true,
+    "_level": "info",
+    "_console": true,
+    "_warnFirstOnly": true
+  },
+  "_scrollingContainer": {
+    "_isEnabled": true,
+    "_limitToSelector": ""
+  },
+  "_trickle": {
+    "_completionAttribute": "_isComplete"
+  },
+  "_elfh_spoor": {
+    "_isEnabled": true,
+    "_tracking": {
+      "_shouldSubmitScore": true,
+      "_shouldStoreResponses": true,
+      "_shouldRecordInteractions": true
+    },
+    "_reporting": {
+      "_onTrackingCriteriaMet": "passed",
+      "_onAssessmentFailure": "failed",
+      "_resetStatusOnLanguageChange": false
+    },
+    "_advancedSettings": {
+      "_showDebugWindow": false,
+      "_commitOnStatusChange": true,
+      "_timedCommitFrequency": 10,
+      "_maxCommitRetries": 5,
+      "_commitRetryDelay": 2000,
+      "_suppressErrors": false,
+      "_commitOnVisibilityChangeHidden": true
+    }
+  },
+  "build": {
+    "includes": [
+      "adapt-contrib-boxMenu",
+      "5e44ed3504f23157369c7045",
+      "adapt-contrib-text",
+      "adapt-contrib-accordion",
+      "adapt-contrib-hotgraphic",
+      "adapt-contrib-narrative",
+      "adapt-contrib-blank",
+      "adapt-pageNav",
+      "adapt-contrib-graphic",
+      "adapt-contrib-mcq",
+      "adapt-contrib-assessmentResults",
+      "adapt-contrib-assessment",
+      "adapt-contrib-pageLevelProgress",
+      "adapt-contrib-resources",
+      "adapt-contrib-trickle",
+      "adapt-contrib-tutor",
+      "adapt-elfh-spoor"
+    ]
+  }
+}
