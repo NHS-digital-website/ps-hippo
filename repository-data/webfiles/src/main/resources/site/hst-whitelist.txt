@@ -30,4 +30,4 @@ dist/nhsd-priority-scripts.bundle.js
 images/
 icons/
 apispecification/
-/freemarker/common/static-ui/adapt-learning/
+adapt-learning/
