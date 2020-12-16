@@ -6,6 +6,15 @@ definitions:
         hst:authenticated: false
         hst:containerresource: true
         jcr:primaryType: hst:sitemapitem
+      /_any_.json:
+        hst:containerresource: true
+        jcr:primaryType: hst:sitemapitem
+      /_any_.woff:
+        hst:containerresource: true
+        jcr:primaryType: hst:sitemapitem
+      /_any_.woff2:
+        hst:containerresource: true
+        jcr:primaryType: hst:sitemapitem
       /googlec9ae176a412840f1.html:
         hst:authenticated: false
         hst:containerresource: true

@@ -9,7 +9,7 @@ definitions:
         hst:renderpath: webfile:/freemarker/common/about.ftl
         jcr:primaryType: hst:template
       /adapt-learning:
-        hst:renderpath: webfile:/adapt-learning/adapt-learning.ftl
+        hst:renderpath: webfile:/freemarker/common/adapt-learning.ftl
         jcr:primaryType: hst:template
       /apiendpoint-article:
         hst:renderpath: webfile:/freemarker/common/apiendpoint-article.ftl

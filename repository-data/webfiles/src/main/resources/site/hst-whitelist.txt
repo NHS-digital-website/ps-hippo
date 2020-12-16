@@ -30,4 +30,3 @@ dist/nhsd-priority-scripts.bundle.js
 images/
 icons/
 apispecification/
-adapt-learning/
