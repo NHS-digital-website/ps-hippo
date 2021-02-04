@@ -1,0 +1,13 @@
+---
+definitions:
+  config:
+    /hst:hst/hst:configurations/base/hst:components/nhsd-breadcrumb:
+      hst:componentclassname: org.onehippo.forge.breadcrumb.components.BreadcrumbComponent
+      hst:parameternames:
+      - breadcrumb-separator
+      - breadcrumb-add-content-based
+      hst:parametervalues:
+      - '>'
+      - 'true'
+      hst:template: nhsd-breadcrumb
+      jcr:primaryType: hst:component

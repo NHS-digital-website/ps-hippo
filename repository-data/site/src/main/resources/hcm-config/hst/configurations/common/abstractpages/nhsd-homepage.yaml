@@ -2,6 +2,9 @@
 definitions:
   config:
     /hst:hst/hst:configurations/common/hst:abstractpages/nhsd-homepage:
+      /breadcrumb:
+        hst:referencecomponent: hst:components/nhsd-breadcrumb
+        jcr:primaryType: hst:component
       /footer:
         /footer-col-1:
           hst:referencecomponent: nhsd-homepage/footer-col-1

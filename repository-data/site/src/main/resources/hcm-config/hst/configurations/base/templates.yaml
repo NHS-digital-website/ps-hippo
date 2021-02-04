@@ -20,6 +20,9 @@ definitions:
       /footer:
         hst:renderpath: webfile:/freemarker/common/base-footer.ftl
         jcr:primaryType: hst:template
+      /nhsd-breadcrumb:
+        hst:renderpath: webfile:/freemarker/common/nhsd-breadcrumb.ftl
+        jcr:primaryType: hst:template
       /searchbar:
         hst:renderpath: webfile:/freemarker/common/searchbar.ftl
         jcr:primaryType: hst:template
