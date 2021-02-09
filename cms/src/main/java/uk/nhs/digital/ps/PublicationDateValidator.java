@@ -29,6 +29,8 @@ public class PublicationDateValidator implements Validator<Date> {
 
     private static final String VALID_PERIOD_YEARS_KEY = "validPeriodLengthInYears";
 
+    private static final String PUBLICLY_ACCESSIBLE_PROPERTY_NAME =
+        "publicationsystem:PubliclyAccessible";
     private static final String DATE_PROPERTY_NAME = "publicationsystem:NominalDate";
 
     private final Long validPeriod;

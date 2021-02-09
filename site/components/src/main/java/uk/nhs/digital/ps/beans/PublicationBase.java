@@ -244,7 +244,7 @@ public abstract class PublicationBase extends BaseDocument {
     }
 
     public Boolean getBeforePublicationDate() {
-        Calendar publicationDate = getPropertyIfPermittedSingle(PropertyKeys.NOMINAL_DATE);
+        Calendar publicationDate = getSingleProperty(PropertyKeys.NOMINAL_DATE);
         if (publicationDate == null) {
             return false;
         }
@@ -276,8 +276,8 @@ public abstract class PublicationBase extends BaseDocument {
 
     public boolean isCorrectAccessKey() {
         return StringUtils
-            .isNotBlank(getProperty(PublicationBase.PropertyKeys.EARLY_ACCESS_KEY))
-            && getProperty(PublicationBase.PropertyKeys.EARLY_ACCESS_KEY).equals(
+            .isNotBlank(getSingleProperty(PublicationBase.PropertyKeys.EARLY_ACCESS_KEY))
+            && getSingleProperty(PublicationBase.PropertyKeys.EARLY_ACCESS_KEY).equals(
             RequestContextProvider.get().getServletRequest().getParameter(
                 EARLY_ACCESS_KEY_QUERY_PARAM));
     }
