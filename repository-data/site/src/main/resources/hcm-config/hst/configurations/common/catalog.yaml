@@ -51,6 +51,13 @@ definitions:
           hst:template: feedlist
           hst:xtype: hst.item
           jcr:primaryType: hst:containeritemcomponent
+        /header-banner:
+          hst:componentclassname: uk.nhs.digital.common.components.HeaderComponent
+          hst:iconpath: images/essentials/catalog-component-icons/banner.png
+          hst:label: Header
+          hst:template: header-banner
+          hst:xtype: hst.item
+          jcr:primaryType: hst:containeritemcomponent
         /hero:
           hst:componentclassname: uk.nhs.digital.common.components.HeroComponent
           hst:label: Hero

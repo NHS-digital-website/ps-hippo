@@ -149,6 +149,9 @@ definitions:
       /group:
         hst:renderpath: webfile:/freemarker/common/group.ftl
         jcr:primaryType: hst:template
+      /header-banner:
+        hst:renderpath: webfile:/freemarker/common/header-banner.ftl
+        jcr:primaryType: hst:template
       /hero:
         hst:renderpath: webfile:/freemarker/common/hero.ftl
         jcr:primaryType: hst:template
