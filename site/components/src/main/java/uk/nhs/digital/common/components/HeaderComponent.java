@@ -31,12 +31,12 @@ public class HeaderComponent extends CommonComponent {
 
         String button1text = componentParametersInfo.getButton1Text();
         String button1Url = componentParametersInfo.getButton1Url();
-        request.setAttribute("button1text", button1text);
+        request.setAttribute("button1Text", button1text);
         request.setAttribute("button1Url", button1Url);
 
         String button2text = componentParametersInfo.getButton2Text();
         String button2Url = componentParametersInfo.getButton2Url();
-        request.setAttribute("button2text", button2text);
+        request.setAttribute("button2Text", button2text);
         request.setAttribute("button2Url", button2Url);
     }
 }

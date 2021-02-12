@@ -1456,7 +1456,7 @@
   font-weight: 200;
   src: url("https://assets.nhs.uk/fonts/FrutigerLTW01-45Light.woff2") format("woff2");
 }
-.nhsd-t-quote:before, .nhsd-t-quote:after, .nhsd-t-quote, .nhsd-t-list, .nhsd-t-body, .nhsd-t-form-hint, .nhsd-t-form-input, .nhsd-t-form-input-s, .nhsd-t-form-input-m, .nhsd-t-form-textarea, .nhsd-t-form-textarea-s, .nhsd-t-form-textarea-m, .nhsd-t-form-select, .nhsd-t-form-select-s, .nhsd-t-form-select-m, .nhsd-t-form-error, .nhsd-m-breadcrumbs__item, .nhsd-t-body-s, .nhsd-t-heading-xxl, .nhsd-t-heading-xl, .nhsd-t-form-label-l, .nhsd-t-heading-l, .nhsd-t-heading-m, .nhsd-t-form-label, .nhsd-t-form-label-m, .nhsd-t-heading-s, .nhsd-t-heading-xs, .nhsd-t-form-label-s {
+.nhsd-t-quote:before, .nhsd-t-quote:after, .nhsd-t-quote, .nhsd-t-list, .nhsd-t-body, .nhsd-t-form-hint, .nhsd-t-form-input, .nhsd-t-form-input-s, .nhsd-t-form-input-m, .nhsd-t-form-textarea, .nhsd-t-form-textarea-s, .nhsd-t-form-textarea-m, .nhsd-t-form-select, .nhsd-t-form-select-s, .nhsd-t-form-select-m, .nhsd-t-form-error, .nhsd-t-body-s, .nhsd-m-breadcrumbs__item .nhsd-a-link, .nhsd-t-heading-xxl, .nhsd-t-heading-xl, .nhsd-t-form-label-l, .nhsd-t-heading-l, .nhsd-t-heading-m, .nhsd-t-form-label, .nhsd-t-form-label-m, .nhsd-t-heading-s, .nhsd-t-heading-xs, .nhsd-t-form-label-s {
   font-family: "Frutiger W01", "Arial", sans-serif;
   font-kerning: auto;
 }
@@ -1473,17 +1473,17 @@
   }
 }
 
-.nhsd-t-list, .nhsd-t-body, .nhsd-t-form-hint, .nhsd-t-form-input, .nhsd-t-form-input-s, .nhsd-t-form-input-m, .nhsd-t-form-textarea, .nhsd-t-form-textarea-s, .nhsd-t-form-textarea-m, .nhsd-t-form-select, .nhsd-t-form-select-s, .nhsd-t-form-select-m, .nhsd-t-form-error, .nhsd-m-breadcrumbs__item, .nhsd-t-body-s {
+.nhsd-t-list, .nhsd-t-body, .nhsd-t-form-hint, .nhsd-t-form-input, .nhsd-t-form-input-s, .nhsd-t-form-input-m, .nhsd-t-form-textarea, .nhsd-t-form-textarea-s, .nhsd-t-form-textarea-m, .nhsd-t-form-select, .nhsd-t-form-select-s, .nhsd-t-form-select-m, .nhsd-t-form-error, .nhsd-t-body-s, .nhsd-m-breadcrumbs__item .nhsd-a-link {
   margin: 0 auto 0.8333333333rem;
   font-size: 1rem;
   letter-spacing: -0.01666rem;
   line-height: 1.38889;
 }
-.nhsd-t-list a, .nhsd-t-body a, .nhsd-t-form-hint a, .nhsd-t-form-input a, .nhsd-t-form-input-s a, .nhsd-t-form-input-m a, .nhsd-t-form-textarea a, .nhsd-t-form-textarea-s a, .nhsd-t-form-textarea-m a, .nhsd-t-form-select a, .nhsd-t-form-select-s a, .nhsd-t-form-select-m a, .nhsd-t-form-error a, .nhsd-m-breadcrumbs__item a, .nhsd-t-body-s a {
+.nhsd-t-list a, .nhsd-t-body a, .nhsd-t-form-hint a, .nhsd-t-form-input a, .nhsd-t-form-input-s a, .nhsd-t-form-input-m a, .nhsd-t-form-textarea a, .nhsd-t-form-textarea-s a, .nhsd-t-form-textarea-m a, .nhsd-t-form-select a, .nhsd-t-form-select-s a, .nhsd-t-form-select-m a, .nhsd-t-form-error a, .nhsd-t-body-s a, .nhsd-m-breadcrumbs__item .nhsd-a-link a {
   line-height: 1.63;
 }
 @media (max-width: 63.99em) {
-  .nhsd-t-list, .nhsd-t-body, .nhsd-t-form-hint, .nhsd-t-form-input, .nhsd-t-form-input-s, .nhsd-t-form-input-m, .nhsd-t-form-textarea, .nhsd-t-form-textarea-s, .nhsd-t-form-textarea-m, .nhsd-t-form-select, .nhsd-t-form-select-s, .nhsd-t-form-select-m, .nhsd-t-form-error, .nhsd-m-breadcrumbs__item, .nhsd-t-body-s {
+  .nhsd-t-list, .nhsd-t-body, .nhsd-t-form-hint, .nhsd-t-form-input, .nhsd-t-form-input-s, .nhsd-t-form-input-m, .nhsd-t-form-textarea, .nhsd-t-form-textarea-s, .nhsd-t-form-textarea-m, .nhsd-t-form-select, .nhsd-t-form-select-s, .nhsd-t-form-select-m, .nhsd-t-form-error, .nhsd-t-body-s, .nhsd-m-breadcrumbs__item .nhsd-a-link {
     font-size: 0.888rem;
     line-height: 1.4;
   }
@@ -1588,23 +1588,23 @@
     line-height: 1.675;
   }
 }
-.nhsd-t-body-s, .nhsd-t-form-input-s, .nhsd-t-form-textarea-s, .nhsd-t-form-select-s {
+.nhsd-t-body-s, .nhsd-t-form-input-s, .nhsd-t-form-textarea-s, .nhsd-t-form-select-s, .nhsd-m-breadcrumbs__item .nhsd-a-link {
   font-size: 0.888rem;
   letter-spacing: -0.0166rem;
   line-height: 1.4375;
 }
-.nhsd-t-body-s a, .nhsd-t-form-input-s a, .nhsd-t-form-textarea-s a, .nhsd-t-form-select-s a {
+.nhsd-t-body-s a, .nhsd-t-form-input-s a, .nhsd-t-form-textarea-s a, .nhsd-t-form-select-s a, .nhsd-m-breadcrumbs__item .nhsd-a-link a {
   line-height: 1.635;
 }
 @media (max-width: 63.99em) {
-  .nhsd-t-body-s, .nhsd-t-form-input-s, .nhsd-t-form-textarea-s, .nhsd-t-form-select-s {
+  .nhsd-t-body-s, .nhsd-t-form-input-s, .nhsd-t-form-textarea-s, .nhsd-t-form-select-s, .nhsd-m-breadcrumbs__item .nhsd-a-link {
     font-size: 0.778rem;
     line-height: 1.389;
   }
-  .nhsd-t-body-s a, .nhsd-t-form-input-s a, .nhsd-t-form-textarea-s a, .nhsd-t-form-select-s a {
+  .nhsd-t-body-s a, .nhsd-t-form-input-s a, .nhsd-t-form-textarea-s a, .nhsd-t-form-select-s a, .nhsd-m-breadcrumbs__item .nhsd-a-link a {
     line-height: 1.75;
   }
-  .nhsd-t-body-s:before, .nhsd-t-form-input-s:before, .nhsd-t-form-textarea-s:before, .nhsd-t-form-select-s:before {
+  .nhsd-t-body-s:before, .nhsd-t-form-input-s:before, .nhsd-t-form-textarea-s:before, .nhsd-t-form-select-s:before, .nhsd-m-breadcrumbs__item .nhsd-a-link:before {
     left: -0.6rem;
   }
 }
@@ -3169,6 +3169,28 @@ html.nhsd-no-js .nhsd-a-menu-item.js-active .nhsd-a-icon, html.nhsd-no-js .nhsd-
   box-sizing: border-box;
 }
 
+.nhsd-a-skip-link {
+  display: block;
+  position: absolute;
+  z-index: 100000;
+  left: -99999rem;
+  width: 100%;
+  padding: 1.111rem;
+  color: #231f20;
+  background-color: transparent;
+  text-decoration: none;
+  transition-property: background-color;
+  transition-duration: 0.2s;
+}
+.nhsd-a-skip-link__label {
+  border-bottom: 3px solid #231f20;
+}
+.nhsd-a-skip-link:focus {
+  position: relative;
+  left: 0;
+  background-color: #fae100;
+}
+
 .nhsd-a-tag {
   font-family: "Frutiger W01", "Arial", sans-serif;
   font-weight: 600;
@@ -3260,10 +3282,11 @@ html.nhsd-no-js .nhsd-a-menu-item.js-active .nhsd-a-icon, html.nhsd-no-js .nhsd-
   margin-bottom: 0;
   align-items: center;
 }
-.nhsd-m-breadcrumbs__item:not(:first-child):not(.nhsd-m-breadcrumbs__item--button),
+.nhsd-m-breadcrumbs__item:not(:last-child):not(.nhsd-m-breadcrumbs__item--button) {
+  margin-right: 0.2777777778rem;
+}
 .nhsd-m-breadcrumbs__item .nhsd-a-icon {
   top: 0.111rem;
-  margin-left: 0.5555555556rem;
 }
 .nhsd-m-breadcrumbs__item [class^=nhsd-t-body] {
   font-weight: 600;
@@ -3679,6 +3702,9 @@ html.nhsd-no-js .nhsd-a-menu-item.js-active .nhsd-a-icon, html.nhsd-no-js .nhsd-
   position: relative;
 }
 
+html:not(.nhsd-no-js) .nhsd-a-menu-item:not(:first-child) {
+  margin-left: 1.1111111111rem;
+}
 @media (max-width: 77.49em) {
   html:not(.nhsd-no-js) .nhsd-m-menu-bar {
     flex-direction: column;
@@ -3771,8 +3797,6 @@ html.nhsd-no-js .nhsd-a-menu-item.js-active .nhsd-a-icon, html.nhsd-no-js .nhsd-
   align-self: center;
 }
 .nhsd-m-nav-block .nhsd-a-icon {
-  width: 3.2rem;
-  height: 3.2rem;
   margin: 0 auto;
   margin-bottom: 0.8333333333rem;
 }
@@ -3833,15 +3857,6 @@ html.nhsd-no-js .nhsd-a-menu-item.js-active .nhsd-a-icon, html.nhsd-no-js .nhsd-
   fill: #ffffff;
 }
 
-.nhsd-m-search-bar {
-  display: flex;
-  position: relative;
-  width: 100%;
-  max-width: 36rem;
-  padding: 0 2.5rem;
-  flex-direction: column;
-}
-
 .nhsd-m-quote {
   display: block;
   position: relative;
@@ -3860,6 +3875,18 @@ html.nhsd-no-js .nhsd-a-menu-item.js-active .nhsd-a-icon, html.nhsd-no-js .nhsd-
 }
 .nhsd-m-quote figure {
   margin: 0;
+}
+
+.nhsd-m-search-bar {
+  display: flex;
+  position: relative;
+  width: 100%;
+  max-width: 36rem;
+  padding: 0 2.5rem;
+  flex-direction: column;
+}
+.nhsd-m-search-bar .nhsd-t-form-input {
+  padding-right: calc(2.5rem * 1.2);
 }
 
 .nhsd-o-card-list {
@@ -4463,14 +4490,18 @@ html.nhsd-no-js .nhsd-o-global-header__menu-button {
 .nhsd-o-hero {
   display: block;
   position: relative;
+  min-height: 11.111rem;
+  overflow: hidden;
   background: #e8edee;
 }
 .nhsd-o-hero__content-box {
   display: flex;
-  justify-content: center;
   position: relative;
+  z-index: 1;
+  justify-content: center;
   height: 100%;
   min-height: 15.555rem;
+  padding: calc(3.3333333333rem - 6px) 3.3333333333rem 3.3333333333rem;
 }
 .nhsd-o-hero__content {
   max-width: 100%;
@@ -4481,7 +4512,18 @@ html.nhsd-no-js .nhsd-o-global-header__menu-button {
     text-align: center;
   }
 }
+.nhsd-o-hero .nhsd-a-digiblocks {
+  z-index: 0;
+}
+.nhsd-o-hero--light-text [class^=nhsd-t-heading],
+.nhsd-o-hero--light-text [class^=nhsd-t-body] {
+  color: #ffffff;
+}
+.nhsd-o-hero--light-text .nhsd-a-icon > svg {
+  fill: #ffffff;
+}
 .nhsd-o-hero-feature {
+  padding: 0;
   background: transparent;
 }
 .nhsd-o-hero-feature .nhsd-t-grid {
