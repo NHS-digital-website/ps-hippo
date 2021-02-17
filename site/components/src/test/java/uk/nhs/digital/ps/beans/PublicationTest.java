@@ -60,7 +60,7 @@ public class PublicationTest {
     private static final String KEY_FACT_IMAGES_KEY = "publicationsystem:KeyFactImages";
     private static final String KEY_FACT_INFOGRAPHIC_KEY = "website:infographic";
     private static final String KEY_FACT_INFOGRAPHICS = "publicationsystem:keyFactInfographics";
-    private static final String HIGHLIGHTS = "publicationsystem:highlights";
+    private static final String HIGHLIGHTS = "publicationsystem:Highlights";
     private static final String INTERACTIVE_TOOL_KEY = "publicationsystem:interactivetool";
     private static final String CHANGE_NOTICE_KEY = "publicationsystem:changenotice";
 
