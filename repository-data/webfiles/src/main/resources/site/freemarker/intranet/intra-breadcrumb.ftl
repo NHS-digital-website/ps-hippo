@@ -2,11 +2,11 @@
 <#include "../include/imports.ftl">
 
 <#if breadcrumb?? && breadcrumb.items?size gte 1>
-<div class="grid-wrapper">
-    <div class="grid-row">
-        <div class="column column--reset">
+<div class="nhsd-t-grid nhsd-!t-padding-0">
+    <div class="nhsd-t-row">
+        <div class="nhsd-t-col nhsd-!t-padding-0">
             <nav class="nhsd-m-breadcrumbs" aria-label="Breadcrumb">
-                <ol class="nhsd-m-breadcrumbs__list">
+                <ol class="nhsd-m-breadcrumbs__list nhsd-!t-padding-top-1 nhsd-!t-padding-bottom-1">
                     <li class="nhsd-m-breadcrumbs__item">
                         <a class="nhsd-a-link nhsd-a-link--col-dark-grey" data-text="NHS Digital" href="<@hst.link siteMapItemRefId='root'/>">NHS Digital</a>
                     </li>
@@ -30,4 +30,5 @@
         </div>
     </div>
 </div>
+<hr class="nhsd-a-horizontal-rule nhsd-!t-margin-top-1 nhsd-!t-margin-bottom-0" />
 </#if>
