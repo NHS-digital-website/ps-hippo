@@ -5,6 +5,13 @@ definitions:
       /publicationsystem-catalog:
         jcr:primaryType: hst:containeritempackage
       /website-catalog:
+        /az-list:
+          hst:componentclassname: uk.nhs.digital.common.components.AzListComponent
+          hst:iconpath: images/essentials/catalog-component-icons/az-nav.png
+          hst:label: A-Z List
+          hst:template: az-list
+          hst:xtype: hst.item
+          jcr:primaryType: hst:containeritemcomponent
         /bloglist:
           hst:componentclassname: uk.nhs.digital.common.components.LatestBlogComponent
           hst:iconpath: images/essentials/catalog-component-icons/news-list.png
