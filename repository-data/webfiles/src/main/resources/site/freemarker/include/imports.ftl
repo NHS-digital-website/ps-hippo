@@ -82,8 +82,6 @@
     <#return pageTitle/>
 </#function>
 
-
-
 <#function flat_blocks blocks order inital_blocks = []>
     <#local flattened_blocks = inital_blocks />
     <#list blocks as block>
