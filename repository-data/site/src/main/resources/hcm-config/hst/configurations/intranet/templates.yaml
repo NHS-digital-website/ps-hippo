@@ -8,8 +8,14 @@ definitions:
       /base-top-menu:
         hst:renderpath: webfile:/freemarker/common/base-top-menu.ftl
         jcr:primaryType: hst:template
+      /collaborate:
+        hst:renderpath: webfile:/freemarker/intranet/collaborate.ftl
+        jcr:primaryType: hst:template
       /home:
         hst:renderpath: webfile:/freemarker/intranet/home.ftl
+        jcr:primaryType: hst:template
+      /howwework:
+        hst:renderpath: webfile:/freemarker/intranet/howwework.ftl
         jcr:primaryType: hst:template
       /intra-breadcrumb:
         hst:renderpath: webfile:/freemarker/intranet/intra-breadcrumb.ftl
@@ -21,7 +27,7 @@ definitions:
         hst:renderpath: webfile:/freemarker/intranet/layout/master-no-header-search.ftl
         jcr:primaryType: hst:template
       /news:
-        hst:renderpath: webfile:/freemarker/intranet/news-internal.ftl
+        hst:renderpath: webfile:/freemarker/intranet/news.ftl
         jcr:primaryType: hst:template
       /person:
         hst:renderpath: webfile:/freemarker/intranet/person.ftl
@@ -34,5 +40,14 @@ definitions:
         jcr:primaryType: hst:template
       /taskhub:
         hst:renderpath: webfile:/freemarker/intranet/task-list-article.ftl
+        jcr:primaryType: hst:template
+      /tasks:
+        hst:renderpath: webfile:/freemarker/intranet/tasks.ftl
+        jcr:primaryType: hst:template
+      /teams:
+        hst:renderpath: webfile:/freemarker/intranet/teams.ftl
+        jcr:primaryType: hst:template
+      /whoweare:
+        hst:renderpath: webfile:/freemarker/intranet/whoweare.ftl
         jcr:primaryType: hst:template
       jcr:primaryType: hst:templates

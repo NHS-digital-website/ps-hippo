@@ -48,6 +48,24 @@ definitions:
           hst:relativecontentpath: announcements/${1}
           jcr:primaryType: hst:sitemapitem
         jcr:primaryType: hst:sitemapitem
+      /collaborate:
+        /_index_:
+          hst:componentconfigurationid: hst:pages/collaborate
+          hst:relativecontentpath: .
+          jcr:primaryType: hst:sitemapitem
+        jcr:primaryType: hst:sitemapitem
+      /howwework:
+        /_index_:
+          hst:componentconfigurationid: hst:pages/howwework
+          hst:relativecontentpath: .
+          jcr:primaryType: hst:sitemapitem
+        jcr:primaryType: hst:sitemapitem
+      /news:
+        /_index_:
+          hst:componentconfigurationid: hst:pages/news
+          hst:relativecontentpath: news
+          jcr:primaryType: hst:sitemapitem
+        jcr:primaryType: hst:sitemapitem
       /person:
         /_any_:
           hst:componentconfigurationid: hst:pages/person
@@ -68,8 +86,20 @@ definitions:
           hst:relativecontentpath: tasks/${1}
           jcr:primaryType: hst:sitemapitem
         /_index_:
-          hst:componentconfigurationid: hst:pages/taskhub
-          hst:relativecontentpath: tasks/task-hub
+          hst:componentconfigurationid: hst:pages/tasks
+          hst:relativecontentpath: tasks
+          jcr:primaryType: hst:sitemapitem
+        jcr:primaryType: hst:sitemapitem
+      /teams:
+        /_index_:
+          hst:componentconfigurationid: hst:pages/teams
+          hst:relativecontentpath: teams
+          jcr:primaryType: hst:sitemapitem
+        jcr:primaryType: hst:sitemapitem
+      /whoweare:
+        /_index_:
+          hst:componentconfigurationid: hst:pages/whoweare
+          hst:relativecontentpath: .
           jcr:primaryType: hst:sitemapitem
         jcr:primaryType: hst:sitemapitem
       jcr:primaryType: hst:sitemap

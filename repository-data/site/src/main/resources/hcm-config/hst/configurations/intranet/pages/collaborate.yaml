@@ -1,12 +1,12 @@
 ---
 definitions:
   config:
-    /hst:hst/hst:configurations/intranet/hst:pages/news:
+    /hst:hst/hst:configurations/intranet/hst:pages/collaborate:
       /main:
-        /newscontainer:
-          hst:referencecomponent: newscontainer
+        /collaboratecontainer:
+          hst:referencecomponent: collaboratecontainer
           jcr:primaryType: hst:containercomponentreference
-        hst:template: news
+        hst:template: collaborate
         jcr:primaryType: hst:component
       hst:referencecomponent: hst:abstractpages/master
       jcr:primaryType: hst:component

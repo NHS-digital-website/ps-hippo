@@ -3,6 +3,10 @@ definitions:
   config:
     /hst:hst/hst:configurations/intranet/hst:workspace:
       /hst:containers:
+        /collaboratecontainer:
+          hst:label: Collaborate container
+          hst:xtype: hst.nomarkup
+          jcr:primaryType: hst:containercomponent
         /homepage:
           /left:
             hst:label: Left container
@@ -15,5 +19,25 @@ definitions:
             hst:xtype: hst.nomarkup
             jcr:primaryType: hst:containercomponent
           jcr:primaryType: hst:containercomponentfolder
+        /howweworkcontainer:
+          hst:label: How we work container
+          hst:xtype: hst.nomarkup
+          jcr:primaryType: hst:containercomponent
+        /newscontainer:
+          hst:label: News container
+          hst:xtype: hst.nomarkup
+          jcr:primaryType: hst:containercomponent
+        /taskscontainer:
+          hst:label: Tasks container
+          hst:xtype: hst.nomarkup
+          jcr:primaryType: hst:containercomponent
+        /teamscontainer:
+          hst:label: Teams container
+          hst:xtype: hst.nomarkup
+          jcr:primaryType: hst:containercomponent
+        /whowearecontainer:
+          hst:label: Who We Are container
+          hst:xtype: hst.nomarkup
+          jcr:primaryType: hst:containercomponent
         jcr:primaryType: hst:containercomponentfolder
       jcr:primaryType: hst:workspace
