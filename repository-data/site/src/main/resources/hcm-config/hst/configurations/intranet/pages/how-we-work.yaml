@@ -1,12 +1,12 @@
 ---
 definitions:
   config:
-    /hst:hst/hst:configurations/intranet/hst:pages/howwework:
+    /hst:hst/hst:configurations/intranet/hst:pages/how-we-work:
       /main:
-        /howweworkcontainer:
-          hst:referencecomponent: howweworkcontainer
+        /how-we-work-container:
+          hst:referencecomponent: how-we-work-container
           jcr:primaryType: hst:containercomponentreference
-        hst:template: howwework
+        hst:template: how-we-work
         jcr:primaryType: hst:component
       hst:referencecomponent: hst:abstractpages/master
       jcr:primaryType: hst:component

@@ -6,5 +6,5 @@
 <@metaTags></@metaTags>
 
 <div>
-  <@hst.include ref="howweworkcontainer"/>
+  <@hst.include ref="who-we-are-container"/>
 </div>
