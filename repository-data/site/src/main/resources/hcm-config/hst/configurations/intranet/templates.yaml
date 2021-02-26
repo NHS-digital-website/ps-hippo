@@ -14,8 +14,8 @@ definitions:
       /home:
         hst:renderpath: webfile:/freemarker/intranet/home.ftl
         jcr:primaryType: hst:template
-      /howwework:
-        hst:renderpath: webfile:/freemarker/intranet/howwework.ftl
+      /how-we-work:
+        hst:renderpath: webfile:/freemarker/intranet/how-we-work.ftl
         jcr:primaryType: hst:template
       /intra-breadcrumb:
         hst:renderpath: webfile:/freemarker/intranet/intra-breadcrumb.ftl
@@ -47,7 +47,7 @@ definitions:
       /teams:
         hst:renderpath: webfile:/freemarker/intranet/teams.ftl
         jcr:primaryType: hst:template
-      /whoweare:
-        hst:renderpath: webfile:/freemarker/intranet/whoweare.ftl
+      /who-we-are:
+        hst:renderpath: webfile:/freemarker/intranet/who-we-are.ftl
         jcr:primaryType: hst:template
       jcr:primaryType: hst:templates

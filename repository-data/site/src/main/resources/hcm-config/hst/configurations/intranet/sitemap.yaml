@@ -54,9 +54,9 @@ definitions:
           hst:relativecontentpath: .
           jcr:primaryType: hst:sitemapitem
         jcr:primaryType: hst:sitemapitem
-      /howwework:
+      /how-we-work:
         /_index_:
-          hst:componentconfigurationid: hst:pages/howwework
+          hst:componentconfigurationid: hst:pages/how-we-work
           hst:relativecontentpath: .
           jcr:primaryType: hst:sitemapitem
         jcr:primaryType: hst:sitemapitem
@@ -96,9 +96,9 @@ definitions:
           hst:relativecontentpath: teams
           jcr:primaryType: hst:sitemapitem
         jcr:primaryType: hst:sitemapitem
-      /whoweare:
+      /who-we-are:
         /_index_:
-          hst:componentconfigurationid: hst:pages/whoweare
+          hst:componentconfigurationid: hst:pages/who-we-are
           hst:relativecontentpath: .
           jcr:primaryType: hst:sitemapitem
         jcr:primaryType: hst:sitemapitem

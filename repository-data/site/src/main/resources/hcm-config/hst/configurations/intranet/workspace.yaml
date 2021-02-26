@@ -19,7 +19,7 @@ definitions:
             hst:xtype: hst.nomarkup
             jcr:primaryType: hst:containercomponent
           jcr:primaryType: hst:containercomponentfolder
-        /howweworkcontainer:
+        /how-we-work-container:
           hst:label: How we work container
           hst:xtype: hst.nomarkup
           jcr:primaryType: hst:containercomponent
@@ -35,7 +35,7 @@ definitions:
           hst:label: Teams container
           hst:xtype: hst.nomarkup
           jcr:primaryType: hst:containercomponent
-        /whowearecontainer:
+        /who-we-are-container:
           hst:label: Who We Are container
           hst:xtype: hst.nomarkup
           jcr:primaryType: hst:containercomponent
