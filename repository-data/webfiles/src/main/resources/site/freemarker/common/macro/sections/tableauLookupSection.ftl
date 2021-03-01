@@ -162,6 +162,13 @@
                         loadViz();
                         _showLoadingSpinner();
 
+                        // build the download link and base it on div being empty
+                        var downloadVizLink = encodeURI("${section.url}".split("?")[0]+".csv" + "?MSOA Code=" + msoa + "&Lat=" + latitude + "&Lon=" + longitude + "&Distance=" + parseInt(viz${index}Elements.distance().value) + "&Postcode=" + postcode + "&:refresh=yes");
+                        let isEmpty = document.getElementsByClassName('viz-wrapper-item').innerHTML === "";
+                        if(!isEmpty){
+                            document.getElementsByClassName('viz-wrapper-item').innerHTML = "<br><a href='"+downloadVizLink+"'>Download the coronavirus data for '"+postcode+"'</a>";
+                        }
+
                         // Init loading retry
                         viz${index}Loaded = false;
                         viz${index}LoadingTimerStart = Date.now();
@@ -184,7 +191,7 @@
             function postcodeApiUrl(input) {
                 function _formatPostcode() {
                     if ((typeof input === 'string' || input instanceof String) && input.length >= 5) {
-                        var postcode = input.split(" ").join("");;
+                        var postcode = input.split(" ").join("");
                         postcode = postcode.toUpperCase();
                         return postcode.substr(0, postcode.length - 3) + "/" + postcode.substr(postcode.length - 3);
                     } else {
