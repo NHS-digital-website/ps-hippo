@@ -3,8 +3,8 @@ definitions:
   config:
     /hst:hst/hst:configurations/common/hst:pages/glossarylist:
       /main:
-        hst:componentclassname: uk.nhs.digital.common.components.DocumentChildComponent
-        hst:template: glossary-list
+        hst:componentclassname: uk.nhs.digital.common.components.ListArticleComponent
+        hst:template: nhsd-list-article
         jcr:primaryType: hst:component
-      hst:referencecomponent: hst:abstractpages/apppage
+      hst:referencecomponent: hst:abstractpages/nhsd-homepage
       jcr:primaryType: hst:component

@@ -221,6 +221,9 @@ definitions:
       /nhsd-homepage-layout:
         hst:renderpath: webfile:/freemarker/common/nhsd-homepage-layout.ftl
         jcr:primaryType: hst:template
+      /nhsd-list-article:
+        hst:renderpath: webfile:/freemarker/common/nhsd-list-article.ftl
+        jcr:primaryType: hst:template
       /nhsd-main-nav:
         hst:renderpath: webfile:/freemarker/common/nhsd-main-nav.ftl
         jcr:primaryType: hst:template
