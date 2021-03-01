@@ -47,6 +47,7 @@
 
        <div id="${divId}" class="viz-wrapper">
            <div id="${divId}-viz" class="viz-wrapper-item"></div>
+           <div id="downLoadData"></div>
            <div id="${divId}-loading" class="viz-wrapper-item visually-hidden">
                <div class="viz-wrapper-loading">
                    <span id="${divId}-loading-message"></span>
@@ -132,7 +133,7 @@
                         viz${index}.dispose();
                     }
                     viz${index} = new tableau.Viz(viz${index}Elements.vizDiv(), viz${index}Url, options());
-                    document.getElementsByClassName('viz-wrapper-item').innerHTML = "<br><a href='"+downloadVizLink+"'>Download the coronavirus data for '"+showPostcode+"'</a>";
+                    document.getElementById('downLoadData').innerHTML = "<br><a href='"+downloadVizLink+"'>Download the coronavirus data for '"+showPostcode+"'</a>";
                 } else {
                     _showLoadingError();
                 }
