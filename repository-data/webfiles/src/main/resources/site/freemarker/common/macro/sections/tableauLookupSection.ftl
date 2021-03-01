@@ -78,6 +78,9 @@
             var viz${index}LoadingRetryAtempIntervales;
             var viz${index}LoadingTimer;
 
+            var downloadVizLink;
+            var showPostcode;
+
             // Viz instance supporting HTML elements
             var viz${index}Elements = {
                 vizDiv: function () {
@@ -129,6 +132,7 @@
                         viz${index}.dispose();
                     }
                     viz${index} = new tableau.Viz(viz${index}Elements.vizDiv(), viz${index}Url, options());
+                    document.getElementsByClassName('viz-wrapper-item').innerHTML = "<br><a href='"+downloadVizLink+"'>Download the coronavirus data for '"+showPostcode+"'</a>";
                 } else {
                     _showLoadingError();
                 }
@@ -157,17 +161,14 @@
                         var longitude = data["result"]["longitude"];
                         viz${index}Url = encodeURI("${section.url}".split("?")[0] + "?MSOA Code=" + msoa + "&Lat=" + latitude + "&Lon=" + longitude + "&Distance=" + parseInt(viz${index}Elements.distance().value) + "&Postcode=" + postcode + "&:refresh=yes");
 
+                        // build the download link and base it on div being empty
+                        downloadVizLink = encodeURI("${section.url}".split("?")[0]+".csv" + "?MSOA Code=" + msoa + "&Lat=" + latitude + "&Lon=" + longitude + "&Distance=" + parseInt(viz${index}Elements.distance().value) + "&Postcode=" + postcode + "&:refresh=yes");
+                        showPostcode = postcode;
+
                         // Start Viz load
                         _hideLoadingSpinner()
                         loadViz();
                         _showLoadingSpinner();
-
-                        // build the download link and base it on div being empty
-                        var downloadVizLink = encodeURI("${section.url}".split("?")[0]+".csv" + "?MSOA Code=" + msoa + "&Lat=" + latitude + "&Lon=" + longitude + "&Distance=" + parseInt(viz${index}Elements.distance().value) + "&Postcode=" + postcode + "&:refresh=yes");
-                        let isEmpty = document.getElementsByClassName('viz-wrapper-item').innerHTML === "";
-                        if(!isEmpty){
-                            document.getElementsByClassName('viz-wrapper-item').innerHTML = "<br><a href='"+downloadVizLink+"'>Download the coronavirus data for '"+postcode+"'</a>";
-                        }
 
                         // Init loading retry
                         viz${index}Loaded = false;
