@@ -1,0 +1,59 @@
+---
+/content/urlrewriter/rules/redirect-from--news-and-events-events-to--news-events:
+  /redirect-from--news-and-events-events-to--news-events[1]:
+    hippo:availability: []
+    hippostd:retainable: false
+    hippostd:state: draft
+    hippostdpubwf:createdBy: admin
+    hippostdpubwf:creationDate: 2021-03-01T15:54:04.482Z
+    hippostdpubwf:lastModificationDate: 2021-03-01T15:58:22.532Z
+    hippostdpubwf:lastModifiedBy: admin
+    hippostdpubwf:publicationDate: 2008-03-26T11:03:00Z
+    jcr:mixinTypes:
+    - mix:referenceable
+    jcr:primaryType: urlrewriter:rule
+    urlrewriter:ruledescription: Events redirect
+    urlrewriter:rulefrom: /news-and-events/events/**
+    urlrewriter:ruleto: site/news/events/$1
+    urlrewriter:ruletype: permanent-redirect
+  /redirect-from--news-and-events-events-to--news-events[2]:
+    hippo:availability:
+    - preview
+    hippostd:retainable: false
+    hippostd:state: unpublished
+    hippostdpubwf:createdBy: admin
+    hippostdpubwf:creationDate: 2021-03-01T15:54:04.482Z
+    hippostdpubwf:lastModificationDate: 2021-03-01T15:58:26.401Z
+    hippostdpubwf:lastModifiedBy: admin
+    jcr:mixinTypes:
+    - mix:referenceable
+    - mix:versionable
+    jcr:primaryType: urlrewriter:rule
+    urlrewriter:ruledescription: Events redirect
+    urlrewriter:rulefrom: /news-and-events/events/**
+    urlrewriter:ruleto: site/news/events/$1
+    urlrewriter:ruletype: permanent-redirect
+  /redirect-from--news-and-events-events-to--news-events[3]:
+    hippo:availability:
+    - live
+    hippostd:retainable: false
+    hippostd:state: published
+    hippostdpubwf:createdBy: admin
+    hippostdpubwf:creationDate: 2021-03-01T15:54:04.482Z
+    hippostdpubwf:lastModificationDate: 2021-03-01T15:58:26.401Z
+    hippostdpubwf:lastModifiedBy: admin
+    hippostdpubwf:publicationDate: 2021-03-01T15:58:28.545Z
+    jcr:mixinTypes:
+    - mix:referenceable
+    jcr:primaryType: urlrewriter:rule
+    urlrewriter:ruledescription: Events redirect
+    urlrewriter:rulefrom: /news-and-events/events/**
+    urlrewriter:ruleto: site/news/events/$1
+    urlrewriter:ruletype: permanent-redirect
+  hippo:name: Redirect from /news-and-events/events to /news/events
+  hippo:versionHistory: 462b8a0a-7310-4995-be7b-53ff1e7305fd
+  jcr:mixinTypes:
+  - hippo:named
+  - hippo:versionInfo
+  - mix:referenceable
+  jcr:primaryType: hippo:handle
