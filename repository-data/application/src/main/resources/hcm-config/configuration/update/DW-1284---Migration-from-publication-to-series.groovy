@@ -71,6 +71,14 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
     private final static JSON_FIELD_TAXONOMY = "Taxonomy topics"
     private final static JSON_FIELD_ADMINISTRATIVE_SOURCES = "AdministrativeSources"
 
+    private final static JSON_FIELD_SHORT_TITLE = "shortTitle"
+    private final static JSON_FIELD_FREQUENCY = "frequency"
+    private final static JSON_FIELD_DATE_NAMING_CONVENTION = "dateNamingConvention"
+    private final static JSON_FIELD_SUBTITLE = "subtitle"
+    private final static JSON_FIELD_RESPONSIBLE_STASTICIAN = "responsibleStastician"
+    private final static JSON_FIELD_RESPONSIBLE_TEAM = "responsibleTeam"
+
+
     private final static JCR_PROPERTY_TITLE = "publicationsystem:Title"
     private final static JCR_PROPERTY_GRANULARITY = "publicationsystem:Granularity"
     private final static JCR_PROPERTY_GEOGRAPHIC_COVERAGE = "publicationsystem:GeographicCoverage"
@@ -78,6 +86,14 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
     private final static JCR_PROPERTY_FULL_TAXONOMY = "common:FullTaxonomy"
     private final static JCR_PROPERTY_TAXONOMY_KEYS = "hippotaxonomy:keys"
     private final static JCR_PROPERTY_ADMINISTRATIVE_SOURCES = "publicationsystem:AdministrativeSources"
+
+    private final static JCR_PROPERTY_SHORT_TITLE = "publicationsystem:shortTitle"
+    private final static JCR_PROPERTY_SUBTITLE = "publicationsystem:subTitle"
+    private final static JCR_PROPERTY_FREQUENCY = "publicationsystem:frequency"
+    private final static JCR_PROPERTY_DATE_NAMING_CONVENTION = "publicationsystem:dateNaming"
+    private final static JCR_PROPERTY_RESPONSIBLE_STASTICIAN = "publicationsystem:stastician"
+    private final static JCR_PROPERTY_RESPONSIBLE_TEAM = "publicationsystem:team"
+
 
     Session session
     JSONArray jsonArray
@@ -102,6 +118,7 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
 
         } catch (JSONException e) {
             log.error("Exception converting json: ", e)
+            e.printStackTrace()
         }
     }
 
@@ -153,6 +170,14 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
         public String[] taxonomy
         public String administrativeSources
 
+        public String shortTitle
+        public String subTitle
+        public String frequency
+        public String dateNaming
+        public String responsibleStastician
+        public String responsibleTeam
+
+
         public SeriesNewFields(JSONObject jsonObject) {
             this.title                 = jsonObject.get(JSON_FIELD_TITLE).toString()
 
@@ -177,6 +202,25 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
             }
 
             this.administrativeSources = jsonObject.get(JSON_FIELD_ADMINISTRATIVE_SOURCES).toString()
+
+            this.shortTitle = jsonObject.get(JSON_FIELD_SHORT_TITLE).toString()
+            this.subTitle = jsonObject.get(JSON_FIELD_SUBTITLE).toString()
+            this.frequency = jsonObject.get(JSON_FIELD_FREQUENCY).toString()
+            if (this.frequency != null && this.frequency.toLowerCase().indexOf("tbc") >= 0) {
+                this.frequency = ""
+            }
+            this.dateNaming = jsonObject.get(JSON_FIELD_DATE_NAMING_CONVENTION).toString()
+            if (this.dateNaming != null && this.dateNaming.toLowerCase().indexOf("tbc") >= 0) {
+                this.dateNaming = ""
+            }
+            this.responsibleStastician = jsonObject.get(JSON_FIELD_RESPONSIBLE_STASTICIAN).toString()
+            if (this.responsibleStastician != null && this.responsibleStastician.toLowerCase().indexOf("tbc") >= 0) {
+                this.responsibleStastician = ""
+            }
+            this.responsibleTeam = jsonObject.get(JSON_FIELD_RESPONSIBLE_TEAM).toString()
+            if (this.responsibleTeam != null && this.responsibleTeam.toLowerCase().indexOf("tbc") >= 0) {
+                this.responsibleTeam = ""
+            }
         }
 
         public String toString() {
@@ -187,6 +231,13 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
             sb.append("\n informationTypes: ").append(arrayToString(informationTypes))
             sb.append("\n taxonomy: ").append(arrayToString(taxonomy))
             sb.append("\n administrativeSources: ").append(administrativeSources)
+
+            sb.append("\n shortTitle: ").append(shortTitle)
+            sb.append("\n subTitle: ").append(subTitle)
+            sb.append("\n frequency: ").append(frequency)
+            sb.append("\n dateNaming: ").append(dateNaming)
+            sb.append("\n responsibleStastician: ").append(responsibleStastician)
+            sb.append("\n responsibleTeam: ").append(responsibleTeam)
         }
 
         private String arrayToString(String[] myArray) {
@@ -252,15 +303,55 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
             node.setProperty(JCR_PROPERTY_TAXONOMY_KEYS, (String[]) null)
         } else {
             node.setProperty(JCR_PROPERTY_TAXONOMY_KEYS, series.taxonomy)
-//      node.setProperty(JCR_PROPERTY_FULL_TAXONOMY, series.taxonomy)
             taxonomyTask.updateFullTaxonomyAndSearchableTags(node)
         }
 
         node.setProperty(JCR_PROPERTY_ADMINISTRATIVE_SOURCES, series.administrativeSources)
+        node.setProperty(JCR_PROPERTY_SHORT_TITLE, series.shortTitle)
+        node.setProperty(JCR_PROPERTY_SUBTITLE, series.subTitle)
+        node.setProperty(JCR_PROPERTY_FREQUENCY, getFrequencyValueInJCR(series.frequency))
+        node.setProperty(JCR_PROPERTY_DATE_NAMING_CONVENTION, getDateNamingConventionInJCR(series.dateNaming))
+//    node.setProperty(JCR_PROPERTY_RESPONSIBLE_STASTICIAN, series.responsibleStastician)
+//    node.setProperty(JCR_PROPERTY_RESPONSIBLE_TEAM, series.responsibleTeam)
 
         return true
     }
 
+    String getFrequencyValueInJCR(String frequency) {
+        String frequencyAux = frequency.toLowerCase()
+        if (frequencyAux.equals("twice a year")) {
+            return "twiceyear"
+        } else {
+            return frequencyAux.replace(" ", "")
+        }
+    }
+
+    String getDateNamingConventionInJCR(String dateNaming) {
+        String dataNamingAux = dateNaming.toLowerCase()
+        String returnValue = ""
+        if (dataNamingAux.equalsIgnoreCase("At year of publication")) {
+            returnValue = "1"
+        } else if (dataNamingAux.equalsIgnoreCase("At year of coverage end")) {
+            returnValue = "2"
+        } else if (dataNamingAux.equalsIgnoreCase("At year ending of coverage end")) {
+            returnValue = "3"
+        } else if (dataNamingAux.equalsIgnoreCase("At month of publication")) {
+            returnValue = "4"
+        } else if (dataNamingAux.equalsIgnoreCase("At month of coverage end")) {
+            returnValue = "5"
+        } else if (dataNamingAux.equalsIgnoreCase("At quarter ending of coverage end")) {
+            returnValue = "6"
+        } else if (dataNamingAux.equalsIgnoreCase("Coverage range by year (e.g. 2018-19)")) {
+            returnValue = "7"
+        } else if (dataNamingAux.equalsIgnoreCase("Coverage range by month (e.g. March 2018 - Sept 2018)")) {
+            returnValue = "8"
+        } else if (dataNamingAux.equalsIgnoreCase("No date")) {
+            returnValue = "9"
+        } else {
+            log.debug("----returnValue = " + returnValue)
+            return returnValue
+        }
+    }
 
     /* Code taken from hippo proyect class SearchableTaxonomyTask. Originally that was in Java, it has been adapted to Groovy */
     public class SearchableTaxonomyTask {
