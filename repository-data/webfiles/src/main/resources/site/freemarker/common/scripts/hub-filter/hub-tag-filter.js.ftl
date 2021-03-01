@@ -89,7 +89,18 @@
                     e.preventDefault();
                     e.stopPropagation();
 
-                    if (window.vjsu.hasClass(e.currentTarget, 'selected') && e.currentTarget.getAttribute('data-type') !== 'year') {
+                    if (window.vjsu.hasClass(e.currentTarget, 'expand-tags-link')) {
+                        for (var ii = 0; ii < _this.$links.length; ii++) {
+                            if (window.vjsu.hasClass(_this.$links[ii], 'expand-tags-link')) {
+                                window.vjsu.addClass(_this.$links[ii], 'expand-tags-link--hidden');
+                            } else {
+                                window.vjsu.removeClass(_this.$links[ii], 'tag-link--hidden');
+                            }
+                        }
+                        return;
+                    }
+
+                    if (window.vjsu.hasClass(e.currentTarget, 'selected')) {
                         window.vjsu.removeClass(e.currentTarget, 'selected');
                         setValue("all");
                         e.currentTarget.blur();

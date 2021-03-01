@@ -8,6 +8,9 @@ definitions:
       /about:
         hst:renderpath: webfile:/freemarker/common/about.ftl
         jcr:primaryType: hst:template
+      /api-catalogue:
+        hst:renderpath: webfile:/freemarker/common/api-catalogue.ftl
+        jcr:primaryType: hst:template
       /apiendpoint-article:
         hst:renderpath: webfile:/freemarker/common/apiendpoint-article.ftl
         jcr:primaryType: hst:template
@@ -71,9 +74,6 @@ definitions:
       /cyber-alert-hub:
         hst:renderpath: webfile:/freemarker/common/cyber-alert-hub.ftl
         jcr:primaryType: hst:template
-      /cyber-alert-hub-nav:
-        hst:renderpath: webfile:/freemarker/common/faceted-cyber-alerts-navigation.ftl
-        jcr:primaryType: hst:template
       /cyber-alerts:
         hst:renderpath: webfile:/freemarker/common/cyber-alerts.ftl
         jcr:primaryType: hst:template
@@ -110,6 +110,9 @@ definitions:
       /eventlist-main-eventlist:
         hst:renderpath: webfile:/freemarker/common/eventlist-main-eventlist.ftl
         jcr:primaryType: hst:template
+      /faceted-navigation:
+        hst:renderpath: webfile:/freemarker/common/faceted-navigation.ftl
+        jcr:primaryType: hst:template
       /facets:
         hst:renderpath: webfile:/freemarker/common/facets.ftl
         jcr:primaryType: hst:template
@@ -136,6 +139,9 @@ definitions:
         jcr:primaryType: hst:template
       /general-article:
         hst:renderpath: webfile:/freemarker/common/general-article.ftl
+        jcr:primaryType: hst:template
+      /global-footer:
+        hst:renderpath: webfile:/freemarker/common/global-footer.ftl
         jcr:primaryType: hst:template
       /glossary-list:
         hst:renderpath: webfile:/freemarker/common/glossary-list.ftl
@@ -185,6 +191,9 @@ definitions:
       /menu:
         hst:renderpath: webfile:/freemarker/common/menu.ftl
         jcr:primaryType: hst:template
+      /navigationBlock:
+        hst:renderpath: webfile:/freemarker/common/navigationBlock.ftl
+        jcr:primaryType: hst:template
       /news-article:
         hst:renderpath: webfile:/freemarker/common/news-article.ftl
         jcr:primaryType: hst:template
@@ -199,6 +208,15 @@ definitions:
         jcr:primaryType: hst:template
       /newslist-main-newslist:
         hst:renderpath: webfile:/freemarker/common/newslist-main-newslist.ftl
+        jcr:primaryType: hst:template
+      /nhsd-homepage:
+        hst:renderpath: webfile:/freemarker/common/nhsd-homepage.ftl
+        jcr:primaryType: hst:template
+      /nhsd-homepage-layout:
+        hst:renderpath: webfile:/freemarker/common/nhsd-homepage-layout.ftl
+        jcr:primaryType: hst:template
+      /nhsd-main-nav:
+        hst:renderpath: webfile:/freemarker/common/nhsd-main-nav.ftl
         jcr:primaryType: hst:template
       /nihub:
         hst:renderpath: webfile:/freemarker/nationalindicatorlibrary/nihub.ftl

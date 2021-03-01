@@ -39,5 +39,6 @@ definitions:
               jcr:primaryType: hst:mount
             jcr:primaryType: hst:virtualhost
           jcr:primaryType: hst:virtualhost
+        hst:cdnhost: //nhs-test.global.ssl.fastly.net
         jcr:primaryType: hst:virtualhost
       jcr:primaryType: hst:virtualhostgroup

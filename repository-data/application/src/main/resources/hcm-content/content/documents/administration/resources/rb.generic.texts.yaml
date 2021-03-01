@@ -2,10 +2,11 @@
 /content/documents/administration/resources/rb.generic.texts:
   /rb.generic.texts[1]:
     hippo:availability: []
+    hippostd:retainable: false
     hippostd:state: draft
     hippostdpubwf:createdBy: admin
     hippostdpubwf:creationDate: 2018-06-07T16:23:27.852Z
-    hippostdpubwf:lastModificationDate: 2020-12-11T16:28:37.941Z
+    hippostdpubwf:lastModificationDate: 2021-02-04T13:46:19.554Z
     hippostdpubwf:lastModifiedBy: admin
     jcr:mixinTypes:
     - mix:referenceable
@@ -13,20 +14,27 @@
     resourcebundle:descriptions:
     - Texts can be used to set the text of any element or entire section
     - ''
+    - ''
+    - ''
     resourcebundle:id: rb.generic.texts
     resourcebundle:keys:
     - texts.example
     - text.sr-only-link
+    - text.close-menu
+    - text.close-search
     resourcebundle:messages:
     - This is an example text
     - (external link, opens in a new tab)
+    - Close menu
+    - Close search
   /rb.generic.texts[2]:
     hippo:availability:
     - preview
+    hippostd:retainable: false
     hippostd:state: unpublished
     hippostdpubwf:createdBy: admin
     hippostdpubwf:creationDate: 2018-06-07T16:23:27.852Z
-    hippostdpubwf:lastModificationDate: 2020-12-11T16:28:37.862Z
+    hippostdpubwf:lastModificationDate: 2021-02-04T13:47:12.201Z
     hippostdpubwf:lastModifiedBy: admin
     jcr:mixinTypes:
     - mix:referenceable
@@ -35,37 +43,50 @@
     resourcebundle:descriptions:
     - Texts can be used to set the text of any element or entire section
     - ''
+    - ''
+    - ''
     resourcebundle:id: rb.generic.texts
     resourcebundle:keys:
     - texts.example
     - text.sr-only-link
+    - text.close-menu
+    - text.close-search
     resourcebundle:messages:
     - This is an example text
     - (external link, opens in a new tab)
+    - Close menu
+    - Close search
   /rb.generic.texts[3]:
     hippo:availability:
     - live
+    hippostd:retainable: false
     hippostd:state: published
     hippostdpubwf:createdBy: admin
     hippostdpubwf:creationDate: 2018-06-07T16:23:27.852Z
-    hippostdpubwf:lastModificationDate: 2020-12-11T16:28:37.862Z
+    hippostdpubwf:lastModificationDate: 2021-02-04T13:47:12.201Z
     hippostdpubwf:lastModifiedBy: admin
-    hippostdpubwf:publicationDate: 2020-12-11T16:28:44.676Z
+    hippostdpubwf:publicationDate: 2021-02-04T13:47:13.588Z
     jcr:mixinTypes:
     - mix:referenceable
     jcr:primaryType: resourcebundle:resourcebundle
     resourcebundle:descriptions:
     - Texts can be used to set the text of any element or entire section
     - ''
+    - ''
+    - ''
     resourcebundle:id: rb.generic.texts
     resourcebundle:keys:
     - texts.example
     - text.sr-only-link
+    - text.close-menu
+    - text.close-search
     resourcebundle:messages:
     - This is an example text
     - (external link, opens in a new tab)
+    - Close menu
+    - Close search
   hippo:name: Texts
-  hippo:versionHistory: 4802ca37-cb7a-4bdb-9f25-874755c25a79
+  hippo:versionHistory: e5b44efe-cbc4-46f1-8b1c-d5ebb5641398
   jcr:mixinTypes:
   - hippo:named
   - hippo:versionInfo

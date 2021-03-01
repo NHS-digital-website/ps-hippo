@@ -86,6 +86,25 @@ $tab-tile-gutter:10px;
                         width: 100%;
                     }
                 }
+            
+                &-summary {
+                    &, & > * {
+                        @include core-font(16);
+                    }
+        
+                    max-height: 72px;
+                    overflow: hidden;
+                }
+        
+                &-date {
+                    @include core-font(14);
+        
+                    // position: absolute;
+                    display: block;
+                    bottom: 12px;
+                    left: 20px;
+                    color: $col-intranet-mid-grey;
+                }
             }
 
         }

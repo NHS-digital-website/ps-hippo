@@ -1,6 +1,5 @@
 ---
 /content/documents/corporate-website/news-and-events:
-  .meta:order-before: news
   hippo:name: News and events
   hippostd:foldertype:
   - new-digital-website-folder
@@ -12,3 +11,4 @@
   - hippotranslation:translated
   - mix:versionable
   jcr:primaryType: hippostd:folder
+  jcr:uuid: 0f3406bf-9d17-425a-944a-e10ebcb111e4

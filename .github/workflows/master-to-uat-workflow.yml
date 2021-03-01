@@ -13,6 +13,7 @@ jobs:
     env:
       SLACK_WEBHOOK: ${{  secrets.SLACK_WEBHOOK }}
       CHANNEL_ID: C8QJFKBC2 # support channel
+      ENV: "uat"
 
     steps:
 
@@ -36,20 +37,38 @@ jobs:
       # Step 3
       # Get the Caches
       #
+      - name: Get cache key helper values
+        uses: actions/github-script@v3
+        id: cache-key-helper
+        with:
+          result-encoding: string
+          script: |
+            return JSON.stringify({
+              "year" : new Date().getFullYear(),
+              "rotation" : new Date().getTimezoneOffset()
+            })
       - name: Setup cache (Maven packages)
         uses: actions/cache@v2
+        env:
+          YEAR: ${{ fromJSON(steps.cache-key-helper.outputs.result).year }}
+          ROTATION: ${{ fromJSON(steps.cache-key-helper.outputs.result).rotation }}
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-nhs-digital-${{ hashFiles('**/pom.xml') }}
+          key: ${{ runner.os }}-maven-nhs-digital-${{ env.YEAR }}-${{ env.ROTATION }}
           restore-keys: |
+            ${{ runner.os }}-maven-nhs-digital-${{ env.YEAR }}-
             ${{ runner.os }}-maven-nhs-digital-
             ${{ runner.os }}-maven-nhs-
       - name: Setup cache (Node.js packages)
         uses: actions/cache@v2
+        env:
+          YEAR: ${{ fromJSON(steps.cache-key-helper.outputs.result).year }}
+          ROTATION: ${{ fromJSON(steps.cache-key-helper.outputs.result).rotation }}
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-nhs-digital-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-nhs-digital-${{ env.YEAR }}-${{ env.ROTATION }}
           restore-keys: |
+            ${{ runner.os }}-node-nhs-digital-${{ env.YEAR }}-
             ${{ runner.os }}-node-nhs-digital-
             ${{ runner.os }}-node-nhs-
 
@@ -108,9 +127,9 @@ jobs:
           make ondemand.pipeline-deploy > pipeline-deploy-output.txt
           echo "::set-output name=PIPELINE_DEPLOY_URL::"$(cat pipeline-deploy-output.txt | grep -Po "(?<=<)[^>]+")
         env:
-          ENV: "uat"
-          RD_URL: ${{ secrets.RD_URL }}
+          RD_URL: ${{ secrets.RD_API }}
           RD_USER: ${{ secrets.RD_USER }}
+          RD_PASSWORD: ${{ secrets.RD_PASSWORD }}
 
       #
       # Step 10

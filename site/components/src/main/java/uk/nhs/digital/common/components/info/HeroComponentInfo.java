@@ -20,11 +20,11 @@ public interface HeroComponentInfo {
     @Parameter(
         name = "document",
         required = true,
-        displayName = "Banner or CTA Document"
+        displayName = "Video, Banner or CTA Document"
         )
     @JcrPath(
         isRelative = true,
-        pickerSelectableNodeTypes = {"website:calltoaction", "website:bannerdocument"}
+        pickerSelectableNodeTypes = {"website:calltoaction", "website:bannerdocument", "website:video"}
         )
     String getDocument();
 

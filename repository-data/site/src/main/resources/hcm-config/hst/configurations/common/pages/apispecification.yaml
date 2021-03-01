@@ -1,6 +1,13 @@
 ---
 definitions:
   config:
+    /hst:hst/hst:configurations/common/hst:pages/api-catalogue:
+      /main:
+        hst:componentclassname: uk.nhs.digital.common.components.ApiCatalogueComponent
+        hst:template: api-catalogue
+        jcr:primaryType: hst:component
+      hst:referencecomponent: hst:abstractpages/apppage
+      jcr:primaryType: hst:component
     /hst:hst/hst:configurations/common/hst:pages/apispecification:
       /main:
         hst:componentclassname: uk.nhs.digital.common.components.ApiSpecificationComponent

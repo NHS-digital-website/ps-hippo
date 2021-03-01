@@ -8,6 +8,11 @@
 * To run all tests `make test`.
 * To get more help, simply run `make help`.
 
+Set `REPO_PATH = -Drepo.path=storage` in `env.mk` to preserve your local docs between `make serve` sessions.
+This creates `storage` directory within the project directory, that contains your local CMS database.
+The directory is ignored by git, so you're not risking committing it by accident. If you need to start with
+clean slate, simply delete the directory and it will be recreated on the next run.
+
 
 ## Key Maven Build Operations
 

@@ -71,6 +71,12 @@ definitions:
           hst:template: menu
           hst:xtype: HST.Item
           jcr:primaryType: hst:containeritemcomponent
+        /navigationBlock:
+          hst:componentclassname: uk.nhs.digital.common.components.NavigationBlockComponent
+          hst:label: Navigation Block
+          hst:template: navigationBlock
+          hst:xtype: hst.item
+          jcr:primaryType: hst:containeritemcomponent
         /newslist:
           hst:componentclassname: uk.nhs.digital.common.components.LatestNewsComponent
           hst:iconpath: images/essentials/catalog-component-icons/news-list.png

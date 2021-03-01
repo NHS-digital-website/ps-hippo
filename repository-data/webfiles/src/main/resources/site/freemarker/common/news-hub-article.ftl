@@ -11,15 +11,6 @@
 <#include "macro/metaTags.ftl">
 <@metaTags></@metaTags>
 
-<#assign monthNames = monthsOfTheYear()?reverse />
-
-<#--Group the news articles by earliest start month  -->
-<#assign newsGroupHash = {} />
-<#list pageable.items as item>
-<@fmt.formatDate value=item.publisheddatetime.time type="Date" pattern="MMMM" timeZone="${getTimeZone()}" var="key" />
-<#assign newsGroupHash = newsGroupHash + {  key : (newsGroupHash[key]![]) + [ item ] } />
-</#list>
-
 <article class="article article--news-hub">
     <#assign header_title><@fmt.message key="headers.page-title" /></#assign>
     <#assign header_summary><@fmt.message key="texts.intro" /></#assign>
@@ -33,13 +24,15 @@
             <div class="column column--one-quarter page-block page-block--sidebar article-section-nav-outer-wrapper">
                 <#-- Query search component -->
                 <div class="article-section-nav-wrapper" data-hub-filter-type="nhsd-hub-query-filter" data-hub-filter-key="query">
-                    <div class="article-section-nav">
-                        <h2 class="article-section-nav__title"><@fmt.message key="headers.refine" /></h2>
-                        <#assign searchLink = "" />
-                        <#assign searchId = "hub-search-input" />
-                        <#assign searchFormId = "hub-search-form" />
-                        <#assign buttonLabel = "Filter" />
-                        <#include "../include/search-strip.ftl">
+                    <h2 class="article-section-nav__title"><@fmt.message key="headers.refine" /></h2>
+                    <#assign searchLink = "" />
+                    <#assign searchId = "hub-search-input" />
+                    <#assign searchFormId = "hub-search-form" />
+                    <#assign buttonLabel = "Filter" />
+                    <#include "../include/search-strip.ftl">
+
+                    <div id="sticky-nav" class="faceted-nav-wrapper">
+                        <@hst.include ref="filters"/>
                     </div>
                 </div>
             </div>

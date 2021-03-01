@@ -1,0 +1,45 @@
+---
+definitions:
+  config:
+    /hst:hst/hst:hosts/cs:
+      /com:
+        /onehippo:
+          /cs:
+            /nhs:
+              /content:
+                jcr:primaryType: hst:virtualhost
+              /hst:root:
+                /gdpr:
+                  hst:ismapped: false
+                  hst:namedpipeline: TargetingRestApiPipeline
+                  hst:types:
+                  - rest
+                  jcr:primaryType: hst:mount
+                /restapi:
+                  hst:alias: restapi
+                  hst:ismapped: false
+                  hst:namedpipeline: JaxrsRestPlainPipeline
+                  hst:responseheaders:
+                  - 'Access-Control-Allow-Origin: https://cms-nhs.cs.onehippo.com'
+                  hst:types:
+                  - rest
+                  jcr:primaryType: hst:mount
+                hst:homepage: root
+                hst:mountpoint: /hst:hst/hst:sites/common
+                hst:responseheaders:
+                - 'Strict-Transport-Security : max-age=31536000'
+                - 'Content-Security-Policy: upgrade-insecure-requests'
+                - 'Referrer-Policy: no-referrer-when-downgrade'
+                - 'Feature-Policy: vibrate ''none''; microphone ''none''; camera ''none'';
+                  payment ''none''; accelerometer ''none''; ambient-light-sensor ''none'';
+                  magnetometer ''none''; midi ''none''; usb ''none''; wake-lock ''none'';
+                  execution-while-out-of-viewport ''none''; sync-xhr ''self''; gyroscope
+                  ''none''; push ''self''; speaker *;  fullscreen *'
+                jcr:primaryType: hst:mount
+              jcr:primaryType: hst:virtualhost
+            jcr:primaryType: hst:virtualhost
+          jcr:primaryType: hst:virtualhost
+        hst:cdnhost: //nhs-cs.global.ssl.fastly.net
+        hst:scheme: https
+        jcr:primaryType: hst:virtualhost
+      jcr:primaryType: hst:virtualhostgroup

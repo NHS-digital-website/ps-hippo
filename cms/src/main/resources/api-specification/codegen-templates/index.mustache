@@ -7,7 +7,7 @@
     <!-- API Title: {{{appName}}} -->
 
     <div id="api-description" class="article-section">
-        {{{markdown appDescription headingIdPrefix="api-description__"}}}
+        {{{markdown appDescription headingIdPrefix="api-description__" levelToNormaliseHeadingsTo=2}}}
     </div>
         {{#apiInfo}}
             {{#apis}}
@@ -15,11 +15,11 @@
                 {{#operations}}
                     {{#eq baseName 'Default'}}
                     <div id="api-endpoints" class="article-section">
-                        <h1>Endpoints</h1>
+                        <h2>Endpoints</h2>
                     </div>
                     {{else}}
                     <div id="api-{{baseName}}" class="article-section">
-                        <h1>Endpoints: {{baseName}}</h1>
+                        <h2>Endpoints: {{baseName}}</h2>
                     </div>
                     {{/eq}}
                         {{#operation}}
@@ -28,22 +28,22 @@
                                     <div id="api-{{baseName}}-{{nickname}}" class="article-section-with-sub-heading">
                                         <article id="api-{{baseName}}-{{nickname}}-0">
                                             <!-- https://digital.nhs.uk/about-nhs-digital/corporate-information-and-documents/nhs-digital-style-guidelines/features-of-the-nhs-digital-website-cms/call-to-action-cta-buttons -->
-                                            <h2>{{summary}}</h2>
+                                            <h3>{{summary}}</h3>
                                             <div class="endpoint_path">
-                                                <div class="method"><h2>{{httpMethod}}</h2></div>
+                                                <div class="method">{{httpMethod}}</div>
                                                 <div class="pre"><pre>{{path}}</pre></div>
                                                 {{#ifVariableIsFalse "tryThisApiDisabled"}}<div class="try"><a onclick="tryEndpointNow('/{{baseName}}/{{operationIdSnakeCase}}')" class="ctabtn-left ctabtn--nhs-digital-button" onkeyup="return vjsu.onKeyUp(event)">Try this API</a></div>{{/ifVariableIsFalse}}
                                             </div>
 
-                                            <p>{{{markdown notes}}}</p>
+                                            <p>{{{markdown notes levelToNormaliseHeadingsTo=4}}}</p>
 
                                             {{#isAnyTrue this hasPathParams hasHeaderParams hasBodyParam hasFormParams hasQueryParams}}
-                                                <h2>Request</h2>
+                                                <h4>Request</h4>
                                             {{/isAnyTrue}}
 
                                             {{#hasPathParams}}
                                                 <div class="httpparams">
-                                                    <h3>Path parameters</h3>
+                                                    <h5>Path parameters</h5>
                                                     <table data-disablesort="true">
                                                         <tr>
                                                             <th>Name</th>
@@ -58,7 +58,7 @@
 
                                             {{#hasQueryParams}}
                                                 <div class="httpparams">
-                                                    <h3>Query parameters</h3>
+                                                    <h5>Query parameters</h5>
                                                     <table data-disablesort="true">
                                                         <tr>
                                                             <th>Name</th>
@@ -73,7 +73,7 @@
 
                                             {{#hasHeaderParams}}
                                                 <div class="httpparams">
-                                                    <h3>Headers</h3>
+                                                    <h5>Headers</h5>
                                                     <table data-disablesort="true">
                                                         <tr>
                                                             <th>Name</th>
@@ -88,7 +88,7 @@
 
                                             {{#hasFormParams}}
                                                 <div class="httpparams">
-                                                    <h3>Form parameters</h3>
+                                                    <h5>Form parameters</h5>
                                                     <table data-disablesort="true">
                                                         <tr>
                                                             <th>Name</th>
@@ -103,7 +103,7 @@
 
                                             {{#hasBodyParam}}
                                                 <div class="httpparams">
-                                                    <h3>Body</h3>
+                                                    <h5>Body</h5>
                                                     {{#bodyParams}}
                                                         {{#required}}<div class="httpparams__required">Required</div>{{/required}}
 
@@ -116,15 +116,15 @@
 
                                             {{#responses}}
                                                 {{#@first}}
-                                                    <h2>Response</h2>
+                                                    <h4>Response</h4>
                                                 {{/@first}}
 
-                                                <h3>HTTP status: {{code}}</h3>
-                                                <div>{{{markdown message}}}</div>
+                                                <h5>HTTP status: {{code}}</h5>
+                                                <div>{{{markdown message levelToNormaliseHeadingsTo=5}}}</div>
 
                                                 {{#hasHeaders}}
                                                     <div class="httpparams">
-                                                        <h3>Headers</h3>
+                                                        <h6>Headers</h6>
                                                         <table data-disablesort="true">
                                                             <tr>
                                                                 <th>Name</th>
@@ -140,7 +140,7 @@
                                                 {{#vendorExtensions.x-body}}
                                                     {{#mediaTypes}}
                                                         {{#@first}}
-                                                        <h4>Body</h4>
+                                                        <h6>Body</h6>
                                                         {{/@first}}
                                                     {{/mediaTypes}}
                                                     {{>body_param}}

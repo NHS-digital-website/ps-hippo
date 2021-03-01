@@ -1,4 +1,4 @@
-package uk.nhs.digital.jobs;
+package uk.nhs.digital.apispecs.jobs;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
@@ -38,7 +38,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.mock.env.MockEnvironment;
 import uk.nhs.digital.JcrDocumentUtils;
-import uk.nhs.digital.apispecs.jobs.ApiSpecSyncFromApigeeJob;
 
 import javax.jcr.Node;
 import javax.jcr.Session;

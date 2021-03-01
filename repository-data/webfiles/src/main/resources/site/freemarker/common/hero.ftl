@@ -27,9 +27,10 @@
 <#if hasDocument>
     <#assign isCtaDoc = document.class.simpleName == "Calltoaction"/>
     <#assign isBannerDoc = document.class.simpleName == "Banner"/>
+    <#assign isVideoDoc = document.class.simpleName == "Video"/>
 
     <#assign hasTitle = document.title?has_content />
-    <#assign hasContent = document.content?has_content />
+    <#assign hasContent = document.content?has_content || document.introduction?has_content />
     <#assign hasLink = document.external?has_content || document.internal?has_content || document.link?has_content />
     <#assign hasImage = document.image?has_content />
     <#assign hasImageDesc = (hasImage && document.image.description?has_content) />
@@ -52,6 +53,9 @@
                                         ${summaryText?replace('<[^>]+>','','r')}
                                     <#elseif isCtaDoc>
                                         ${document.content}
+                                    <#elseif isVideoDoc>
+                                        <@hst.html hippohtml=document.introduction var="summaryText" />
+                                        ${summaryText?replace('<[^>]+>','','r')}
                                     </#if>
                                 </p>
                             </#if>
@@ -93,14 +97,21 @@
 
                 <div class="nhsd-t-col-s-6 nhsd-!t-no-gutters ${colSize}">
                     <figure class="nhsd-a-image ${imageSize}" aria-hidden="true">
-                        <picture class="nhsd-a-image__picture">
-                            <#if document.image?has_content>
+                        <#if isVideoDoc && document.videoUri???has_content>
+                             <div style="padding-bottom: 56.25%; position: relative">
+                                <iframe style="width: 100%; height: 100%; position: absolute" type="text/html" src="${document.videoUri}" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+                                <link itemprop="embedUrl" href="${document.videoUri}" />
+                             </div>
+                        <#elseif document.image?has_content>
+                            <picture class="nhsd-a-image__picture">
                                 <@hst.link hippobean=document.image var="image" />
                                 <img src="${image}" alt="${altText}">
-                            <#else>
+                            </picture>
+                        <#else>
+                            <picture class="nhsd-a-image__picture">
                                 <img src="https://digital.nhs.uk/binaries/content/gallery/website/about-nhs-digital/fibre_57101102_med.jpg" alt="${altText}">
-                            </#if>
-                        </picture>
+                            </picture>
+                        </#if>
                     </figure>
                 </div>
             </div>

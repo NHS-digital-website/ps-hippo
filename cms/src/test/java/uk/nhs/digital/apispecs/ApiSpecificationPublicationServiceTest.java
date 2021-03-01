@@ -188,6 +188,59 @@ public class ApiSpecificationPublicationServiceTest {
         then(cmsSpecBPublished).should().saveAndPublish();
     }
 
+    @Test
+    public void rerender_skipsSpecificationWhenUnchanged() {
+        // given
+        final String specificationId = "248569";
+
+        // @formatter:off
+        final String lastCmsPublicationTimestamp     = "2020-05-10T10:30:00.000Z";
+        // @formatter:on
+
+        final ApiSpecificationDocument cmsSpecPublished = apiSpecDoc(specificationId, lastCmsPublicationTimestamp);
+        final String cmsSpecificationJson = "{ \"json\": \"payload\" }";
+        final String publishedSpecificationHtml = "<html><body> Some spec content </body></html>";
+
+        when(apiSpecDocumentRepo.findAllApiSpecifications()).thenReturn(singletonList(cmsSpecPublished));
+        when(cmsSpecPublished.getSpecJson()).thenReturn(cmsSpecificationJson);
+        when(cmsSpecPublished.getHtml()).thenReturn(publishedSpecificationHtml);
+        when(apiSpecHtmlProvider.htmlFrom(cmsSpecificationJson)).thenReturn(publishedSpecificationHtml);
+
+        // when
+        apiSpecificationPublicationService.rerenderSpecifications();
+
+        // then
+        then(cmsSpecPublished).should().getSpecJson();
+        then(cmsSpecPublished).should().getHtml();
+        then(cmsSpecPublished).should().getId(); // this call is made for the sake of logging
+        then(cmsSpecPublished).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    public void rerender_updatesAndPublishesSpecificationWhenChanged() {
+
+        final ApiSpecificationDocument cmsSpecPublished = mock(ApiSpecificationDocument.class);
+        final String cmsSpecificationJson = "{ \"json\": \"payload\" }";
+        final String cmsSpecificationHtml = "<html><body> Some spec content </body></html>";
+
+        when(apiSpecDocumentRepo.findAllApiSpecifications()).thenReturn(singletonList(cmsSpecPublished));
+        when(cmsSpecPublished.getSpecJson()).thenReturn(cmsSpecificationJson);
+        when(cmsSpecPublished.getHtml()).thenReturn("<html><body> Some outdated spec content </body></html>");
+        when(apiSpecHtmlProvider.htmlFrom(cmsSpecificationJson)).thenReturn(cmsSpecificationHtml);
+
+        // when
+        apiSpecificationPublicationService.rerenderSpecifications();
+
+        // then
+        then(cmsSpecPublished).should().getSpecJson();
+        then(cmsSpecPublished).should().getHtml();
+        then(cmsSpecPublished).should().setHtml(cmsSpecificationHtml);
+        then(cmsSpecPublished).should().saveAndPublish();
+        then(cmsSpecPublished).should().getId(); // this call is made for the sake of logging
+        then(cmsSpecPublished).shouldHaveNoMoreInteractions();
+    }
+
+
     private ApiSpecificationDocument apiSpecDoc(final String specificationId, final String lastModTimestamp) {
 
         final ApiSpecificationDocument apiSpecificationDocument = mock(ApiSpecificationDocument.class);

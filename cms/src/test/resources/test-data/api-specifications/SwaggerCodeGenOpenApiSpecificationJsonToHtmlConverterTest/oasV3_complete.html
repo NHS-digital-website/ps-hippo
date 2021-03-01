@@ -65,25 +65,25 @@
     </div>
 
                     <div id="api-Patients" class="article-section">
-                        <h1>Endpoints: Patients</h1>
+                        <h2>Endpoints: Patients</h2>
                     </div>
                                     <div id="api-Patients-getPatient" class="article-section-with-sub-heading">
                                         <article id="api-Patients-getPatient-0">
                                             <!-- https://digital.nhs.uk/about-nhs-digital/corporate-information-and-documents/nhs-digital-style-guidelines/features-of-the-nhs-digital-website-cms/call-to-action-cta-buttons -->
-                                            <h2>Retrieve a patient's resource</h2>
+                                            <h3>Retrieve a patient's resource</h3>
                                             <div class="endpoint_path">
-                                                <div class="method"><h2>get</h2></div>
+                                                <div class="method">get</div>
                                                 <div class="pre"><pre>/Patient/{id}</pre></div>
                                                 <div class="try"><a onclick="tryEndpointNow('/Patients/get_patient')" class="ctabtn-left ctabtn--nhs-digital-button" onkeyup="return vjsu.onKeyUp(event)">Try this API</a></div>
                                             </div>
 
-                                            <p><h2 id="overview">Overview</h2>
+                                            <p><h4 id="overview">Overview</h4>
 <p>Use this endpoint to get patient details from PDS for a given NHS Number.</p>
 
-                                                <h2>Request</h2>
+                                                <h4>Request</h4>
 
                                                 <div class="httpparams">
-                                                    <h3>Path parameters</h3>
+                                                    <h5>Path parameters</h5>
                                                     <table data-disablesort="true">
                                                         <tr>
                                                             <th>Name</th>
@@ -117,7 +117,7 @@
 
 
                                                 <div class="httpparams">
-                                                    <h3>Headers</h3>
+                                                    <h5>Headers</h5>
                                                     <table data-disablesort="true">
                                                         <tr>
                                                             <th>Name</th>
@@ -149,13 +149,13 @@
 
 
 
-                                                    <h2>Response</h2>
+                                                    <h4>Response</h4>
 
-                                                <h3>HTTP status: 200</h3>
+                                                <h5>HTTP status: 200</h5>
                                                 <div>Information successfully returned.</div>
 
                                                     <div class="httpparams">
-                                                        <h3>Headers</h3>
+                                                        <h6>Headers</h6>
                                                         <table data-disablesort="true">
                                                             <tr>
                                                                 <th>Name</th>
@@ -185,13 +185,13 @@
                                                         </table>
                                                     </div>
 
-                                                        <h4>Body</h4>
+                                                        <h6>Body</h6>
 
 
-                                                            <h5 class="body__contenttype">
+                                                            <div class="body__contenttype">
                                                                 <span class="body__contenttype__label">Content type: </span>
                                                                 <span class="body__contenttype__value">application/fhir+json</span>
-                                                            </h5>
+                                                            </div>
 
                                                                 <div class="body__example__header">Example</div>
                                                                 <div><pre><code>{
@@ -360,17 +360,17 @@
 
 
 
-                                                <h3>HTTP status: 400</h3>
+                                                <h5>HTTP status: 400</h5>
                                                 <div>Invalid NHS number supplied.</div>
 
 
-                                                        <h4>Body</h4>
+                                                        <h6>Body</h6>
 
 
-                                                            <h5 class="body__contenttype">
+                                                            <div class="body__contenttype">
                                                                 <span class="body__contenttype__label">Content type: </span>
                                                                 <span class="body__contenttype__value">application/fhir+json</span>
-                                                            </h5>
+                                                            </div>
 
                                                                 <div class="body__example__header">Example</div>
                                                                 <div><pre><code>{
@@ -615,21 +615,21 @@
                                     <div id="api-Patients-searchPatient" class="article-section-with-sub-heading">
                                         <article id="api-Patients-searchPatient-0">
                                             <!-- https://digital.nhs.uk/about-nhs-digital/corporate-information-and-documents/nhs-digital-style-guidelines/features-of-the-nhs-digital-website-cms/call-to-action-cta-buttons -->
-                                            <h2>Search for patient</h2>
+                                            <h3>Search for patient</h3>
                                             <div class="endpoint_path">
-                                                <div class="method"><h2>get</h2></div>
+                                                <div class="method">get</div>
                                                 <div class="pre"><pre>/Patient</pre></div>
                                                 <div class="try"><a onclick="tryEndpointNow('/Patients/search_patient')" class="ctabtn-left ctabtn--nhs-digital-button" onkeyup="return vjsu.onKeyUp(event)">Try this API</a></div>
                                             </div>
 
-                                            <p><h2 id="endpoint">Endpoint</h2>
+                                            <p><h4 id="endpoint">Endpoint</h4>
 <p>Use this endpoint to search for a patient in PDS.</p>
 
-                                                <h2>Request</h2>
+                                                <h4>Request</h4>
 
 
                                                 <div class="httpparams">
-                                                    <h3>Query parameters</h3>
+                                                    <h5>Query parameters</h5>
                                                     <table data-disablesort="true">
                                                         <tr>
                                                             <th>Name</th>
@@ -681,7 +681,7 @@
                                                 </div>
 
                                                 <div class="httpparams">
-                                                    <h3>Headers</h3>
+                                                    <h5>Headers</h5>
                                                     <table data-disablesort="true">
                                                         <tr>
                                                             <th>Name</th>
@@ -735,19 +735,19 @@
 
 
 
-                                                    <h2>Response</h2>
+                                                    <h4>Response</h4>
 
-                                                <h3>HTTP status: 200</h3>
+                                                <h5>HTTP status: 200</h5>
                                                 <div>A completed search, containing zero, one, or many matching patients.</div>
 
 
-                                                        <h4>Body</h4>
+                                                        <h6>Body</h6>
 
 
-                                                            <h5 class="body__contenttype">
+                                                            <div class="body__contenttype">
                                                                 <span class="body__contenttype__label">Content type: </span>
                                                                 <span class="body__contenttype__value">application/fhir+json</span>
-                                                            </h5>
+                                                            </div>
 
                                                                 <div class="body__example__header">Example</div>
                                                                 <div><pre><code>{
@@ -919,17 +919,17 @@
 
 
 
-                                                <h3>HTTP status: 400</h3>
+                                                <h5>HTTP status: 400</h5>
                                                 <div>Invalid search paramaters supplied.</div>
 
 
-                                                        <h4>Body</h4>
+                                                        <h6>Body</h6>
 
 
-                                                            <h5 class="body__contenttype">
+                                                            <div class="body__contenttype">
                                                                 <span class="body__contenttype__label">Content type: </span>
                                                                 <span class="body__contenttype__value">application/fhir+json</span>
-                                                            </h5>
+                                                            </div>
 
 
 
@@ -1027,20 +1027,20 @@
                                     <div id="api-Patients-updatePatientPartial" class="article-section-with-sub-heading">
                                         <article id="api-Patients-updatePatientPartial-0">
                                             <!-- https://digital.nhs.uk/about-nhs-digital/corporate-information-and-documents/nhs-digital-style-guidelines/features-of-the-nhs-digital-website-cms/call-to-action-cta-buttons -->
-                                            <h2>Update a patient's resource</h2>
+                                            <h3>Update a patient's resource</h3>
                                             <div class="endpoint_path">
-                                                <div class="method"><h2>patch</h2></div>
+                                                <div class="method">patch</div>
                                                 <div class="pre"><pre>/Patient/{id}</pre></div>
                                                 <div class="try"><a onclick="tryEndpointNow('/Patients/update_patient_partial')" class="ctabtn-left ctabtn--nhs-digital-button" onkeyup="return vjsu.onKeyUp(event)">Try this API</a></div>
                                             </div>
 
-                                            <p><h2 id="overview">Overview</h2>
+                                            <p><h4 id="overview">Overview</h4>
 <p>Use this endpoint to update patient details in PDS.</p>
 
-                                                <h2>Request</h2>
+                                                <h4>Request</h4>
 
                                                 <div class="httpparams">
-                                                    <h3>Path parameters</h3>
+                                                    <h5>Path parameters</h5>
                                                     <table data-disablesort="true">
                                                         <tr>
                                                             <th>Name</th>
@@ -1074,7 +1074,7 @@
 
 
                                                 <div class="httpparams">
-                                                    <h3>Headers</h3>
+                                                    <h5>Headers</h5>
                                                     <table data-disablesort="true">
                                                         <tr>
                                                             <th>Name</th>
@@ -1131,15 +1131,15 @@
 
 
                                                 <div class="httpparams">
-                                                    <h3>Body</h3>
+                                                    <h5>Body</h5>
                                                         <div class="httpparams__required">Required</div>
 
 
 
-                                                                    <h5 class="body__contenttype">
+                                                                    <div class="body__contenttype">
                                                                         <span class="body__contenttype__label">Content type: </span>
                                                                         <span class="body__contenttype__value">application/json</span>
-                                                                    </h5>
+                                                                    </div>
 
 
 
@@ -1234,13 +1234,13 @@
 
                                                 </div>
 
-                                                    <h2>Response</h2>
+                                                    <h4>Response</h4>
 
-                                                <h3>HTTP status: 202</h3>
+                                                <h5>HTTP status: 202</h5>
                                                 <div>The patch was syntactically correct and was accepted.</div>
 
                                                     <div class="httpparams">
-                                                        <h3>Headers</h3>
+                                                        <h6>Headers</h6>
                                                         <table data-disablesort="true">
                                                             <tr>
                                                                 <th>Name</th>
@@ -1292,17 +1292,17 @@
 
 
 
-                                                <h3>HTTP status: 400</h3>
+                                                <h5>HTTP status: 400</h5>
                                                 <div>Client error.</div>
 
 
-                                                        <h4>Body</h4>
+                                                        <h6>Body</h6>
 
 
-                                                            <h5 class="body__contenttype">
+                                                            <div class="body__contenttype">
                                                                 <span class="body__contenttype__label">Content type: </span>
                                                                 <span class="body__contenttype__value">application/fhir+json</span>
-                                                            </h5>
+                                                            </div>
 
 
 
@@ -1663,25 +1663,25 @@
                                     </div>
 
                     <div id="api-Polling" class="article-section">
-                        <h1>Endpoints: Polling</h1>
+                        <h2>Endpoints: Polling</h2>
                     </div>
                                     <div id="api-Polling-polling" class="article-section-with-sub-heading">
                                         <article id="api-Polling-polling-0">
                                             <!-- https://digital.nhs.uk/about-nhs-digital/corporate-information-and-documents/nhs-digital-style-guidelines/features-of-the-nhs-digital-website-cms/call-to-action-cta-buttons -->
-                                            <h2>Retrieve the outcome of the accepted update.</h2>
+                                            <h3>Retrieve the outcome of the accepted update.</h3>
                                             <div class="endpoint_path">
-                                                <div class="method"><h2>get</h2></div>
+                                                <div class="method">get</div>
                                                 <div class="pre"><pre>/Polling/{message_id}</pre></div>
                                                 <div class="try"><a onclick="tryEndpointNow('/Polling/polling')" class="ctabtn-left ctabtn--nhs-digital-button" onkeyup="return vjsu.onKeyUp(event)">Try this API</a></div>
                                             </div>
 
-                                            <p><h2 id="overview">Overview</h2>
+                                            <p><h4 id="overview">Overview</h4>
 <p>Use this endpoint to poll for the outcome of an updated patient record.</p>
 
-                                                <h2>Request</h2>
+                                                <h4>Request</h4>
 
                                                 <div class="httpparams">
-                                                    <h3>Path parameters</h3>
+                                                    <h5>Path parameters</h5>
                                                     <table data-disablesort="true">
                                                         <tr>
                                                             <th>Name</th>
@@ -1715,7 +1715,7 @@
 
 
                                                 <div class="httpparams">
-                                                    <h3>Headers</h3>
+                                                    <h5>Headers</h5>
                                                     <table data-disablesort="true">
                                                         <tr>
                                                             <th>Name</th>
@@ -1747,13 +1747,13 @@
 
 
 
-                                                    <h2>Response</h2>
+                                                    <h4>Response</h4>
 
-                                                <h3>HTTP status: 200</h3>
+                                                <h5>HTTP status: 200</h5>
                                                 <div>Patient updated.</div>
 
                                                     <div class="httpparams">
-                                                        <h3>Headers</h3>
+                                                        <h6>Headers</h6>
                                                         <table data-disablesort="true">
                                                             <tr>
                                                                 <th>Name</th>
@@ -1784,13 +1784,13 @@
                                                         </table>
                                                     </div>
 
-                                                        <h4>Body</h4>
+                                                        <h6>Body</h6>
 
 
-                                                            <h5 class="body__contenttype">
+                                                            <div class="body__contenttype">
                                                                 <span class="body__contenttype__label">Content type: </span>
                                                                 <span class="body__contenttype__value">application/fhir+json</span>
-                                                            </h5>
+                                                            </div>
 
 
 
@@ -1949,17 +1949,17 @@
 
 
 
-                                                <h3>HTTP status: 400</h3>
+                                                <h5>HTTP status: 400</h5>
                                                 <div>Client error after the patch was accepted and patient was not updated.</div>
 
 
-                                                        <h4>Body</h4>
+                                                        <h6>Body</h6>
 
 
-                                                            <h5 class="body__contenttype">
+                                                            <div class="body__contenttype">
                                                                 <span class="body__contenttype__label">Content type: </span>
                                                                 <span class="body__contenttype__value">application/fhir+json</span>
-                                                            </h5>
+                                                            </div>
 
 
 

@@ -8,11 +8,11 @@
                         <li>
                             <a href="#top" aria-label="Scroll to 'Top of page'" title="Scroll to 'Top of page'">Top of page</a>
                         </li>
-                        {{#headingsFromMarkdown appDescription}}
+                        {{#headingsHyperlinksFromMarkdown appDescription}}
                         <li>
                             <a href="#api-description__{{id}}" aria-label="Scroll to '{{text}}'" title="Scroll to '{{text}}'">{{text}}</a>
                         </li>
-                        {{/headingsFromMarkdown}}
+                        {{/headingsHyperlinksFromMarkdown}}
 
                         {{#apiInfo}}
                             {{#apis}}

@@ -139,7 +139,7 @@ ondemand.deploy: vendor/rd
 		--project nhs \
 		--job "jobs/$(OD_ENV)/Deploy" \
 		-- \
-		-bootstrap full \
+		-bootstrap true \
 		-distribution "$(VERSION).tar.gz"
 
 ondemand.pipeline-deploy: vendor/rd
@@ -147,7 +147,7 @@ ondemand.pipeline-deploy: vendor/rd
 		--project nhs \
 		--job "jobs/$(OD_ENV)/Deploy" \
 		-- \
-		-bootstrap full \
+		-bootstrap true \
 		-distribution "$(VERSION).tar.gz"
 
 ## Schedule deployment of the "rc" tag for next working day
@@ -164,7 +164,7 @@ ondemand.schedule-deploy: vendor/rd
 		--project nhs \
 		--job "jobs/$(OD_ENV)/Deploy" \
 		-- \
-		-bootstrap full \
+		-bootstrap true \
 		-distribution "$$(git describe --tags --match $(VERSION_BASE)* rc).tar.gz"
 
 ondemand.restart: vendor/rd

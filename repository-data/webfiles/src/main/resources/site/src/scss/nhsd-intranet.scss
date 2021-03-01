@@ -1,10 +1,12 @@
 // The Intranet styling system based on the NHSD styling system!
 @import "nhsuk";
+@import "intranet/intranet";
 
 // Intranet colours
 @import "intranet/environment/settings/colours";
 
 // Intranet components
+@import "intranet/intranet-components";
 @import "intranet/components/intra-home-grid";
 @import "intranet/components/intra-home-article-grid";
 @import "intranet/components/intra-articleblock";

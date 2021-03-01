@@ -7,8 +7,40 @@ on:
 
 jobs:
 
+  integrity:
+    name: Integrity Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+
+    steps:
+
+      #
+      # Validate that the origin is from Slack
+      # See: https://api.slack.com/authentication/verifying-requests-from-slack
+      #
+      - name: Validate Origin
+        uses: actions/github-script@v3
+        env:
+          AGENT: ${{ github.event.client_payload.integrity.agent }}
+          BODY: ${{ github.event.client_payload.integrity.body }}
+          TIMESTAMP: ${{ github.event.client_payload.integrity.timestamp }}
+          SIGNATURE: ${{ github.event.client_payload.integrity.signature }}
+          SIGNING_SECRET: ${{ secrets.SLACK_SIGNING_SECRET }}
+        with:
+          script: |
+            if(!`${process.env.AGENT}`.startsWith("Slackbot")){
+                core.setFailed("User agent mismatch.")
+            } else {
+                const base = `v0:${process.env.TIMESTAMP}:${process.env.BODY}`
+                const hash = require('crypto').createHmac('sha256', `${process.env.SIGNING_SECRET}`).update(base).digest("hex")
+                if(`${process.env.SIGNATURE}` !== `v0=${hash}`) {
+                  core.setFailed("The origin integrity check failed.")
+                }
+            }
+
   build:
     name: Build Commit
+    needs: integrity
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
@@ -16,12 +48,7 @@ jobs:
       BRANCH: ${{ github.event.client_payload.data.text }}
       CHANNEL_ID: ${{ github.event.client_payload.data.channel_id }}
       SLACK_WEBHOOK: ${{  secrets.SLACK_WEBHOOK }}
-      USER_NAME: ${{  github.event.client_payload.data.user_name }}
-      RD_URL: ${{ secrets.RD_API }}
-      RD_USER: ${{ secrets.RD_USER }}
-      RD_PASSWORD: ${{ secrets.RD_PASSWORD }}
-      RD_AUTH_PROMPT: false
-      RD_COLOR: 0
+      USER_ID: ${{  github.event.client_payload.data.user_id }}
 
     steps:
 
@@ -35,7 +62,6 @@ jobs:
           result-encoding: string
           script: |
             const environments = {
-              C01KGP0B78R: "debugging",
               C011BKDNUS1: "dev",
               C01119ANCJE: "tst",
               C01119BULFL: "trn"
@@ -87,21 +113,40 @@ jobs:
         with:
           java-version: 1.8
 
+      - name: Get cache key helper values
+        uses: actions/github-script@v3
+        id: cache-key-helper
+        with:
+          result-encoding: string
+          script: |
+            return JSON.stringify({
+              "year" : new Date().getFullYear(),
+              "rotation" : new Date().getTimezoneOffset()
+            })
+
       - name: Setup cache (Maven packages)
         uses: actions/cache@v2
+        env:
+          YEAR: ${{ fromJSON(steps.cache-key-helper.outputs.result).year }}
+          ROTATION: ${{ fromJSON(steps.cache-key-helper.outputs.result).rotation }}
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-nhs-digital-${{ hashFiles('**/pom.xml') }}
+          key: ${{ runner.os }}-maven-nhs-digital-${{ env.YEAR }}-${{ env.ROTATION }}
           restore-keys: |
+            ${{ runner.os }}-maven-nhs-digital-${{ env.YEAR }}-
             ${{ runner.os }}-maven-nhs-digital-
             ${{ runner.os }}-maven-nhs-
 
       - name: Setup cache (Node.js packages)
         uses: actions/cache@v2
+        env:
+          YEAR: ${{ fromJSON(steps.cache-key-helper.outputs.result).year }}
+          ROTATION: ${{ fromJSON(steps.cache-key-helper.outputs.result).rotation }}
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-nhs-digital-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-nhs-digital-${{ env.YEAR }}-${{ env.ROTATION }}
           restore-keys: |
+            ${{ runner.os }}-node-nhs-digital-${{ env.YEAR }}-
             ${{ runner.os }}-node-nhs-digital-
             ${{ runner.os }}-node-nhs-
 
@@ -172,6 +217,9 @@ jobs:
           echo "::set-output name=PIPELINE_DEPLOY_URL::"$(cat pipeline-deploy-output.txt | grep -Po "(?<=<)[^>]+")
         env:
           ENV: ${{steps.find-target.outputs.result}}
+          RD_URL: ${{ secrets.RD_API }}
+          RD_USER: ${{ secrets.RD_USER }}
+          RD_PASSWORD: ${{ secrets.RD_PASSWORD }}
 
       - name: Slack message (failed to deploy)
         if: ${{ failure() }}
@@ -188,7 +236,7 @@ jobs:
         uses: muinmomin/webhook-action@v1.0.0
         with:
           url: ${{ env.SLACK_WEBHOOK }}
-          data: '{ "channel": "${{ env.CHANNEL_ID }}", "text": "Pipeline progress...", "attachments": [{ "text" : "RunDeck is deploying. <@${{ env.USER_NAME }}> You can track progress here ${{steps.pipeline-deploy.outputs.PIPELINE_DEPLOY_URL}}", "color": "#78BE20" }] }'
+          data: '{ "channel": "${{ env.CHANNEL_ID }}", "text": "Pipeline progress...", "attachments": [{ "text" : "RunDeck is deploying. <@${{ env.USER_ID }}> You can track progress here ${{steps.pipeline-deploy.outputs.PIPELINE_DEPLOY_URL}}", "color": "#78BE20" }] }'
 
 
       - name: Slack message (failed end message)

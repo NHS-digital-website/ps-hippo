@@ -1,10 +1,10 @@
 
     {{#mediaTypes}}
 
-        <h5 class="body__contenttype">
+        <div class="body__contenttype">
             <span class="body__contenttype__label">Content type: </span>
             <span class="body__contenttype__value">{{name}}</span>
-        </h5>
+        </div>
 
         {{#example}}
             <div class="body__example__header">Example</div>
@@ -34,7 +34,7 @@
             {{/summary}}
 
             {{#description}}
-            <div class="body__example__description">{{{markdown description}}}</div>
+            <div class="body__example__description">{{{markdown description levelToNormaliseHeadingsTo=7}}}</div>
             {{/description}}
 
             <div><pre><code>{{value}}</code></pre></div>

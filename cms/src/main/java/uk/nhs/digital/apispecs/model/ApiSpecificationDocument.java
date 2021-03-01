@@ -3,6 +3,7 @@ package uk.nhs.digital.apispecs.model;
 import static org.hippoecm.repository.util.WorkflowUtils.Variant.DRAFT;
 import static uk.nhs.digital.apispecs.model.ApiSpecificationDocument.Properties.*;
 
+import org.hippoecm.repository.util.WorkflowUtils;
 import uk.nhs.digital.apispecs.jcr.JcrDocumentLifecycleSupport;
 
 import java.time.Instant;
@@ -26,8 +27,18 @@ public class ApiSpecificationDocument {
             ;
     }
 
+    public String getHtml() {
+        Optional<String> html = jcrDocument().getStringProperty(HTML.value(), WorkflowUtils.Variant.PUBLISHED);
+        return html.orElse("");
+    }
+
     public void setHtml(final String html) {
         jcrDocument().setProperty(HTML.value(), html);
+    }
+
+    public String getSpecJson() {
+        Optional<String> json = jcrDocument().getStringProperty(JSON.value(), WorkflowUtils.Variant.PUBLISHED);
+        return json.orElse("");
     }
 
     public void setSpecJson(final String specificationJson) {

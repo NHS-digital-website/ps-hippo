@@ -50,6 +50,13 @@ public class ApiSpecificationPublicationService {
         updateAndPublish(specsEligibleToUpdateAndPublish);
     }
 
+    public void rerenderSpecifications() {
+        LOGGER.info("Rerendering API Specifications in CMS");
+        final List<ApiSpecificationDocument> cmsApiSpecificationDocuments = findCmsApiSpecifications();
+        LOGGER.info("API Specifications found in CMS: {}", cmsApiSpecificationDocuments.size());
+        rerender(cmsApiSpecificationDocuments);
+    }
+
     private void reportNumbersOfSpecsFound(final List<ApiSpecificationDocument> cmsApiSpecificationDocuments,
                                            final List<OpenApiSpecificationStatus> apigeeSpecsStatuses,
                                            final List<ApiSpecificationDocument> specsEligibleToUpdateAndPublish) {
@@ -125,6 +132,45 @@ public class ApiSpecificationPublicationService {
 
             LOGGER.info("API Specification has been published: {}", apiSpecificationDocument.getId());
 
+            return PASS;
+
+        } catch (final Exception e) {
+            LOGGER.error("Failed to publish API Specification: " + apiSpecificationDocument, e);
+
+            return FAIL;
+        }
+    }
+
+    private void rerender(final List<ApiSpecificationDocument> specsToPublish) {
+
+        final long failedSpecificationsCount = specsToPublish.stream()
+            .map(this::rerender)
+            .filter(PublicationResult::failed)
+            .count();
+
+        reportErrorIfAnySpecificationsFailed(failedSpecificationsCount, specsToPublish.size());
+    }
+
+    private PublicationResult rerender(final ApiSpecificationDocument apiSpecificationDocument) {
+        try {
+            LOGGER.info("Rerendering API Specification: {}", apiSpecificationDocument);
+
+            final String apiSpecJson = apiSpecificationDocument.getSpecJson();
+            final String specHtml = apiSpecJson.isEmpty() ? "" : specHtmlFrom(apiSpecJson);
+
+            final String publishedHtml = apiSpecificationDocument.getHtml();
+            final boolean specUnchanged = publishedHtml.equals(specHtml);
+
+            if (specUnchanged) {
+                LOGGER.info("No changes to API Specification, skipped: {}", apiSpecificationDocument.getId());
+                return PASS;
+            }
+
+            apiSpecificationDocument.setHtml(specHtml);
+
+            apiSpecificationDocument.saveAndPublish();
+
+            LOGGER.info("API Specification has been published: {}", apiSpecificationDocument.getId());
             return PASS;
 
         } catch (final Exception e) {

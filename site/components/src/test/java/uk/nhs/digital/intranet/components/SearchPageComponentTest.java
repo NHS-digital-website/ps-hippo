@@ -3,15 +3,14 @@ package uk.nhs.digital.intranet.components;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static uk.nhs.digital.intranet.components.SearchPageComponent.REQUEST_ATTR_AREA;
 import static uk.nhs.digital.intranet.components.SearchPageComponent.REQUEST_ATTR_PAGEABLE;
 import static uk.nhs.digital.intranet.components.SearchPageComponent.REQUEST_ATTR_PEOPLE_RESULTS;
 import static uk.nhs.digital.intranet.components.SearchPageComponent.REQUEST_ATTR_SEARCH_TABS;
 
 import org.hippoecm.hst.container.ModifiableRequestContextProvider;
+import org.hippoecm.hst.content.beans.query.HstQuery;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.core.component.HstParameterInfoProxyFactoryImpl;
 import org.hippoecm.hst.mock.core.component.MockHstRequest;
@@ -38,6 +37,7 @@ import uk.nhs.digital.intranet.provider.BloomreachSearchProvider;
 import uk.nhs.digital.intranet.provider.impl.GraphProviderImpl;
 import uk.nhs.digital.intranet.utils.Constants;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -174,7 +174,7 @@ public class SearchPageComponentTest {
         underTest.doBeforeRender(request, new MockHstResponse());
 
         assertEquals(expectedPeopleResults, request.getAttribute(REQUEST_ATTR_PEOPLE_RESULTS));
-        Mockito.verify(bloomreachSearchProvider, Mockito.never()).getBloomreachResults(anyString(), anyInt(), anyInt(), Mockito.any());
+        Mockito.verify(bloomreachSearchProvider, Mockito.never()).getBloomreachResults(anyString(), anyInt(), anyInt(), any());
         List<SearchResultTab> tabs = (List<SearchResultTab>) request.getAttribute(REQUEST_ATTR_SEARCH_TABS);
         assertTrue(tabs.contains(new SearchResultTab(SearchArea.NEWS, newsResults)));
         assertTrue(tabs.contains(new SearchResultTab(SearchArea.TASKS, tasksResults)));

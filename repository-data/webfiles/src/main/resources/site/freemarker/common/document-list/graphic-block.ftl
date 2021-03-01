@@ -7,7 +7,7 @@
 <@hst.setBundle basename="rb.generic.texts"/>
 <@fmt.message key="text.sr-only-link" var="srOnlyLinkText" />
 
-<div class="nhsd-o-graphic-block-list">
+<div class="nhsd-o-graphic-block-list nhsd-!t-margin-bottom-9">
     <div class="nhsd-t-grid nhsd-!t-no-gutters">
         <div class="nhsd-t-row nhsd-t-row--centred nhsd-o-graphic-block-list__items">
             <#if pageable?? && pageable.items?has_content>

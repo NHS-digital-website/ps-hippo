@@ -34,6 +34,10 @@
     border-radius: 5px;
     padding: 5px 10px;
     background: $col-15;
+
+    &--hidden {
+        display: none !important;
+    }
 }
 
 a.tag-link {
@@ -59,5 +63,15 @@ a.tag-link {
 
     &:focus {
         box-shadow: 0 0 0 4px #ffcd60;
+    }
+}
+
+.expand-tags-link {
+    @include bold-font(14);
+    margin-top: 15px;
+    display: inline-block;
+
+    &--hidden {
+        display: none !important;
     }
 }

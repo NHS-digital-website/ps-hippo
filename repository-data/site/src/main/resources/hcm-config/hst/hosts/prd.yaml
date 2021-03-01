@@ -58,5 +58,6 @@ definitions:
               jcr:primaryType: hst:virtualhost
             jcr:primaryType: hst:virtualhost
           jcr:primaryType: hst:virtualhost
+        hst:cdnhost: //nhs-prod.global.ssl.fastly.net
         jcr:primaryType: hst:virtualhost
       jcr:primaryType: hst:virtualhostgroup

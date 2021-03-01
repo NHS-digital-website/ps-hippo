@@ -7,17 +7,21 @@
         <#if links??>
             <nav>
                 <ol class="article-section-nav__list article-section-nav__list--tag-links">
+                <#assign selectedIndex = -1 />
                 <#list links as link>
                     <li>
+                        <#assign selectedIndex = (selectedYear == link.key)?then(link?index, selectedIndex) />
+
                         <#assign hasCount = (link.count?? && link.count?has_content)?then("(" + link.count + ")", "") />
-                        <#if selectedYear == link.key>
-                            <a href="${"?year=" + link.key + affix}" title="Show '${link.title}' only" class="tag-link selected" data-type="year" data-slugified-value="${slugify(link.title)}">${link.title} ${hasCount}</a>
-                        <#else>
-                            <a href="?year=${link.key + affix}" title="Show '${link.title}' only" class="tag-link" data-type="year" data-slugified-value="${slugify(link.title)}">${link.title} ${hasCount}</a>
-                        </#if>
+                        <#assign selected = (selectedYear == link.key)?then("selected", "") />
+                        <#assign hidden = (link?index gte 10 && selectedIndex lt 10 && !expandYearsTags)?then("tag-link--hidden", "") />
+                        <a href="?year=${link.key + affix}" title="Show '${link.title}' only" class="tag-link ${selected} ${hidden}" data-type="year" data-slugified-value="${slugify(link.title)}">${link.title} ${hasCount}</a>
                     </li>
                 </#list>
                 </ol>
+                <#if !expandYearsTags && selectedIndex lt 10 && links?size gt 10>
+                    <a href="?expandYearsTags=true${affix}" class="expand-tags-link">Show more years</a>
+                </#if>
             </nav>
         </#if>
     </div>

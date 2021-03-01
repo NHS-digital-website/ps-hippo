@@ -16,7 +16,7 @@
     <#assign hasImage = document.image?has_content />
     <#assign hasLink = (document.external?has_content || document.internal?has_content) && document.label?has_content />
 
-    <article class="nhsd-o-case-study nhsd-o-case-study--no-label ${isRightAlignment}">
+    <article class="nhsd-o-case-study nhsd-o-case-study--no-label nhsd-!t-margin-bottom-9 ${isRightAlignment}">
         <div class="nhsd-t-grid">
             <div class="nhsd-t-row">
                 <div class="nhsd-t-col-xs-12">

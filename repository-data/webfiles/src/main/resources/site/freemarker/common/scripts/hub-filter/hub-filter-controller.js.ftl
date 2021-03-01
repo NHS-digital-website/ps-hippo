@@ -13,6 +13,7 @@
         var SEARCH_RESULTS_EL_ID = '#hub-search-results';
         var SEARCH_PAGINATION_EL_ID = '#hub-search-pagination';
         var SEARCH_CONTENT_NAV_EL_ID = '#hub-search-page-contents';
+        var FACET_NAV_WRAPPER_CLASS = '.faceted-nav-wrapper';
         var DELAY = 200;
 
         var _this = this;
@@ -37,7 +38,7 @@
                 window.addEventListener('popstate', popHistoryState);
             }
         })();
-        
+
         // Instantiate tag filter components
         function initTagFilters() {
             var hubTagFilterElements = document.querySelectorAll('[data-hub-filter-type=nhsd-hub-tag-filter]');
@@ -61,7 +62,7 @@
 
             for (var i = 0; i < hubQueryFilterElements.length; i++) {
                 var component = new HubQueryFilter(hubQueryFilterElements[i]);
-                
+
                 // Cache the first query filter component for progress indication
                 _this.queryFilterComponent = _this.queryFilterComponent ? _this.queryFilterComponent : component;
 
@@ -88,8 +89,8 @@
                     _this.queryFilterComponent.showProgress();
 
                     _this.cachedQueryString = _this.queryFilterComponent.getValue();
-                    
-                    makeDelayedFunctionCall(function (e) {
+
+                    makeDelayedFunctionCall(function () {
                         performSearch();
                     }, DELAY)();
                 } else {
@@ -110,20 +111,26 @@
             var queryString = '';
             var i = 0;
             for (var r in queryFilters) {
+                if (queryFilters[r] == '') continue;
                 queryString += (i == 0 ? '?' : '&') + r + '=' + queryFilters[r];
                 i++;
             }
-            
+
             return queryString;
         }
 
         function performSearch() {
             var searchParamsString = populateQueryString(_this.queryFilters);
+
             _this.cachedSearchParamsString = searchParamsString;
+
+            if (!_this.poppingHistoryState) {
+                pushHistoryState();
+            }
 
             var xhr = new XMLHttpRequest();
             xhr.open('GET', searchParamsString, true);
-            xhr.addEventListener('readystatechange', (e) => {
+            xhr.addEventListener('readystatechange', () => {
                 if (xhr.readyState !== 4) {
                     return;
                 }
@@ -142,10 +149,6 @@
                     console.log('An error occured while performing the search.');
                 }
             });
-            
-            if (!_this.poppingHistoryState) {
-                pushHistoryState();
-            }
 
             xhr.send();
         }
@@ -170,7 +173,7 @@
 
         function replaceFoundString(inputTextEl) {
             var queryString = _this.cachedQueryString;
-            
+
             if (_this.cachedQueryString) {
                 var innerHTML = inputTextEl.innerHTML;
                 innerHTML = replaceAll(innerHTML, queryString, '<span class=\'highlight\'>'+queryString+'</span>');
@@ -181,7 +184,7 @@
         function highlightSearchTerm() {
             var shortSummaries = document.querySelectorAll('.hub-box__text');
             Array.prototype.forEach.call(shortSummaries, replaceFoundString);
-            
+
             var titles = document.querySelectorAll('.hub-box__title-a');
             Array.prototype.forEach.call(titles, replaceFoundString);
         }
@@ -204,7 +207,7 @@
 
         function renderSideNavLinks(data) {
             var $dataContentNavEl = $(data).find(SEARCH_CONTENT_NAV_EL_ID);
-            
+
             // If Sticky nav doesn't already have the content nav element...
             if ($dataContentNavEl.length) {
                 if (!$(_this.$sideNavigation).find(SEARCH_CONTENT_NAV_EL_ID).length) {
@@ -217,12 +220,22 @@
                 $(_this.$searchContentsNavContainer).remove();
                 _this.$searchContentsNavContainer = null;
             }
+
+            // Update facets
+            var facetWrapper = $(_this.$sideNavigation).find(FACET_NAV_WRAPPER_CLASS);
+            if (facetWrapper.length) {
+                facetWrapper.find(FACET_NAV_WRAPPER_CLASS).empty();
+                var facetWrapperContent = $(data).find(FACET_NAV_WRAPPER_CLASS);
+                if (facetWrapperContent.length) {
+                    facetWrapper.html(facetWrapperContent);
+                }
+            }
         }
 
         function pushHistoryState() {
             var searchParamsString = populateQueryString(_this.queryFilters);
             var url = window.location.origin + window.location.pathname + searchParamsString;
-            
+
             if (_this.history) {
                 _this.history.pushState({queryFilters: _this.queryFilters}, null, url);
             }
@@ -240,7 +253,7 @@
         function resetComponentValues(queryFilters) {
             if (typeof queryFilters === 'object') {
                 _this.queryFilters = queryFilters;
-                
+
                 for (var r in _this.filterComponents) {
                     var component = _this.filterComponents[r];
 

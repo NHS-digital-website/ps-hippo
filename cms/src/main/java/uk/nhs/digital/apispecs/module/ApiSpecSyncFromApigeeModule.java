@@ -1,19 +1,19 @@
 package uk.nhs.digital.apispecs.module;
 
-import static uk.nhs.digital.apispecs.module.ApiSpecSyncFromApigeeModule.ConfigPropertyNames.CRON_EXPRESSION;
-import static uk.nhs.digital.apispecs.module.ApiSpecSyncFromApigeeModule.ConfigPropertyNames.SYNC_ENABLED;
-
 import org.onehippo.cms7.services.HippoServiceRegistry;
 import org.onehippo.repository.modules.AbstractReconfigurableDaemonModule;
 import org.onehippo.repository.modules.RequiresService;
+import org.onehippo.repository.scheduling.RepositoryJob;
 import org.onehippo.repository.scheduling.RepositoryJobCronTrigger;
 import org.onehippo.repository.scheduling.RepositoryJobInfo;
 import org.onehippo.repository.scheduling.RepositoryScheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.nhs.digital.JcrNodeUtils;
+import uk.nhs.digital.apispecs.jobs.ApiSpecRerenderJob;
 import uk.nhs.digital.apispecs.jobs.ApiSpecSyncFromApigeeJob;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Stream;
 import javax.jcr.Node;
@@ -28,7 +28,6 @@ public class ApiSpecSyncFromApigeeModule extends AbstractReconfigurableDaemonMod
     private final Object configurationLock = new Object();
 
     private static final String JOB_GROUP = "devzone";
-    private static final String JOB_NAME = "apiSpecSyncFromApigee";
     private static final String JOB_TRIGGER_NAME = "cronTrigger";
 
     @Override protected void doConfigure(final Node moduleConfigNode) {
@@ -39,22 +38,23 @@ public class ApiSpecSyncFromApigeeModule extends AbstractReconfigurableDaemonMod
         // job here rather than in doInitialize which is only being called on system startup.
 
         synchronized (configurationLock) {
+            for (final ScheduledJobs job: ScheduledJobs.values()) {
+                try {
+                    log.info("Configuring job {}/{} for updating API specifications.", JOB_GROUP, job.jobName); // the only one called on the config node change
 
-            try {
-                log.info("Configuring job {}/{} for synchronising API Specifications from Apigee.", JOB_GROUP, JOB_NAME); // the only one called on the config node change
+                    deactivatePreviousJobInstanceIfExist(job.jobName);
 
-                deactivatePreviousJobInstanceIfExists();
+                    if (jobShouldBeEnabled(moduleConfigNode, job)) {
 
-                if (jobShouldBeEnabled(moduleConfigNode)) {
+                        scheduleNewJob(moduleConfigNode, job);
 
-                    scheduleNewJob(moduleConfigNode);
+                    } else {
+                        log.warn("Job {}/{} is not configured to be enabled, therefore it will not be activated.", JOB_GROUP, job.jobName);
+                    }
 
-                } else {
-                    log.warn("Job {}/{} is not configured to be enabled, therefore it will not be activated.", JOB_GROUP, JOB_NAME);
+                } catch (final Exception e) {
+                    throw new RuntimeException(String.format("Failed to configure job %s/%s", JOB_GROUP, job.jobName), e);
                 }
-
-            } catch (final Exception e) {
-                throw new RuntimeException(String.format("Failed to configure job %s/%s", JOB_GROUP, JOB_NAME), e);
             }
         }
     }
@@ -64,35 +64,37 @@ public class ApiSpecSyncFromApigeeModule extends AbstractReconfigurableDaemonMod
     }
 
     @Override protected void doShutdown() {
-
-        try {
-            deactivatePreviousJobInstanceIfExists();
-
-        } catch (final Exception e) {
-            throw new RuntimeException(String.format("Failed to cleanly shut down job %s/%s", JOB_GROUP, JOB_NAME), e);
-        }
+        Arrays.stream(ScheduledJobs.values())
+            .map(x -> x.jobName)
+            .forEach(jobName -> {
+                try {
+                    deactivatePreviousJobInstanceIfExist(jobName);
+                } catch (final Exception e) {
+                    throw new RuntimeException(String.format("Failed to cleanly shut down job %s/%s", JOB_GROUP, jobName), e);
+                }
+            });
     }
 
-    private void scheduleNewJob(final Node moduleConfigNode) throws RepositoryException {
+    private void scheduleNewJob(
+        final Node moduleConfigNode,
+        final ScheduledJobs job
+    ) throws RepositoryException {
 
-        final RepositoryJobInfo jobInfo = new RepositoryJobInfo(JOB_NAME, JOB_GROUP, ApiSpecSyncFromApigeeJob.class);
+        final RepositoryJobInfo jobInfo = new RepositoryJobInfo(job.jobName, JOB_GROUP, job.jobClass);
 
-        final String cronExpression = cronExpression(moduleConfigNode);
+        final String cronExpression = cronExpression(moduleConfigNode, job);
 
         final RepositoryJobCronTrigger trigger = new RepositoryJobCronTrigger(JOB_TRIGGER_NAME, cronExpression);
 
         scheduler().scheduleJob(jobInfo, trigger);
 
-        log.info("Job {}/{} has been scheduled with cron expression: {}", JOB_GROUP, JOB_NAME, cronExpression);
+        log.info("Job {}/{} has been scheduled with cron expression: {}", JOB_GROUP, job.jobName, cronExpression);
     }
 
-    private void deactivatePreviousJobInstanceIfExists() throws RepositoryException {
-
-        if (scheduler().checkExists(JOB_NAME, JOB_GROUP)) {
-
-            scheduler().deleteJob(JOB_NAME, JOB_GROUP);
-
-            log.info("Job {}/{} has been deactivated.", JOB_GROUP, JOB_NAME);
+    private void deactivatePreviousJobInstanceIfExist(final String jobName) throws RepositoryException {
+        if (scheduler().checkExists(jobName, JOB_GROUP)) {
+            scheduler().deleteJob(jobName, JOB_GROUP);
+            log.info("Job {}/{} has been deactivated.", JOB_GROUP, jobName);
         }
     }
 
@@ -100,25 +102,20 @@ public class ApiSpecSyncFromApigeeModule extends AbstractReconfigurableDaemonMod
         return HippoServiceRegistry.getService(RepositoryScheduler.class);
     }
 
-    private boolean jobShouldBeEnabled(final Node moduleConfigNode) {
+    private boolean jobShouldBeEnabled(final Node moduleConfigNode, final ScheduledJobs job) {
 
-        final Optional<Boolean> enabledViaJcr = JcrNodeUtils.getBooleanPropertyQuietly(moduleConfigNode, SYNC_ENABLED.jcrPropertyName);
+        final Optional<String> cronExprFromJcr = JcrNodeUtils.getStringPropertyQuietly(moduleConfigNode, job.jcrPropertyName);
 
-        final Optional<Boolean> enabledViaSystemProperty =
-            Optional.ofNullable(System.getProperty(SYNC_ENABLED.systemPropertyName)).map(Boolean::parseBoolean);
+        final Optional<String> cronExprFromSystemProperty = Optional.ofNullable(System.getProperty(job.systemPropertyName));
 
-        return Stream.of(enabledViaJcr, enabledViaSystemProperty)
-            .filter(Optional::isPresent)
-            .map(Optional::get)
-            .findFirst()
-            .orElse(false);
+        return Stream.of(cronExprFromJcr, cronExprFromSystemProperty).anyMatch(Optional::isPresent);
     }
 
-    private String cronExpression(final Node moduleConfigNode) {
+    private String cronExpression(final Node moduleConfigNode, final ScheduledJobs job) {
 
-        final Optional<String> cronExprFromJcr = JcrNodeUtils.getStringPropertyQuietly(moduleConfigNode, CRON_EXPRESSION.jcrPropertyName);
+        final Optional<String> cronExprFromJcr = JcrNodeUtils.getStringPropertyQuietly(moduleConfigNode, job.jcrPropertyName);
 
-        final Optional<String> cronExprFromSystemProperty = Optional.ofNullable(System.getProperty(CRON_EXPRESSION.systemPropertyName));
+        final Optional<String> cronExprFromSystemProperty = Optional.ofNullable(System.getProperty(job.systemPropertyName));
 
         return Stream.of(cronExprFromJcr, cronExprFromSystemProperty)
             .filter(Optional::isPresent)
@@ -127,15 +124,29 @@ public class ApiSpecSyncFromApigeeModule extends AbstractReconfigurableDaemonMod
             .orElseThrow(() -> new RuntimeException("Cron expression has not been configured."));
     }
 
-    enum ConfigPropertyNames {
+    enum ScheduledJobs {
 
-        SYNC_ENABLED("devzone.apispec.sync.enabled", "enabled"),
-        CRON_EXPRESSION("devzone.apispec.sync.cron-expression", "cronExpression");
+        DAILY(
+            "apiSpecSyncFromApigee",
+            ApiSpecSyncFromApigeeJob.class,
+            "devzone.apispec.sync.daily-cron-expression",
+            "cronExpression"
+        ),
+        NIGHTLY(
+            "apiSpecRerender",
+            ApiSpecRerenderJob.class,
+            "devzone.apispec.sync.nightly-cron-expression",
+            "cronExpression"
+        );
 
+        private final String jobName;
+        private final Class<? extends RepositoryJob> jobClass;
         private final String systemPropertyName;
         private final String jcrPropertyName;
 
-        ConfigPropertyNames(final String systemPropertyName, final String jcrPropertyName) {
+        ScheduledJobs(final String jobName, final Class<? extends RepositoryJob> jobClass, final String systemPropertyName, final String jcrPropertyName) {
+            this.jobName = jobName;
+            this.jobClass = jobClass;
             this.systemPropertyName = systemPropertyName;
             this.jcrPropertyName = jcrPropertyName;
         }

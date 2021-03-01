@@ -71,6 +71,10 @@ public class SitePage extends AbstractSitePage {
         element.click();
     }
 
+    public WebElement findElementWithXPath(String xPath) {
+        return helper.findElement(By.xpath(xPath));
+    }
+
     public WebElement findElementWithTitle(String title) {
         return helper.findElement(By.xpath("//*[@title='" + title + "']"));
     }

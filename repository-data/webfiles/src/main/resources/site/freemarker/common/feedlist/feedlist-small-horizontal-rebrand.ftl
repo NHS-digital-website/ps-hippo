@@ -7,7 +7,7 @@
 <@hst.setBundle basename="rb.generic.texts"/>
 <@fmt.message key="text.sr-only-link" var="srOnlyLinkText" />
 
-<div class="nhsd-o-card-list">
+<div class="nhsd-o-card-list nhsd-!t-margin-bottom-9">
     <div class="nhsd-t-grid">
         <#if titleText?has_content>
             <div class="nhsd-t-row">

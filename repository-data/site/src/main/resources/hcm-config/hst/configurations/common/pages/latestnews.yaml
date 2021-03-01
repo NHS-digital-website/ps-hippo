@@ -6,11 +6,20 @@ definitions:
         /component-rightpane:
           hst:referencecomponent: newshubpage/newshubpage-right
           jcr:primaryType: hst:containercomponentreference
+        /filters:
+          hst:componentclassname: org.onehippo.cms7.essentials.components.EssentialsFacetsComponent
+          hst:suppresswastemessage: true
+          hst:template: faceted-navigation
+          jcr:primaryType: hst:component
         hst:componentclassname: uk.nhs.digital.common.components.LatestNewsComponent
         hst:parameternames:
-        - defaultPageSize
+        - pageSize
+        - sortOrder
+        - sortField
         hst:parametervalues:
-        - '100'
+        - '10'
+        - asc
+        - hippostdpubwf:publicationDate
         hst:template: news-hub-article
         jcr:primaryType: hst:component
       hst:referencecomponent: hst:abstractpages/apppage

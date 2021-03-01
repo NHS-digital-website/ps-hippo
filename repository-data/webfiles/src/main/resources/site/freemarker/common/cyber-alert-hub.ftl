@@ -52,7 +52,7 @@
             <div class="grid-row">
                 <div class="column column--one-third page-block--sticky-nav page-block--sidebar article-section-nav-outer-wrapper">
                     <!-- start sticky-nav -->
-                    <div id="sticky-nav">
+                    <div id="sticky-nav" class="faceted-nav-wrapper">
                         <@hst.include ref="filters"/>
                     </div>
                     <!-- end sticky-nav -->

@@ -35,6 +35,7 @@ import uk.nhs.digital.ps.test.acceptance.util.TestContentUrls;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -197,6 +198,47 @@ public class SiteSteps extends AbstractSpringSteps {
         for (String header : headers) {
             assertNotNull("The Text should be displayed: " + header, sitePage.findElementWithText(header));
         }
+    }
+
+    @Then("^the index is rendered with entries:")
+    public void thenIndexIsRendered(final DataTable elementAttributes) throws Throwable {
+        thenIShouldSeeMultipleElementsWithAttributes(elementAttributes);
+    }
+
+    @Then("^I can see the following links:")
+    public void thenICanSeeLinks(final DataTable elementAttributes) throws Throwable {
+        thenIShouldSeeMultipleElementsWithAttributes(elementAttributes);
+    }
+
+    @Then("^I (?:can|should) see elements with attributes:")
+    public void thenIShouldSeeMultipleElementsWithAttributes(final DataTable elementAttributes) throws Throwable {
+        final List<List<String>> rawElementItems = elementAttributes.raw();
+        List<String> keys = rawElementItems.get(0);
+        for (int i = 1; i < rawElementItems.size(); i++) {
+            List<String> elementItem = rawElementItems.get(i);
+
+            String xPathExpression = buildXPathExpressionFromElementAttributes(keys, elementItem);
+
+            assertNotNull(
+                "I should find element with xpath expression " + xPathExpression,
+                sitePage.findElementWithXPath(xPathExpression)
+            );
+        }
+    }
+
+    private String buildXPathExpressionFromElementAttributes(List<String> keys, List<String> elementItem) {
+        List<String> clauses = new ArrayList<>();
+        for (String key: keys) {
+            String value = elementItem.get(keys.indexOf(key));
+            if (key.equals("text")) {
+                String clause = String.format( "text()=\"%s\"", value);
+                clauses.add(clause);
+                continue;
+            }
+            String clause = String.format("@%s=\"%s\"", key, value);
+            clauses.add(clause);
+        }
+        return String.format("//*[%s]", String.join(" and ", clauses));
     }
 
     @Then("^I should(?: also)? see multiple \"([^\"]+)\" with:")

@@ -24,9 +24,9 @@
                                 <meta itemprop="url" content="${leadImage}">
                                 <img itemprop="contentUrl" class="homeland-blog__icon__img"
                                      srcset="
-                                        ${leadImageSmall} 341w
-                                        ${leadImageSmall2x} 682w
-                                        ${leadImage} 468w
+                                        ${leadImageSmall} 341w,
+                                        ${leadImageSmall2x} 682w,
+                                        ${leadImage} 468w,
                                         ${leadImage2x} 936w
                                       "
                                      sizes="(min-width: 1000px) 468px, (min-width: 642px) 46vw, calc(100vw - 34px)"

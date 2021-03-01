@@ -1,0 +1,20 @@
+---
+definitions:
+  config:
+    /hst:platform/hst:hosts/cs:
+      /com:
+        /onehippo:
+          /cs:
+            /cms-nhs:
+              /hst:root:
+                hst:ismapped: false
+                hst:namedpipeline: WebApplicationInvokingPipeline
+                jcr:primaryType: hst:mount
+              jcr:primaryType: hst:virtualhost
+            jcr:primaryType: hst:virtualhost
+          jcr:primaryType: hst:virtualhost
+        hst:scheme: https
+        hst:showcontextpath: false
+        hst:showport: false
+        jcr:primaryType: hst:virtualhost
+      jcr:primaryType: hst:virtualhostgroup

@@ -1,0 +1,16 @@
+---
+/content/documents/corporate-website/faceted-news:
+  hippo:docbase: 0f3406bf-9d17-425a-944a-e10ebcb111e4
+  hippofacnav:facetnodenames:
+  - year${sortby:'facetvalue', sortorder:'descending'}
+  - month${after:'year', sortby:'facetvalue', sortorder:'ascending'}
+  hippofacnav:facets:
+  - website:publisheddatetime$year
+  - website:publisheddatetime$month
+  hippofacnav:filters:
+  - jcr:primaryType=website:news
+  hippofacnav:sortby:
+  - website:publisheddatetime
+  hippofacnav:sortorder:
+  - descending
+  jcr:primaryType: hippofacnav:facetnavigation

@@ -10,4 +10,8 @@ definitions:
         .meta:residual-child-node-category: content
         hst:lastmodified: 2018-02-21T11:03:23.023Z
         jcr:primaryType: hst:sitemenu
+      /nhsd-main-nav:
+        .meta:residual-child-node-category: content
+        hst:lastmodified: 2018-02-21T11:03:23.023Z
+        jcr:primaryType: hst:sitemenu
       jcr:primaryType: hst:sitemenus

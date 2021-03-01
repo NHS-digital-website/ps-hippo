@@ -5,7 +5,7 @@
 
 <#if facets??>
     <#list facets.folders as facet>
-        <div class="article-section-nav-wrapper">
+        <div class="article-section-nav-wrapper faceted-nav-facet">
             <div class="article-section-nav">
                 <h2 class="article-section-nav__title">Filter by ${facet.name}</h2>
                 <nav>
@@ -13,6 +13,7 @@
                         <#list facet.folders as value>
                             <#if value.count &gt; 0>
                                 <li>
+                                    <#assign affix = query?has_content?then("?query=" + query, "") />
                                     <#assign valueName = value.name />
                                     <#if facet.name="month">
                                         <@fmt.message key=value.name var="monthName"/>
@@ -27,7 +28,7 @@
                                         </#if>
                                     <#else>
                                         <@hst.link var="link" hippobean=value />
-                                        <a href="${link}" class="tag-link">${valueName}&nbsp;(${value.count})</a>
+                                        <a href="${link + affix}" class="tag-link">${valueName}&nbsp;(${value.count})</a>
                                     </#if>
                                 </li>
                             </#if>

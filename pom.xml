@@ -115,7 +115,8 @@
         <devzone.apigee.resources.specs.individual.url ></devzone.apigee.resources.specs.individual.url>
         <!-- Apigee API specifications sync schedule properties -->
         <devzone.apispec.sync.enabled></devzone.apispec.sync.enabled>
-        <devzone.apispec.sync.cron-expression></devzone.apispec.sync.cron-expression>
+        <devzone.apispec.sync.daily-cron-expression></devzone.apispec.sync.daily-cron-expression>
+        <devzone.apispec.sync.nightly-cron-expression></devzone.apispec.sync.nightly-cron-expression>
 
         <!--<tomcatDistributionUrl>https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.48/bin/apache-tomcat-8.0.48.tar.gz</tomcatDistributionUrl>-->
 
@@ -124,7 +125,6 @@
         <spring.version>5.1.14.RELEASE</spring.version>
 
         <bloomreach.inference-engine.version>4.0.0</bloomreach.inference-engine.version>
-        <org.eclipse.jetty.version>9.4.24.v20191120</org.eclipse.jetty.version>
         <com.fasterxml.jackson.version>2.11.2</com.fasterxml.jackson.version>
 
         <hippo-addon-inference-engine.version>3.0.1</hippo-addon-inference-engine.version>
@@ -133,7 +133,7 @@
 
         <hystrix-javanica.version>1.5.18</hystrix-javanica.version>
         <bloomreach.forge.feed.version>6.0.0</bloomreach.forge.feed.version>
-        <bloomreach.text-search-replace.version>1.0.4</bloomreach.text-search-replace.version>
+        <bloomreach.text-search-replace.version>2.0.0</bloomreach.text-search-replace.version>
     </properties>
 
     <repositories>
@@ -335,31 +335,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-server</artifactId>
-                <version>${org.eclipse.jetty.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-util</artifactId>
-                <version>${org.eclipse.jetty.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-security</artifactId>
-                <version>${org.eclipse.jetty.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-continuation</artifactId>
-                <version>${org.eclipse.jetty.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
                 <groupId>org.apache.sling</groupId>
                 <artifactId>org.apache.sling.testing.jcr-mock</artifactId>
                 <version>1.4.4</version>
@@ -557,19 +532,19 @@
             <dependency>
                 <groupId>org.onehippo.forge.content-exim</groupId>
                 <artifactId>content-exim-core</artifactId>
-                <version>3.0.1</version>
+                <version>4.0.0</version>
             </dependency>
 
             <dependency>
                 <groupId>org.onehippo.forge.folderctxmenus</groupId>
                 <artifactId>folderctxmenus-repository</artifactId>
-                <version>4.0.1</version>
+                <version>${forge.folderctxmenus.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.onehippo.forge.folderctxmenus</groupId>
                 <artifactId>folderctxmenus-frontend</artifactId>
-                <version>4.0.1</version>
+                <version>${forge.folderctxmenus.version}</version>
             </dependency>
 
             <!-- Inference Rule Engine -->
@@ -979,7 +954,8 @@
                                     <devzone.apigee.resources.specs.individual.url>${devzone.apigee.resources.specs.individual.url}</devzone.apigee.resources.specs.individual.url>
                                     <!-- Apigee API specifications sync schedule properties -->
                                     <devzone.apispec.sync.enabled>${devzone.apispec.sync.enabled}</devzone.apispec.sync.enabled>
-                                    <devzone.apispec.sync.cron-expression>${devzone.apispec.sync.cron-expression}</devzone.apispec.sync.cron-expression>
+                                    <devzone.apispec.sync.daily-cron-expression>${devzone.apispec.sync.daily-cron-expression}</devzone.apispec.sync.daily-cron-expression>
+                                    <devzone.apispec.sync.nightly-cron-expression>${devzone.apispec.sync.nightly-cron-expression}</devzone.apispec.sync.nightly-cron-expression>
 
                                 </systemProperties>
                                 <dependencies>

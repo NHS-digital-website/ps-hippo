@@ -63,6 +63,8 @@
     "title": item.searchResultTitle,
     "linkType": "internal",
     "link": item,
+    "modified": item.lastModified,
+    "summary": item.shortsummary,
     "type": item.searchResultType
     }] />
 </#list>

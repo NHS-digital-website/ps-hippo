@@ -295,6 +295,8 @@ public class TestContentUrls {
             "/website-acceptance-tests/person-test-document-3");
 
         // API specifications
+        addSiteUrl("Static API Catalogue",
+            "/website-acceptance-tests/developer/api-catalogue");
         addSiteUrl("Static API Specification",
             "/website-acceptance-tests/api-specifications/static-api-specification");
     }

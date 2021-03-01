@@ -57,6 +57,9 @@ public class BloomreachSearchProvider {
         HstQuery query = getQuery(queryString, searchArea);
         query.setLimit(pageSize);
         query.setOffset((currentPage - 1) * pageSize);
+        if (queryString == null) {
+            query.addOrderByDescending("hippostdpubwf:lastModificationDate");
+        }
         try {
             final HstQueryResult execute = query.execute();
             return pageableFactory

@@ -96,7 +96,7 @@ public class ApiSpecificationStaticHtml2Codegen extends StaticHtml2Codegen {
             .registerHelper(SchemaHelper.NAME, new SchemaHelper(markdownHelper))
             .registerHelper(IsAnyTrueHelper.NAME, IsAnyTrueHelper.INSTANCE)
             .registerHelper(AssignHelper.NAME, AssignHelper.INSTANCE)
-            .registerHelper(HtmlHeadingsFromMarkdownHelper.NAME, HtmlHeadingsFromMarkdownHelper.INSTANCE)
+            .registerHelper(HeadingsHyperlinksFromMarkdownHelper.NAME, HeadingsHyperlinksFromMarkdownHelper.INSTANCE)
             .registerHelper(StringBooleanVariableHelper.NAME, StringBooleanVariableHelper.INSTANCE)
             .registerHelper(ConditionalHelpers.eq.name(), ConditionalHelpers.eq)
         ;

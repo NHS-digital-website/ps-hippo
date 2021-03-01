@@ -46,7 +46,7 @@ public class Blog extends CaseStudyAndBlogBase implements IntranetSearchResult {
 
     @Override
     public String getSearchResultType() {
-        return SearchResultType.NEWS.getValue();
+        return SearchResultType.BLOG.getValue();
     }
 
     public String getDocType() {
