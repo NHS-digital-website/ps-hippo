@@ -23,7 +23,7 @@
     hippostdpubwf:creationDate: 2018-03-14T21:41:31.456Z
     hippostdpubwf:lastModificationDate: 2018-03-15T14:31:46.997Z
     hippostdpubwf:lastModifiedBy: admin
-    hippostdpubwf:publicationDate: 2018-03-15T14:31:52.182Z
+    hippostdpubwf:publicationDate: 2021-03-01T21:20:14.581Z
     jcr:mixinTypes:
     - mix:referenceable
     jcr:primaryType: urlrewriter:rule
@@ -33,10 +33,12 @@
     urlrewriter:ruletype: permanent-redirect
   /publications-to-data-and-information[3]:
     hippo:availability: []
+    hippostd:retainable: false
     hippostd:state: draft
+    hippostd:transferable: false
     hippostdpubwf:createdBy: admin
     hippostdpubwf:creationDate: 2018-03-14T21:41:31.456Z
-    hippostdpubwf:lastModificationDate: 2018-03-15T14:31:42.293Z
+    hippostdpubwf:lastModificationDate: 2021-03-01T19:49:11.906Z
     hippostdpubwf:lastModifiedBy: admin
     jcr:mixinTypes:
     - mix:referenceable
@@ -46,7 +48,9 @@
     urlrewriter:ruleto: /site/data-and-information/publications/$1
     urlrewriter:ruletype: permanent-redirect
   hippo:name: Publications to Data and Information (dev)
+  hippo:versionHistory: 6bb7d339-14ad-411c-8011-b564916ca977
   jcr:mixinTypes:
   - hippo:named
+  - hippo:versionInfo
   - mix:referenceable
   jcr:primaryType: hippo:handle
