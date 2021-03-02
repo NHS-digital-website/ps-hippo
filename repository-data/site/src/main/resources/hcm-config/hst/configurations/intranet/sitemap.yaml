@@ -13,6 +13,7 @@ definitions:
           - website:team
           - intranet:newsinternal
           - website:person
+          - website:video
           hst:componentconfigurationmappingvalues:
           - hst:pages/general
           - hst:pages/event
@@ -21,6 +22,7 @@ definitions:
           - hst:pages/team
           - hst:pages/news
           - hst:pages/website-person
+          - hst:pages/video
           hst:relativecontentpath: ${parent}/content
           jcr:primaryType: hst:sitemapitem
         hst:componentconfigurationid: hst:pages/404
@@ -32,6 +34,7 @@ definitions:
         - website:team
         - intranet:newsinternal
         - website:person
+        - website:video
         hst:componentconfigurationmappingvalues:
         - hst:pages/general
         - hst:pages/event
@@ -40,6 +43,7 @@ definitions:
         - hst:pages/team
         - hst:pages/news
         - hst:pages/website-person
+        - hst:pages/video
         hst:relativecontentpath: ${1}
         jcr:primaryType: hst:sitemapitem
       /announcements:

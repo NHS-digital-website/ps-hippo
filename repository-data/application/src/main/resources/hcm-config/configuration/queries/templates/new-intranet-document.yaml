@@ -26,4 +26,5 @@ definitions:
         @jcr:primaryType='intranet:task' or @jcr:primaryType='intranet:newsinternal'
         or @jcr:primaryType='website:blog' or @jcr:primaryType='website:team' or @jcr:primaryType='website:event'
         or @jcr:primaryType='website:location' or @jcr:primaryType='website:general'
-        or @jcr:primaryType='website:person' or @jcr:primaryType='website:calltoaction']
+        or @jcr:primaryType='website:person' or @jcr:primaryType='website:calltoaction'
+        or @jcr:primaryType='website:video']

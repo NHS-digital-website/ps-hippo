@@ -1,0 +1,10 @@
+---
+definitions:
+  config:
+    /hst:hst/hst:configurations/intranet/hst:pages/video:
+      /main:
+        hst:componentclassname: uk.nhs.digital.common.components.BaseGaContentComponent
+        hst:template: video-page
+        jcr:primaryType: hst:component
+      hst:referencecomponent: hst:abstractpages/master
+      jcr:primaryType: hst:component

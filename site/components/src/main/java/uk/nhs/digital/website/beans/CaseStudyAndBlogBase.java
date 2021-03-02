@@ -105,7 +105,7 @@ public class CaseStudyAndBlogBase extends CommonFieldsBean {
         return getSingleProperty("jcr:uuid");
     }
 
-    public List<String> getCategories() {
+    public String getCategories() {
         List<String> strList = new ArrayList<>();
 
         List<HippoBean> relatedSubjectDoc = getLinkedBeans("website:relatedsubjects", HippoBean.class);
@@ -117,7 +117,7 @@ public class CaseStudyAndBlogBase extends CommonFieldsBean {
         if (topics != null && topics.length > 0) {
             strList.addAll(Arrays.asList(topics));
         }
-        return strList;
+        return strList.size() > 0 ? strList.toString() : null;
     }
 
     public String getAllDescription() {
