@@ -1,10 +1,6 @@
----
 /content/urlrewriter/rules:
-  hippo:name: Rules
-  hippostd:foldertype:
-  - new-urlrewriter-folder
-  - new-urlrewriter-document
-  jcr:mixinTypes:
-  - hippo:named
-  - mix:referenceable
   jcr:primaryType: urlrewriter:ruleset
+  jcr:mixinTypes: ['hippo:named', 'mix:referenceable']
+  jcr:uuid: 228e5ff0-3d41-4baf-83a3-1ee1fceb6575
+  hippo:name: Rules
+  hippostd:foldertype: [new-urlrewriter-folder, new-urlrewriter-document]
