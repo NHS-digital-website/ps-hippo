@@ -1,6 +1,5 @@
 ---
 /content/documents/corporate-website/organisation:
-  .meta:order-before: news
   hippo:name: Organisation
   hippostd:foldertype:
   - new-organisation-folder

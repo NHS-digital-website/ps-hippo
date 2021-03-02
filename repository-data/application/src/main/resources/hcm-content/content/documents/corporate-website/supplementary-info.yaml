@@ -1,6 +1,5 @@
 ---
 /content/documents/corporate-website/supplementary-info:
-  .meta:order-before: news
   hippo:name: Supplementary Info
   hippostd:foldertype:
   - new-supplementary-info-folder
