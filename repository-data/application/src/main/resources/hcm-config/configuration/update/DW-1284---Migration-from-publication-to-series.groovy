@@ -2,12 +2,13 @@ package org.hippoecm.frontend.plugins.cms.admin.updater
 
 import org.hippoecm.repository.util.JcrUtils
 import org.onehippo.repository.update.BaseNodeUpdateVisitor
-import javax.jcr.Node
-import javax.jcr.RepositoryException
-import javax.jcr.Session
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+
+import javax.jcr.query.Query
+import javax.jcr.query.QueryManager
+import javax.jcr.query.QueryResult
 
 // IMPORTS FOR SearchableTaxonomyTask
 import static java.util.stream.Collectors.toSet;
@@ -16,14 +17,6 @@ import static org.apache.cxf.common.util.CollectionUtils.isEmpty;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.jackrabbit.value.StringValue;
 import org.onehippo.repository.documentworkflow.DocumentVariant;
-import org.onehippo.repository.documentworkflow.task.AbstractDocumentTask;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import javax.jcr.Node;
@@ -32,12 +25,13 @@ import javax.jcr.Session;
 import javax.jcr.Value;
 
 /*
-This script takes the series fields (Granularity, Geographic Coverage, Administrative sources, Taxonomy and Information Types) from a file and finds
+This script takes the series fields (Granularity, Geographic Coverage, Administrative sources, Taxonomy, Information Types,
+short title, subtitle, responsible statistician, responsible team, frequency, date naming convention) from a file and finds
 the corresponding series in the JCR and then overides the existing values with the ones coming from the file.
 Bear in mind if a field of a series in the input is empty or blank, it will remove it in the JCR.
 
 
-When runnin this script "XPath query" should be for example:
+When running this script "XPath query" should be for example:
 /jcr:root/content/documents/corporate-website//*[(@jcr:primaryType='publicationsystem:series')]
 
 This script has a parameter called "inputFile", that is passed in the "parameters" field in the CMS script runner
@@ -91,17 +85,21 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
     private final static JCR_PROPERTY_SUBTITLE = "publicationsystem:subTitle"
     private final static JCR_PROPERTY_FREQUENCY = "publicationsystem:frequency"
     private final static JCR_PROPERTY_DATE_NAMING_CONVENTION = "publicationsystem:dateNaming"
-    private final static JCR_PROPERTY_RESPONSIBLE_STASTICIAN = "publicationsystem:stastician"
+    private final static JCR_PROPERTY_RESPONSIBLE_STASTICIAN = "publicationsystem:statistician"
     private final static JCR_PROPERTY_RESPONSIBLE_TEAM = "publicationsystem:team"
 
+    private final static RESPONSIBLE_STASTICIAN_DEFAULT_VALUE_HIPPO_BASE  = "cafebabe-cafe-babe-cafe-babecafebabe"
+    private final static RESPONSIBLE_TEAM_DEFAULT_VALUE_HIPPO_BASE  = "cafebabe-cafe-babe-cafe-babecafebabe"
 
     Session session
     JSONArray jsonArray
-    SearchableTaxonomyTask taxonomyTask;
+    SearchableTaxonomyTask taxonomyTask
+    QueryManager queryManager
 
     void initialize(Session session) {
         this.session = session
         this.taxonomyTask = new SearchableTaxonomyTask()
+        this.queryManager = session.getWorkspace().getQueryManager();
 
         try {
             String fileInJsonPath //= "/content/assets/assetsmiguel/seriesinfoexport.json/seriesinfoexport.json/hippogallery:asset"
@@ -305,14 +303,19 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
             node.setProperty(JCR_PROPERTY_TAXONOMY_KEYS, series.taxonomy)
             taxonomyTask.updateFullTaxonomyAndSearchableTags(node)
         }
-
         node.setProperty(JCR_PROPERTY_ADMINISTRATIVE_SOURCES, series.administrativeSources)
         node.setProperty(JCR_PROPERTY_SHORT_TITLE, series.shortTitle)
         node.setProperty(JCR_PROPERTY_SUBTITLE, series.subTitle)
         node.setProperty(JCR_PROPERTY_FREQUENCY, getFrequencyValueInJCR(series.frequency))
         node.setProperty(JCR_PROPERTY_DATE_NAMING_CONVENTION, getDateNamingConventionInJCR(series.dateNaming))
-//    node.setProperty(JCR_PROPERTY_RESPONSIBLE_STASTICIAN, series.responsibleStastician)
-//    node.setProperty(JCR_PROPERTY_RESPONSIBLE_TEAM, series.responsibleTeam)
+
+        String responsibleStasticianUUID = getResponsibleStasticianUUID(series.responsibleStastician)
+        def responsibleStasticianNode = node.getNode(JCR_PROPERTY_RESPONSIBLE_STASTICIAN)
+        responsibleStasticianNode.setProperty("hippo:docbase", (String) responsibleStasticianUUID)
+
+        String responsibleTeamUUID = getResponsibleTeamUUID(series.responsibleTeam)
+        def responsibleTeamNode = node.getNode(JCR_PROPERTY_RESPONSIBLE_TEAM)
+        responsibleTeamNode.setProperty("hippo:docbase", (String) responsibleTeamUUID)
 
         return true
     }
@@ -348,10 +351,52 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
         } else if (dataNamingAux.equalsIgnoreCase("No date")) {
             returnValue = "9"
         } else {
-            log.debug("----returnValue = " + returnValue)
             return returnValue
         }
     }
+
+    String getResponsibleStasticianUUID(String stastician) {
+        if (stastician != null && !stastician.trim().equalsIgnoreCase("")) {
+            QueryResult resultStasticians = queryManager.createQuery(
+//        "/jcr:root/content/documents/corporate-website//*[(@jcr:primaryType='website:person') and (@website:shortsummary='" + stastician + "')]", Query.XPATH).execute()
+                    "/jcr:root/content//*[(@jcr:primaryType='website:person') and (@website:shortsummary='" + stastician + "')]", Query.XPATH).execute()
+
+            final NodeIterator nodes = resultStasticians.getNodes()
+            if (nodes.hasNext()) {
+                Node node = nodes.nextNode()
+                if (node != null) {
+                    String identifier = (String) node.getIdentifier()
+                    if (identifier == null || identifier.trim().equalsIgnoreCase("")) {
+                        identifier = RESPONSIBLE_STASTICIAN_DEFAULT_VALUE_HIPPO_BASE
+                    }
+                    return identifier
+                }
+            }
+        }
+        return RESPONSIBLE_STASTICIAN_DEFAULT_VALUE_HIPPO_BASE
+    }
+
+    String getResponsibleTeamUUID(String team) {
+        if (team != null && !team.trim().equalsIgnoreCase("")) {
+            QueryResult resultTeams = queryManager.createQuery(
+//        "/jcr:root/content/documents/corporate-website//*[(@jcr:primaryType='website:team') and (@website:shortsummary='" + team + "')]", Query.XPATH).execute()
+                    "/jcr:root/content//*[(@jcr:primaryType='website:team') and (@website:shortsummary='" + team + "')]", Query.XPATH).execute()
+
+            final NodeIterator nodes = resultTeams.getNodes()
+            if (nodes.hasNext()) {
+                Node node = nodes.nextNode()
+                if (node != null) {
+                    String identifier = (String) node.getIdentifier()
+                    if (identifier == null || identifier.trim().equalsIgnoreCase("")) {
+                        identifier = RESPONSIBLE_TEAM_DEFAULT_VALUE_HIPPO_BASE
+                    }
+                    return identifier
+                }
+            }
+        }
+        return RESPONSIBLE_TEAM_DEFAULT_VALUE_HIPPO_BASE
+    }
+
 
     /* Code taken from hippo proyect class SearchableTaxonomyTask. Originally that was in Java, it has been adapted to Groovy */
     public class SearchableTaxonomyTask {
