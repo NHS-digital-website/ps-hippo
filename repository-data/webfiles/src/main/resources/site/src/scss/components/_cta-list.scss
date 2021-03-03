@@ -22,7 +22,9 @@
     @include clearfix;
 
     .cta {
-        margin-bottom: $vertical-gap;
+        &:not(:last-child) {
+            margin-bottom: $vertical-gap;
+        }
     }
 
     .cta--detailed {

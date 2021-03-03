@@ -1,6 +1,106 @@
 ---
 /content/documents/administration/website:
   .meta:order-before: publication-system
+  /date-naming-convention:
+    /date-naming-convention:
+      /selection:listitem[1]:
+        jcr:primaryType: selection:listitem
+        selection:key: '1'
+        selection:label: At year of publication
+      /selection:listitem[2]:
+        jcr:primaryType: selection:listitem
+        selection:key: '2'
+        selection:label: At year of coverage end
+      /selection:listitem[3]:
+        jcr:primaryType: selection:listitem
+        selection:key: '3'
+        selection:label: At year ending of coverage end
+      /selection:listitem[4]:
+        jcr:primaryType: selection:listitem
+        selection:key: '4'
+        selection:label: At month of publication
+      /selection:listitem[5]:
+        jcr:primaryType: selection:listitem
+        selection:key: '5'
+        selection:label: At month of coverage end
+      /selection:listitem[6]:
+        jcr:primaryType: selection:listitem
+        selection:key: '6'
+        selection:label: At quarter ending of coverage end
+      /selection:listitem[7]:
+        jcr:primaryType: selection:listitem
+        selection:key: '7'
+        selection:label: Coverage range by year (e.g 2018-19)
+      /selection:listitem[8]:
+        jcr:primaryType: selection:listitem
+        selection:key: '8'
+        selection:label: Coverage range by month (e.g March 2018 - Sept 2018)
+      /selection:listitem[9]:
+        jcr:primaryType: selection:listitem
+        selection:key: '9'
+        selection:label: No date
+      hippo:availability:
+      - live
+      - preview
+      hippotranslation:id: c3e742a4-bda3-4524-af02-ae8230e6d63c
+      hippotranslation:locale: inherited - from query
+      jcr:mixinTypes:
+      - hippotranslation:translated
+      - mix:referenceable
+      jcr:primaryType: selection:valuelist
+    hippo:name: Date naming convention
+    jcr:mixinTypes:
+    - hippo:named
+    - mix:referenceable
+    jcr:primaryType: hippo:handle
+  /frequency:
+    /frequency:
+      /selection:listitem[1]:
+        jcr:primaryType: selection:listitem
+        selection:key: daily
+        selection:label: Daily
+      /selection:listitem[2]:
+        jcr:primaryType: selection:listitem
+        selection:key: weekly
+        selection:label: Weekly
+      /selection:listitem[3]:
+        jcr:primaryType: selection:listitem
+        selection:key: monthly
+        selection:label: Monthly
+      /selection:listitem[4]:
+        jcr:primaryType: selection:listitem
+        selection:key: quarterly
+        selection:label: Quarterly
+      /selection:listitem[5]:
+        jcr:primaryType: selection:listitem
+        selection:key: twiceyear
+        selection:label: Twice a year
+      /selection:listitem[6]:
+        jcr:primaryType: selection:listitem
+        selection:key: yearly
+        selection:label: Yearly
+      /selection:listitem[7]:
+        jcr:primaryType: selection:listitem
+        selection:key: snapshot
+        selection:label: Snapshot
+      /selection:listitem[8]:
+        jcr:primaryType: selection:listitem
+        selection:key: adhoc
+        selection:label: Ad hoc
+      hippo:availability:
+      - live
+      - preview
+      hippotranslation:id: aa11153a-d56d-4678-8f5f-55d4262a125c
+      hippotranslation:locale: inherited - from query
+      jcr:mixinTypes:
+      - hippotranslation:translated
+      - mix:referenceable
+      jcr:primaryType: selection:valuelist
+    hippo:name: Frequency
+    jcr:mixinTypes:
+    - hippo:named
+    - mix:referenceable
+    jcr:primaryType: hippo:handle
   /gdpr:
     /gdpr[1]:
       hippo:availability: []

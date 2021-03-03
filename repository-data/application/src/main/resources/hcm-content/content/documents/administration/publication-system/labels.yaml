@@ -5,12 +5,17 @@
     hippostd:state: draft
     hippostdpubwf:createdBy: admin
     hippostdpubwf:creationDate: 2018-01-17T15:49:40.466Z
-    hippostdpubwf:lastModificationDate: 2020-02-10T14:04:32.108Z
+    hippostdpubwf:lastModificationDate: 2021-02-11T12:59:52.579Z
     hippostdpubwf:lastModifiedBy: admin
     jcr:mixinTypes:
     - mix:referenceable
     jcr:primaryType: resourcebundle:resourcebundle
     resourcebundle:descriptions:
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
     - ''
     - ''
     - ''
@@ -29,6 +34,11 @@
     - labels.upcoming-publication
     - labels.api
     - labels.download-pdf
+    - labels.responsible-statistician
+    - labels.responsible-team
+    - labels.issn
+    - labels.usrn
+    - labels.latest-publication-date-label
     resourcebundle:messages:
     - Archive
     - Publication
@@ -38,13 +48,18 @@
     - Publication not yet published
     - API
     - Download as PDF
+    - 'Responsible statistician:'
+    - 'Responsible team:'
+    - 'ISSN:'
+    - 'USRN:'
+    - 'Published:'
   /labels[2]:
     hippo:availability:
     - preview
     hippostd:state: unpublished
     hippostdpubwf:createdBy: admin
     hippostdpubwf:creationDate: 2018-01-17T15:49:40.466Z
-    hippostdpubwf:lastModificationDate: 2020-02-10T14:04:43.349Z
+    hippostdpubwf:lastModificationDate: 2021-02-11T13:01:37.720Z
     hippostdpubwf:lastModifiedBy: admin
     jcr:mixinTypes:
     - mix:referenceable
@@ -59,6 +74,11 @@
     - ''
     - ''
     - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
     resourcebundle:id: publicationsystem.labels
     resourcebundle:keys:
     - labels.archive
@@ -69,6 +89,11 @@
     - labels.upcoming-publication
     - labels.api
     - labels.download-pdf
+    - labels.responsible-statistician
+    - labels.responsible-team
+    - labels.issn
+    - labels.usrn
+    - labels.latest-publication-date-label
     resourcebundle:messages:
     - Archive
     - Publication
@@ -78,15 +103,20 @@
     - Publication not yet published
     - API
     - Download as PDF
+    - 'Responsible statistician:'
+    - 'Responsible team:'
+    - 'ISSN:'
+    - 'USRN:'
+    - 'Published:'
   /labels[3]:
     hippo:availability:
     - live
     hippostd:state: published
     hippostdpubwf:createdBy: admin
     hippostdpubwf:creationDate: 2018-01-17T15:49:40.466Z
-    hippostdpubwf:lastModificationDate: 2020-02-10T14:04:43.349Z
+    hippostdpubwf:lastModificationDate: 2021-02-11T13:01:37.720Z
     hippostdpubwf:lastModifiedBy: admin
-    hippostdpubwf:publicationDate: 2020-02-10T14:04:45.223Z
+    hippostdpubwf:publicationDate: 2021-02-11T13:01:39.886Z
     jcr:mixinTypes:
     - mix:referenceable
     jcr:primaryType: resourcebundle:resourcebundle
@@ -99,6 +129,11 @@
     - ''
     - ''
     - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
     resourcebundle:id: publicationsystem.labels
     resourcebundle:keys:
     - labels.archive
@@ -109,6 +144,11 @@
     - labels.upcoming-publication
     - labels.api
     - labels.download-pdf
+    - labels.responsible-statistician
+    - labels.responsible-team
+    - labels.issn
+    - labels.usrn
+    - labels.latest-publication-date-label
     resourcebundle:messages:
     - Archive
     - Publication
@@ -118,8 +158,13 @@
     - Publication not yet published
     - API
     - Download as PDF
+    - 'Responsible statistician:'
+    - 'Responsible team:'
+    - 'ISSN:'
+    - 'USRN:'
+    - 'Published:'
   hippo:name: Labels
-  hippo:versionHistory: 8262f1ef-505c-4fc3-bd4a-e394eb0c4649
+  hippo:versionHistory: 418bfad2-9050-427c-9236-cac48ec70979
   jcr:mixinTypes:
   - hippo:named
   - hippo:versionInfo

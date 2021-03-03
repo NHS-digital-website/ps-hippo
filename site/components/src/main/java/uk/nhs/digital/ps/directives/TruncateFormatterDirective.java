@@ -59,6 +59,9 @@ public class TruncateFormatterDirective implements TemplateDirectiveModel {
         if (!parameters.containsKey(parameterName)) {
             throw new TemplateException(format("Required parameter ''{0}'' was not provided to template {1}.",
                 parameterName, getClass().getName()), environment);
+        } else if (parameters.get(parameterName) == null) {
+            throw new TemplateException(format("Required parameter ''{0}'' was null in template {1}.",
+                parameterName, getClass().getName()), environment);
         }
     }
 }

@@ -56,9 +56,89 @@ definitions:
             wicket.css:
             - document-summary
             wicket.id: ${cluster.id}.left.item
+          /InformationType:
+            /cluster.options:
+              jcr:primaryType: frontend:pluginconfig
+              selectable.options: Audit,Experimental statistics,National statistics,Official
+                statistics,Open data,Other reports and statistics,Survey
+            caption: Information Type
+            field: information_type
+            hint: ''
+            jcr:primaryType: frontend:plugin
+            plugin.class: org.hippoecm.frontend.editor.plugins.field.PropertyFieldPlugin
+            wicket.css:
+            - information-type
+            wicket.id: ${cluster.id}.left.item
+          /classifiable:
+            /cluster.options:
+              caption: Taxonomy
+              jcr:primaryType: frontend:pluginconfig
+              taxonomy.name: publication_taxonomy
+            essentials-taxonomy-name: publication_taxonomy
+            jcr:primaryType: frontend:plugin
+            mixin: hippotaxonomy:classifiable
+            plugin.class: org.hippoecm.frontend.editor.plugins.mixin.MixinLoaderPlugin
+            wicket.id: ${cluster.id}.left.item
+          /GeographicCoverage:
+            /cluster.options:
+              jcr:primaryType: frontend:pluginconfig
+              source: /content/documents/administration/value-lists/geographic-coverage
+            caption: Geographic Coverage
+            field: GeographicCoverage
+            jcr:primaryType: frontend:plugin
+            multiselect.type: checkboxes
+            palette.alloworder: false
+            palette.maxrows: '10'
+            plugin.class: org.onehippo.forge.selection.frontend.plugin.DynamicMultiSelectPlugin
+            selectlist.maxrows: '10'
+            valuelist.provider: service.valuelist.default
+            wicket.id: ${cluster.id}.left.item
+          /Granularity:
+            /cluster.options:
+              jcr:primaryType: frontend:pluginconfig
+              selectable.options: Ambulance Trusts,Cancer networks,Care Trusts,Census
+                Area Statistics Wards,Clinical Commissioning Area Teams,Clinical Commissioning
+                Groups,Clinical Commissioning Regions,Community health services,Councils
+                with Adult Social Services Responsibilities (CASSRs),Country,County,Crime
+                & disorder reduction partnership,Dental practices,Deprivation,Education
+                Authority,Government Office Regions,GP practices,Health Education
+                England Region,Hospital and Community Health Services,Hospital Sites,Hospital
+                Trusts,Independent Sector Health Care Providers,Local Authorities,London
+                Authorities,Mental Health Trusts,Middle Layer Super Output Areas,NHS
+                Health Boards,NHS Trusts,ONS Area Classification,Parliamentary constituency,Pharmacies
+                and clinics,Primary Care Organisations,Primary Care Trusts,Provider,Provider
+                clusters,Regional health body,Regions,Strategic Health Authorities,Sustainability
+                and Transformation Partnerships,Wards
+            caption: Granularity
+            field: granularity
+            hint: ''
+            jcr:primaryType: frontend:plugin
+            plugin.class: org.hippoecm.frontend.editor.plugins.field.PropertyFieldPlugin
+            wicket.css:
+            - granularity
+            wicket.id: ${cluster.id}.left.item
+          /AdministrativeSources:
+            /cluster.options:
+              jcr:primaryType: frontend:pluginconfig
+            caption: Administrative Sources
+            field: administrative_sources
+            hint: ''
+            jcr:primaryType: frontend:plugin
+            plugin.class: org.hippoecm.frontend.editor.plugins.field.PropertyFieldPlugin
+            wicket.css:
+            - administrative-sources
+            wicket.id: ${cluster.id}.left.item
         jcr:primaryType: editor:templateset
       /hipposysedit:nodetype:
         /hipposysedit:nodetype:
+          /GeographicCoverage:
+            hipposysedit:mandatory: false
+            hipposysedit:multiple: true
+            hipposysedit:ordered: false
+            hipposysedit:path: publicationsystem:GeographicCoverage
+            hipposysedit:primary: false
+            hipposysedit:type: String
+            jcr:primaryType: hipposysedit:field
           /Summary:
             hipposysedit:mandatory: false
             hipposysedit:multiple: false
@@ -68,6 +148,34 @@ definitions:
             hipposysedit:type: Text
             hipposysedit:validators:
             - required
+            jcr:primaryType: hipposysedit:field
+          /administrative_sources:
+            hipposysedit:mandatory: false
+            hipposysedit:multiple: false
+            hipposysedit:ordered: false
+            hipposysedit:path: publicationsystem:AdministrativeSources
+            hipposysedit:primary: false
+            hipposysedit:type: Text
+            jcr:primaryType: hipposysedit:field
+          /granularity:
+            hipposysedit:mandatory: false
+            hipposysedit:multiple: true
+            hipposysedit:ordered: false
+            hipposysedit:path: publicationsystem:Granularity
+            hipposysedit:primary: false
+            hipposysedit:type: StaticDropdown
+            hipposysedit:validators:
+            - publicationsystem-dropdown-granularity
+            jcr:primaryType: hipposysedit:field
+          /information_type:
+            hipposysedit:mandatory: false
+            hipposysedit:multiple: true
+            hipposysedit:ordered: false
+            hipposysedit:path: publicationsystem:InformationType
+            hipposysedit:primary: false
+            hipposysedit:type: StaticDropdown
+            hipposysedit:validators:
+            - publicationsystem-dropdown-information-type
             jcr:primaryType: hipposysedit:field
           /title:
             hipposysedit:mandatory: false
@@ -84,6 +192,7 @@ definitions:
           - publicationsystem:basedocument
           - hippostd:relaxed
           - hippotranslation:translated
+          - hippotaxonomy:classifiable
           hipposysedit:uri: http://digital.nhs.uk/jcr/publicationsystem/nt/1.0
           jcr:mixinTypes:
           - mix:referenceable
@@ -107,7 +216,10 @@ definitions:
           hippotranslation:locale: document-type-locale
           jcr:mixinTypes:
           - mix:referenceable
+          - hippotaxonomy:classifiable
           jcr:primaryType: publicationsystem:archive
+          publicationsystem:AdministrativeSources: ''
+          publicationsystem:GeographicCoverage: []
         jcr:primaryType: hipposysedit:prototypeset
       jcr:mixinTypes:
       - editor:editable

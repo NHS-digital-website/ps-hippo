@@ -269,6 +269,7 @@
       hippotranslation:id: 5aa94139-497d-489d-b605-e4a2c3182e06
       hippotranslation:locale: en
       jcr:mixinTypes:
+      - hippotaxonomy:classifiable
       - mix:referenceable
       jcr:primaryType: publicationsystem:archive
       publicationsystem:Summary: "Integer suscipit pulvinar lacus non porta. Aenean\
@@ -301,6 +302,7 @@
       hippotranslation:id: 5aa94139-497d-489d-b605-e4a2c3182e06
       hippotranslation:locale: en
       jcr:mixinTypes:
+      - hippotaxonomy:classifiable
       - mix:referenceable
       - mix:versionable
       jcr:primaryType: publicationsystem:archive
@@ -335,6 +337,7 @@
       hippotranslation:id: 5aa94139-497d-489d-b605-e4a2c3182e06
       hippotranslation:locale: en
       jcr:mixinTypes:
+      - hippotaxonomy:classifiable
       - mix:referenceable
       jcr:primaryType: publicationsystem:archive
       publicationsystem:Summary: "Integer suscipit pulvinar lacus non porta. Aenean\

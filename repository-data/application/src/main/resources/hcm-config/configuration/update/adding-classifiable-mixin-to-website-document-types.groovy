@@ -1,11 +1,10 @@
 package org.hippoecm.frontend.plugins.cms.admin.updater
 
-import org.apache.commons.lang.StringUtils
 import org.onehippo.repository.update.BaseNodeUpdateVisitor
 
 import javax.jcr.Node
 
-class CleaningDocbasesHavingPathsUpdateVisitor extends BaseNodeUpdateVisitor {
+class AddingClassifiableMixinToWebsiteDocumentTypes extends BaseNodeUpdateVisitor {
 
     boolean doUpdate(Node node) {
         log.debug "Visiting ${node.path}"

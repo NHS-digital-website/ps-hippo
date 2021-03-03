@@ -5,12 +5,20 @@
     hippostd:state: draft
     hippostdpubwf:createdBy: admin
     hippostdpubwf:creationDate: 2017-10-26T15:49:40.466Z
-    hippostdpubwf:lastModificationDate: 2020-02-20T15:12:06.799Z
+    hippostdpubwf:lastModificationDate: 2021-02-11T12:59:24.928Z
     hippostdpubwf:lastModifiedBy: admin
     jcr:mixinTypes:
     - mix:referenceable
     jcr:primaryType: resourcebundle:resourcebundle
     resourcebundle:descriptions:
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
     - ''
     - ''
     - ''
@@ -50,9 +58,17 @@
     - headers.latest-version
     - headers.versions
     - headers.datasets
-    - headers.upcoming
     - headers.download-chart-data
     - headers.supplementary-information-requests
+    - headers.latest-statistics
+    - headers.about-this-publication
+    - headers.methodology
+    - headers.upcoming-publications
+    - headers.past-publications
+    - headers.pre-release-access
+    - headers.metadata
+    - headers.responsible-parties
+    - headers.frequency
     resourcebundle:messages:
     - Summary
     - Key Facts
@@ -71,16 +87,24 @@
     - Latest Version
     - Versions
     - Data Sets
-    - Upcoming
     - Download the data for
     - Supplementary information requests
+    - Latest statistics
+    - About this publication
+    - Methodology
+    - Upcoming publications
+    - Past publications
+    - Pre-release access
+    - Metadata
+    - Responsible parties
+    - 'Frequency:'
   /headers[2]:
     hippo:availability:
     - preview
     hippostd:state: unpublished
     hippostdpubwf:createdBy: admin
     hippostdpubwf:creationDate: 2017-10-26T15:49:40.466Z
-    hippostdpubwf:lastModificationDate: 2020-02-20T14:03:21.650Z
+    hippostdpubwf:lastModificationDate: 2021-02-11T12:59:38.462Z
     hippostdpubwf:lastModifiedBy: admin
     jcr:mixinTypes:
     - mix:referenceable
@@ -107,6 +131,14 @@
     - ''
     - ''
     - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
     resourcebundle:id: publicationsystem.headers
     resourcebundle:keys:
     - headers.summary
@@ -126,9 +158,17 @@
     - headers.latest-version
     - headers.versions
     - headers.datasets
-    - headers.upcoming
     - headers.download-chart-data
     - headers.supplementary-information-requests
+    - headers.latest-statistics
+    - headers.about-this-publication
+    - headers.methodology
+    - headers.upcoming-publications
+    - headers.past-publications
+    - headers.pre-release-access
+    - headers.metadata
+    - headers.responsible-parties
+    - headers.frequency
     resourcebundle:messages:
     - Summary
     - Key Facts
@@ -147,18 +187,26 @@
     - Latest Version
     - Versions
     - Data Sets
-    - Upcoming
     - Download the data for
     - Supplementary information requests
+    - Latest statistics
+    - About this publication
+    - Methodology
+    - Upcoming publications
+    - Past publications
+    - Pre-release access
+    - Metadata
+    - Responsible parties
+    - 'Frequency:'
   /headers[3]:
     hippo:availability:
     - live
     hippostd:state: published
     hippostdpubwf:createdBy: admin
     hippostdpubwf:creationDate: 2017-10-26T15:49:40.466Z
-    hippostdpubwf:lastModificationDate: 2020-02-20T14:03:21.650Z
+    hippostdpubwf:lastModificationDate: 2021-02-11T12:59:38.462Z
     hippostdpubwf:lastModifiedBy: admin
-    hippostdpubwf:publicationDate: 2020-02-20T14:03:23.199Z
+    hippostdpubwf:publicationDate: 2021-02-11T12:59:40.259Z
     jcr:mixinTypes:
     - mix:referenceable
     jcr:primaryType: resourcebundle:resourcebundle
@@ -183,6 +231,14 @@
     - ''
     - ''
     - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
+    - ''
     resourcebundle:id: publicationsystem.headers
     resourcebundle:keys:
     - headers.summary
@@ -202,9 +258,17 @@
     - headers.latest-version
     - headers.versions
     - headers.datasets
-    - headers.upcoming
     - headers.download-chart-data
     - headers.supplementary-information-requests
+    - headers.latest-statistics
+    - headers.about-this-publication
+    - headers.methodology
+    - headers.upcoming-publications
+    - headers.past-publications
+    - headers.pre-release-access
+    - headers.metadata
+    - headers.responsible-parties
+    - headers.frequency
     resourcebundle:messages:
     - Summary
     - Key Facts
@@ -223,11 +287,19 @@
     - Latest Version
     - Versions
     - Data Sets
-    - Upcoming
     - Download the data for
     - Supplementary information requests
+    - Latest statistics
+    - About this publication
+    - Methodology
+    - Upcoming publications
+    - Past publications
+    - Pre-release access
+    - Metadata
+    - Responsible parties
+    - 'Frequency:'
   hippo:name: Headers
-  hippo:versionHistory: 1f150ca3-4ff4-4b1d-996b-cf4394b324d4
+  hippo:versionHistory: 7c34c457-2902-42be-b142-f6108d873bbb
   jcr:mixinTypes:
   - hippo:named
   - hippo:versionInfo

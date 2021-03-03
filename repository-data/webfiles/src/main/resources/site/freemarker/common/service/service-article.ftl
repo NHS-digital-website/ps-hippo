@@ -11,6 +11,7 @@
 <#include "../macro/component/lastModified.ftl">
 <#include "../macro/latestblogs.ftl">
 <#include "../macro/component/calloutBox.ftl">
+<#include "../macro/updateGroup.ftl">
 <#include "../macro/contentPixel.ftl">
 
 <#-- Add meta tags -->
@@ -64,21 +65,7 @@
 
     <div class="grid-wrapper grid-wrapper--article">
 
-        <#if document.updates?has_content>
-            <div class="grid-row">
-                <div class="column column--no-padding">
-                    <div class="callout-box-group">
-                        <#assign item = {} />
-                        <#list document.updates as update>
-                            <#assign item += update />
-                            <#assign item += {"calloutType":"update", "index":update?index} />
-                            <@calloutBox item />
-                        </#list>
-                    </div>
-                </div>
-            </div>
-        </#if>
-
+        <@updateGroup document=document />
 
         <div class="grid-row">
             <#if navStatus == "withNav" && renderNav>

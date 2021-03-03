@@ -14,6 +14,7 @@
       hippotranslation:id: a8876ac6-5c4d-419a-a898-ec1a46a5b6d7
       hippotranslation:locale: en
       jcr:mixinTypes:
+      - hippotaxonomy:classifiable
       - mix:referenceable
       jcr:primaryType: publicationsystem:archive
       publicationsystem:Summary: "Archive Summary\r\nWeightSearchTerm"
@@ -32,6 +33,7 @@
       hippotranslation:id: a8876ac6-5c4d-419a-a898-ec1a46a5b6d7
       hippotranslation:locale: en
       jcr:mixinTypes:
+      - hippotaxonomy:classifiable
       - mix:referenceable
       - mix:versionable
       jcr:primaryType: publicationsystem:archive
@@ -52,6 +54,7 @@
       hippotranslation:id: a8876ac6-5c4d-419a-a898-ec1a46a5b6d7
       hippotranslation:locale: en
       jcr:mixinTypes:
+      - hippotaxonomy:classifiable
       - mix:referenceable
       jcr:primaryType: publicationsystem:archive
       publicationsystem:Summary: "Archive Summary\r\nWeightSearchTerm"
@@ -75,6 +78,7 @@
       hippotranslation:id: 185f8cc2-87a9-4ee4-8c9d-945e3d154a0e
       hippotranslation:locale: en
       jcr:mixinTypes:
+      - hippotaxonomy:classifiable
       - mix:referenceable
       jcr:primaryType: publicationsystem:archive
       publicationsystem:Summary: Archive Title
@@ -93,6 +97,7 @@
       hippotranslation:id: 185f8cc2-87a9-4ee4-8c9d-945e3d154a0e
       hippotranslation:locale: en
       jcr:mixinTypes:
+      - hippotaxonomy:classifiable
       - mix:referenceable
       - mix:versionable
       jcr:primaryType: publicationsystem:archive
@@ -113,6 +118,7 @@
       hippotranslation:id: 185f8cc2-87a9-4ee4-8c9d-945e3d154a0e
       hippotranslation:locale: en
       jcr:mixinTypes:
+      - hippotaxonomy:classifiable
       - mix:referenceable
       jcr:primaryType: publicationsystem:archive
       publicationsystem:Summary: Archive Title
@@ -629,6 +635,7 @@
       hippotranslation:id: d72b68b5-1381-4f4e-97c2-f2af46b3e147
       hippotranslation:locale: en
       jcr:mixinTypes:
+      - hippotaxonomy:classifiable
       - mix:referenceable
       jcr:primaryType: publicationsystem:series
       publicationsystem:Summary: "Search Test Series Summary\r\nWeightSearchTerm"
@@ -647,6 +654,7 @@
       hippotranslation:id: d72b68b5-1381-4f4e-97c2-f2af46b3e147
       hippotranslation:locale: en
       jcr:mixinTypes:
+      - hippotaxonomy:classifiable
       - mix:referenceable
       - mix:versionable
       jcr:primaryType: publicationsystem:series
@@ -667,6 +675,7 @@
       hippotranslation:id: d72b68b5-1381-4f4e-97c2-f2af46b3e147
       hippotranslation:locale: en
       jcr:mixinTypes:
+      - hippotaxonomy:classifiable
       - mix:referenceable
       jcr:primaryType: publicationsystem:series
       publicationsystem:Summary: "Search Test Series Summary\r\nWeightSearchTerm"
@@ -690,6 +699,7 @@
       hippotranslation:id: 8952a4c3-eacd-4573-a3b4-a34b08b3eb22
       hippotranslation:locale: en
       jcr:mixinTypes:
+      - hippotaxonomy:classifiable
       - mix:referenceable
       jcr:primaryType: publicationsystem:series
       publicationsystem:Summary: Search Test Series Title
@@ -708,6 +718,7 @@
       hippotranslation:id: 8952a4c3-eacd-4573-a3b4-a34b08b3eb22
       hippotranslation:locale: en
       jcr:mixinTypes:
+      - hippotaxonomy:classifiable
       - mix:referenceable
       - mix:versionable
       jcr:primaryType: publicationsystem:series
@@ -728,6 +739,7 @@
       hippotranslation:id: 8952a4c3-eacd-4573-a3b4-a34b08b3eb22
       hippotranslation:locale: en
       jcr:mixinTypes:
+      - hippotaxonomy:classifiable
       - mix:referenceable
       jcr:primaryType: publicationsystem:series
       publicationsystem:Summary: Search Test Series Title

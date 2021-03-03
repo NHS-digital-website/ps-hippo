@@ -17,8 +17,14 @@
 <#include "../common/macro/metaTags.ftl">
 <@metaTags></@metaTags>
 
+<#assign informationTypes = legacyPublication.parentDocument?has_content?then(legacyPublication.parentDocument.informationType?has_content?then(legacyPublication.parentDocument.informationType, legacyPublication.informationType), legacyPublication.informationType) />
+<#assign fullTaxonomyList = legacyPublication.parentDocument?has_content?then(legacyPublication.parentDocument.fullTaxonomyList?has_content?then(legacyPublication.parentDocument.fullTaxonomyList, legacyPublication.fullTaxonomyList), legacyPublication.fullTaxonomyList) />
+<#assign geographicCoverage = legacyPublication.parentDocument?has_content?then(legacyPublication.parentDocument.geographicCoverage?has_content?then(legacyPublication.parentDocument.geographicCoverage, legacyPublication.geographicCoverage), legacyPublication.geographicCoverage) />
+<#assign granularity = legacyPublication.parentDocument?has_content?then(legacyPublication.parentDocument.granularity?has_content?then(legacyPublication.parentDocument.granularity, legacyPublication.granularity), legacyPublication.granularity) />
+<#assign administrativeSources = legacyPublication.parentDocument?has_content?then(legacyPublication.parentDocument.administrativeSources?has_content?then(legacyPublication.parentDocument.administrativeSources, legacyPublication.administrativeSources), legacyPublication.administrativeSources) />
+
 <#assign hasSummary = legacyPublication.summary.content?has_content>
-<#assign hasAdministrativeSources = legacyPublication.administrativeSources?has_content>
+<#assign hasAdministrativeSources = administrativeSources?has_content>
 <#assign hasAttachments = legacyPublication.getAttachments()?size gt 0>
 <#assign hasKeyFacts = legacyPublication.keyFacts.content?has_content>
 <#assign hasResourceLinks = legacyPublication.resourceLinks?has_content>
@@ -54,7 +60,7 @@
 <@fmt.message key="headers.related-links" var="relatedLinksHeader" />
 
 <#macro nationalStatsStamp>
-    <#list legacyPublication.informationType as type>
+    <#list informationTypes as type>
         <#if type == "National statistics">
             <div class="article-header__stamp">
                 <img src="<@hst.webfile path="images/national-statistics-logo.svg"/>" data-uipath="ps.publication.national-statistics" alt="National Statistics" title="National Statistics" class="image-icon image-icon--large" />
@@ -119,11 +125,11 @@
                 </#if>
                 <h1 class="local-header__title" data-uipath="document.title" itemprop="name">${legacyPublication.title}</h1>
 
-                <span data-uipath="ps.legacyPublication.information-types">
-                    <#if legacyPublication.informationType?has_content>
-                        <#list legacyPublication.informationType as type>${type}<#sep>, </#list>
-                    </#if>
-                </span>
+                <#if informationTypes?has_content>
+                    <span class="article-header__types ${(publication.parentDocument??)?then('', 'article-header__types--push')}" data-uipath="ps.legacyPublication.information-types">
+                        <#list informationTypes as type>${type}<#sep>, </#list>
+                    </span>
+                </#if>
 
                 <div class="detail-list-grid">
                     <div class="grid-row">
@@ -137,30 +143,34 @@
                         </div>
                     </div>
 
-                    <#if legacyPublication.geographicCoverage?has_content>
-                    <div class="grid-row">
-                        <div class="column column--reset">
-                            <dl class="detail-list">
-                                <dt class="detail-list__key" id="geographic-coverage"><@fmt.message key="headers.geographical-coverage"/></dt>
-                                <dd class="detail-list__value" itemprop="spatialCoverage" data-uipath="ps.publication.geographic-coverage">
-                                    <#list legacyPublication.geographicCoverage as geographicCoverageItem>${geographicCoverageItem}<#sep>, </#list>
-                                </dd>
-                            </dl>
-                        </div>
-                    </div>
+                    <#if fullTaxonomyList?has_content>
+                        <meta itemprop="keywords" content="${fullTaxonomyList?join(",")}"/>
                     </#if>
 
-                    <#if legacyPublication.granularity?has_content >
-                    <div class="grid-row">
-                        <div class="column column--reset">
-                            <dl class="detail-list">
-                                <dt class="detail-list__key"><@fmt.message key="headers.geographical-granularity"/></dt>
-                                <dd class="detail-list__value" data-uipath="ps.publication.granularity">
-                                    <#list legacyPublication.granularity as granularityItem>${granularityItem}<#sep>, </#list>
-                                </dd>
-                            </dl>
+                    <#if geographicCoverage?has_content>
+                        <div class="grid-row">
+                            <div class="column column--reset">
+                                <dl class="detail-list">
+                                    <dt class="detail-list__key" id="geographic-coverage"><@fmt.message key="headers.geographical-coverage"/></dt>
+                                    <dd class="detail-list__value" itemprop="spatialCoverage" data-uipath="ps.publication.geographic-coverage">
+                                        <#list geographicCoverage as geographicCoverageItem>${geographicCoverageItem}<#sep>, </#list>
+                                    </dd>
+                                </dl>
+                            </div>
                         </div>
-                    </div>
+                    </#if>
+
+                    <#if granularity?has_content >
+                        <div class="grid-row">
+                            <div class="column column--reset">
+                                <dl class="detail-list">
+                                    <dt class="detail-list__key"><@fmt.message key="headers.geographical-granularity"/></dt>
+                                    <dd class="detail-list__value" data-uipath="ps.publication.granularity">
+                                        <#list granularity as granularityItem>${granularityItem}<#sep>, </#list>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
                     </#if>
 
                     <#if legacyPublication.coverageStart?? >
@@ -263,12 +273,12 @@
 
             <#-- [FTL-BEGIN] 'Administrative sources' section -->
             <#if hasAdministrativeSources>
-            <div class="article-section" id="${slugify(adminSourcesHeader)}">
-                <h2>${adminSourcesHeader}</h2>
-                <p itemprop="isBasedOn" data-uipath="ps.publication.administrative-sources">
-                    ${legacyPublication.administrativeSources}
-                </p>
-            </div>
+                <div class="article-section" id="${slugify(adminSourcesHeader)}">
+                    <h2>${adminSourcesHeader}</h2>
+                    <p itemprop="isBasedOn" data-uipath="ps.publication.administrative-sources">
+                        ${administrativeSources}
+                    </p>
+                </div>
             </#if>
             <#-- [FTL-END] 'Administrative sources' section -->
 

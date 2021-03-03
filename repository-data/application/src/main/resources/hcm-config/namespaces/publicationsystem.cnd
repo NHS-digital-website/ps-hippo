@@ -8,6 +8,9 @@
 [publicationsystem:accessiblelink] > hippo:compound, hippostd:relaxed
   orderable
 
+[publicationsystem:accessList] > hippo:compound, hippostd:relaxed
+  orderable
+
 [publicationsystem:basedocument] > hippo:document, hippostd:publishableSummary, hippostdpubwf:document
   orderable
   - common:searchable (boolean) = 'true' autocreated
@@ -57,12 +60,18 @@
 [publicationsystem:relatedlink] > hippo:compound, hippostd:relaxed
   orderable
 
+[publicationsystem:releaseSubject] > hippo:compound, hippostd:relaxed
+  orderable
+
 [publicationsystem:resource] > hippo:derived, hippo:resource
 
 [publicationsystem:series] > hippostd:relaxed, hippotranslation:translated, publicationsystem:basedocument
   orderable
 
 [publicationsystem:survey] > hippo:compound, hippostd:relaxed
+  orderable
+
+[publicationsystem:seriesreplaces] > hippo:compound, hippostd:relaxed
   orderable
 
 [publicationsystem:textSection] > hippo:compound, hippostd:relaxed

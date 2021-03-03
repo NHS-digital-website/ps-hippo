@@ -14,6 +14,7 @@
       hippotranslation:id: 47f1b334-03fe-400b-b801-51682e43dc07
       hippotranslation:locale: en
       jcr:mixinTypes:
+      - hippotaxonomy:classifiable
       - mix:referenceable
       jcr:primaryType: publicationsystem:series
       publicationsystem:Summary: List legacy publications
@@ -32,6 +33,7 @@
       hippotranslation:id: 47f1b334-03fe-400b-b801-51682e43dc07
       hippotranslation:locale: en
       jcr:mixinTypes:
+      - hippotaxonomy:classifiable
       - mix:referenceable
       - mix:versionable
       jcr:primaryType: publicationsystem:series
@@ -52,6 +54,7 @@
       hippotranslation:id: 47f1b334-03fe-400b-b801-51682e43dc07
       hippotranslation:locale: en
       jcr:mixinTypes:
+      - hippotaxonomy:classifiable
       - mix:referenceable
       jcr:primaryType: publicationsystem:series
       publicationsystem:Summary: List legacy publications

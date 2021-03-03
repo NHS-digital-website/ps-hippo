@@ -1,13 +1,19 @@
 <#ftl output_format="HTML">
 <#include "../../include/imports.ftl">
 
+
 <#macro publicationHeader publication restricted=false downloadPDF=false>
+    <#assign informationTypes = publication.parentDocument?has_content?then(publication.parentDocument.informationType?has_content?then(publication.parentDocument.informationType, publication.informationType), publication.informationType) />
+    <#assign fullTaxonomyList = publication.parentDocument?has_content?then(publication.parentDocument.fullTaxonomyList?has_content?then(publication.parentDocument.fullTaxonomyList, publication.fullTaxonomyList), publication.fullTaxonomyList) />
+    <#assign geographicCoverage = publication.parentDocument?has_content?then(publication.parentDocument.geographicCoverage?has_content?then(publication.parentDocument.geographicCoverage, publication.geographicCoverage), publication.geographicCoverage) />
+    <#assign granularity = publication.parentDocument?has_content?then(publication.parentDocument.granularity?has_content?then(publication.parentDocument.granularity, publication.granularity), publication.granularity) />
+
     <div class="grid-wrapper grid-wrapper--full-width grid-wrapper--wide">
         <div class="local-header article-header article-header--detailed">
             <div class="grid-wrapper">
                 <div class="article-header__inner">
 
-                    <@nationalStatsStamp publication=publication/>
+                    <@nationalStatsStamp informationTypes=informationTypes/>
 
                     <#if publication.parentDocument??>
                         <span class="article-header__label"><@fmt.message key="labels.publication"/>, Part of <a itemprop="url" href="<@hst.link hippobean=publication.parentDocument.selfLinkBean/>" title="${publication.parentDocument.title}"><span itemprop="name">${publication.parentDocument.title}</span></a></span>
@@ -16,11 +22,11 @@
                     </#if>
                     <h1 class="local-header__title" data-uipath="document.title" itemprop="name">${publication.title}</h1>
 
-                    <span data-uipath="ps.publication.information-types" class="article-header__types">
-                        <#if publication.informationType?has_content>
-                            <#list publication.informationType as type>${type}<#sep>, </#list>
-                        </#if>
-                    </span>
+                    <#if informationTypes?has_content>
+                        <span class="article-header__types ${(publication.parentDocument??)?then('', 'article-header__types--push')}" data-uipath="ps.publication.information-types">
+                            <#list informationTypes as type>${type}<#sep>, </#list>
+                        </span>
+                    </#if>
 
                     <div class="detail-list-grid">
                         <div class="grid-row">
@@ -35,28 +41,30 @@
                         </div>
 
                         <#if !restricted>
-                            <meta itemprop="keywords" content="${publication.fullTaxonomyList?join(",")}"/>
+                            <#if fullTaxonomyList?has_content>
+                                <meta itemprop="keywords" content="${fullTaxonomyList?join(",")}"/>
+                            </#if>
 
-                            <#if publication.geographicCoverage?has_content>
+                            <#if geographicCoverage?has_content>
                                 <div class="grid-row">
                                     <div class="column column--reset">
                                         <dl class="detail-list">
                                             <dt class="detail-list__key" id="geographic-coverage"><@fmt.message key="headers.geographical-coverage"/></dt>
                                             <dd class="detail-list__value" itemprop="spatialCoverage" data-uipath="ps.publication.geographic-coverage">
-                                                <#list publication.geographicCoverage as geographicCoverageItem>${geographicCoverageItem}<#sep>, </#list>
+                                                <#list geographicCoverage as geographicCoverageItem>${geographicCoverageItem}<#sep>, </#list>
                                             </dd>
                                         </dl>
                                     </div>
                                 </div>
                             </#if>
 
-                            <#if publication.granularity?has_content >
+                            <#if granularity?has_content >
                                 <div class="grid-row">
                                     <div class="column column--reset">
                                         <dl class="detail-list">
                                             <dt class="detail-list__key"><@fmt.message key="headers.geographical-granularity"/></dt>
                                             <dd class="detail-list__value" data-uipath="ps.publication.granularity">
-                                                <#list publication.granularity as granularityItem>${granularityItem}<#sep>, </#list>
+                                                <#list granularity as granularityItem>${granularityItem}<#sep>, </#list>
                                             </dd>
                                         </dl>
                                     </div>
@@ -121,9 +129,9 @@
     </#if>
 </#macro>
 
-<#macro nationalStatsStamp publication>
-    <#if publication.informationType??>
-        <#list publication.informationType as type>
+<#macro nationalStatsStamp informationTypes>
+    <#if informationTypes??>
+        <#list informationTypes as type>
             <#if type == "National statistics">
                 <div class="article-header__stamp" data-uipath="ps.publication.national-statistics">
                     <img src="<@hst.webfile path="images/national-statistics-logo.svg"/>" data-uipath="ps.publication.national-statistics" alt="National Statistics" title="National Statistics" class="image-icon image-icon--large" />

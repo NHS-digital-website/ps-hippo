@@ -66,6 +66,14 @@
         }
     }
 
+    &--regular {
+        .detail-list {
+            border-bottom: 1px solid $col-14;
+            margin-top: $gutter * 0.5 + 2px;
+            padding-bottom: $gutter * 0.5;
+        }
+    }
+
     @media screen {
         @include media($max-width: $min-desktop-width, $ignore-for-ie: true) {
             .grid-row {

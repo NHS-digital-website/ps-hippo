@@ -1,0 +1,350 @@
+definitions:
+  config:
+    /hippo:configuration/hippo:update/hippo:registry/DW-1284 - Migration from publication to series:
+      hipposys:batchsize: 10
+      hipposys:description: ''
+      hipposys:dryrun: false
+      hipposys:loglevel: DEBUG
+      hipposys:parameters: "{\r\n    \"inputFile\" :  \"/content/assets/assetsmiguel/seriesinfoexport2.json/seriesinfoexport2.json/hippogallery:asset\"\
+        \ \r\n}"
+      hipposys:query: /jcr:root/content/documents/corporate-website//*[(@jcr:primaryType='publicationsystem:series')]
+      hipposys:script: "package org.hippoecm.frontend.plugins.cms.admin.updater\r\n\
+        \r\nimport org.hippoecm.repository.util.JcrUtils\r\nimport org.onehippo.repository.update.BaseNodeUpdateVisitor\r\
+        \nimport org.json.JSONArray\r\nimport org.json.JSONException\r\nimport org.json.JSONObject\r\
+        \n\r\nimport javax.jcr.query.Query\r\nimport javax.jcr.query.QueryManager\r\
+        \nimport javax.jcr.query.QueryResult\r\n\r\n// IMPORTS FOR SearchableTaxonomyTask\r\
+        \nimport static java.util.stream.Collectors.toSet;\r\nimport static org.apache.cxf.common.util.CollectionUtils.isEmpty;\r\
+        \n\r\nimport org.apache.commons.lang3.ArrayUtils;\r\nimport org.apache.jackrabbit.value.StringValue;\r\
+        \nimport org.onehippo.repository.documentworkflow.DocumentVariant;\r\nimport\
+        \ java.util.stream.Stream;\r\nimport java.util.stream.StreamSupport;\r\nimport\
+        \ javax.jcr.Node;\r\nimport javax.jcr.RepositoryException;\r\nimport javax.jcr.Session;\r\
+        \nimport javax.jcr.Value;\r\n\r\n/*\r\nThis script takes the series fields\
+        \ (Granularity, Geographic Coverage, Administrative sources, Taxonomy, Information\
+        \ Types,\r\nshort title, subtitle, responsible statistician, responsible team,\
+        \ frequency, date naming convention) from a file and finds\r\nthe corresponding\
+        \ series in the JCR and then overides the existing values with the ones coming\
+        \ from the file.\r\nBear in mind if a field of a series in the input is empty\
+        \ or blank, it will remove it in the JCR.\r\n\r\n\r\nWhen running this script\
+        \ \"XPath query\" should be for example:\r\n/jcr:root/content/documents/corporate-website//*[(@jcr:primaryType='publicationsystem:series')]\r\
+        \n\r\nThis script has a parameter called \"inputFile\", that is passed in\
+        \ the \"parameters\" field in the CMS script runner \r\n(Setup icon/ Update\
+        \ editor).\r\nAn example would be:\r\n{\r\n    \"inputFile\" :  \"/content/assets/assetsmiguel/seriesinfoexport.json/seriesinfoexport.json/hippogallery:asset\"\
+        \ \r\n}\r\nAs you can see, the value is a path in the JCR. That path is a\
+        \ file in the assets folder.\r\nThe last bit of the path \"seriesinfoexport.json/hippogallery:asset\"\
+        \ is the actual node that contains the content.\r\nThe content of that file\
+        \ should be a file in json format.\r\n\r\nTo upload that file in the CMS,\
+        \ sign-in in the CMS, go to \"Content\" section, in the dropdown change to\
+        \ \"assets\". Once in the assets,\r\nif needed, create a folder and then in\
+        \ that folder choose \"add file\" and choose the file to upload.\r\n\r\nNow\
+        \ to find out the path, go to the CMS console, sign-in, open /content/assets\
+        \ folder and try to find the node that represents \r\nthe file you have just\
+        \ uploaded in the CMS, once in the file, there is a property called path on\
+        \ top of the window,\r\nit should look like this, for example:\r\n\"/content/assets/assetsmiguel/seriesinfoexport.json/seriesinfoexport.json/hippogallery:asset\"\
+        \ \r\n\r\nOnce imported you can remove that file from the CMS and if you created\
+        \ a subfolder in assets, you can remove that too.\r\n\r\n*/\r\n\r\nclass DW1284MigrationFromPublicationToSeries\
+        \ extends BaseNodeUpdateVisitor {\r\n\r\n  private final static JSON_FIELD_TITLE\
+        \ = \"Current Series Page Title\"\r\n  private final static JSON_FIELD_GRANULARITY\
+        \ = \"Granularity\"\r\n  private final static JSON_FIELD_GEOGRAPHIC_COVERAGE\
+        \ = \"Geographic Coverage\"\r\n  private final static JSON_FIELD_INFORMATION_TYPES\
+        \ = \"Information Type\"\r\n  private final static JSON_FIELD_TAXONOMY = \"\
+        Taxonomy topics\"\r\n  private final static JSON_FIELD_ADMINISTRATIVE_SOURCES\
+        \ = \"AdministrativeSources\"\r\n\r\n  private final static JSON_FIELD_SHORT_TITLE\
+        \ = \"shortTitle\"\r\n  private final static JSON_FIELD_FREQUENCY = \"frequency\"\
+        \r\n  private final static JSON_FIELD_DATE_NAMING_CONVENTION = \"dateNamingConvention\"\
+        \r\n  private final static JSON_FIELD_SUBTITLE = \"subtitle\"\r\n  private\
+        \ final static JSON_FIELD_RESPONSIBLE_STASTICIAN = \"responsibleStastician\"\
+        \r\n  private final static JSON_FIELD_RESPONSIBLE_TEAM = \"responsibleTeam\"\
+        \r\n  \r\n  \r\n  private final static JCR_PROPERTY_TITLE = \"publicationsystem:Title\"\
+        \r\n  private final static JCR_PROPERTY_GRANULARITY = \"publicationsystem:Granularity\"\
+        \r\n  private final static JCR_PROPERTY_GEOGRAPHIC_COVERAGE = \"publicationsystem:GeographicCoverage\"\
+        \r\n  private final static JCR_PROPERTY_INFORMATION_TYPE = \"publicationsystem:InformationType\"\
+        \r\n  private final static JCR_PROPERTY_FULL_TAXONOMY = \"common:FullTaxonomy\"\
+        \r\n  private final static JCR_PROPERTY_TAXONOMY_KEYS = \"hippotaxonomy:keys\"\
+        \r\n  private final static JCR_PROPERTY_ADMINISTRATIVE_SOURCES = \"publicationsystem:AdministrativeSources\"\
+        \r\n\r\n  private final static JCR_PROPERTY_SHORT_TITLE = \"publicationsystem:shortTitle\"\
+        \r\n  private final static JCR_PROPERTY_SUBTITLE = \"publicationsystem:subTitle\"\
+        \r\n  private final static JCR_PROPERTY_FREQUENCY = \"publicationsystem:frequency\"\
+        \r\n  private final static JCR_PROPERTY_DATE_NAMING_CONVENTION = \"publicationsystem:dateNaming\"\
+        \r\n  private final static JCR_PROPERTY_RESPONSIBLE_STASTICIAN = \"publicationsystem:statistician\"\
+        \r\n  private final static JCR_PROPERTY_RESPONSIBLE_TEAM = \"publicationsystem:team\"\
+        \r\n\r\n  private final static RESPONSIBLE_STASTICIAN_DEFAULT_VALUE_HIPPO_BASE\
+        \  = \"cafebabe-cafe-babe-cafe-babecafebabe\"\r\n  private final static RESPONSIBLE_TEAM_DEFAULT_VALUE_HIPPO_BASE\
+        \  = \"cafebabe-cafe-babe-cafe-babecafebabe\"\r\n  \r\n  Session session\r\
+        \n  JSONArray jsonArray\r\n  SearchableTaxonomyTask taxonomyTask\r\n  QueryManager\
+        \ queryManager\r\n  \r\n  void initialize(Session session) {\r\n    this.session\
+        \ = session\r\n    this.taxonomyTask = new SearchableTaxonomyTask()\r\n  \
+        \  this.queryManager = session.getWorkspace().getQueryManager();\r\n    \r\
+        \n    try {        \r\n        String fileInJsonPath //= \"/content/assets/assetsmiguel/seriesinfoexport.json/seriesinfoexport.json/hippogallery:asset\"\
+        \r\n        if (parametersMap.containsKey(\"inputFile\")) {\r\n          fileInJsonPath\
+        \ = parametersMap.get(\"inputFile\")\r\n        }\r\n        Node nodeInputFileResource\
+        \ = session.getNode(fileInJsonPath)\r\n        log.debug(\"Loading input file\
+        \ in path=\" + nodeInputFileResource.getPath())\r\n        String jsonString\
+        \ = nodeInputFileResource.getProperty(\"jcr:data\").getString()\r\n      \
+        \  \r\n        jsonArray = new JSONArray(jsonString)\r\n        log.info(\"\
+        \\nInput data contains [\" + jsonArray.length() + \"] series\")\r\n      \
+        \  log.debug(\"\\n\\n\\n\")\r\n      \r\n    } catch (JSONException e) {\r\
+        \n        log.error(\"Exception converting json: \", e)\r\n        e.printStackTrace()\r\
+        \n    }      \r\n  }\r\n  \r\n  boolean doUpdate(Node node) {  \r\n    //\
+        \ Query returns the hippo:handle node for the document\r\n    // (which has\
+        \ the 3 variants)\r\n    try {\r\n        if (node.hasNodes()) {\r\n     \
+        \       return updateNode(node)\r\n        }\r\n    } catch (e) {\r\n    \
+        \    log.error(\"Failed to process node: \" + node.getPath() + \", exception:\
+        \ \" + e)\r\n    }\r\n    return false\r\n  }\r\n\r\n  boolean undoUpdate(Node\
+        \ node) {\r\n      throw new UnsupportedOperationException('Updater does not\
+        \ implement undoUpdate method')\r\n  }\r\n  \r\n  boolean updateNode(Node\
+        \ n) {\r\n    JcrUtils.ensureIsCheckedOut(n)\r\n\r\n    def path = n.getPath()\r\
+        \n    def nodeType = n.getPrimaryNodeType().getName()\r\n    def title = n.getProperty(JCR_PROPERTY_TITLE).getString()\r\
+        \n    \r\n    log.info(\"\\n\\nProcessing node\")\r\n    log.info(\"  path=\"\
+        \ + path)\r\n    log.info(\"  title=\" + title)\r\n\r\n    if ((\"publicationsystem:series\"\
+        .equals(nodeType)))  {\r\n      SeriesNewFields series = getSeriesFieldsByTitle(title,\
+        \ jsonArray)\r\n      if (series == null) {\r\n        return false\r\n  \
+        \    } else {\r\n        return updateProperties(n, series)\r\n      }\r\n\
+        \    }\r\n    \r\n    return false\r\n  }\r\n\r\n  class SeriesNewFields {\r\
+        \n    public String title\r\n    public String[] granularity\r\n    public\
+        \ String[] geographicCoverage\r\n    public String[] informationTypes\r\n\
+        \    public String[] taxonomy\r\n    public String administrativeSources\r\
+        \n    \r\n    public String shortTitle\r\n    public String subTitle\r\n \
+        \   public String frequency\r\n    public String dateNaming\r\n    public\
+        \ String responsibleStastician\r\n    public String responsibleTeam\r\n  \
+        \  \r\n    \r\n    public SeriesNewFields(JSONObject jsonObject) {\r\n   \
+        \       this.title                 = jsonObject.get(JSON_FIELD_TITLE).toString()\r\
+        \n          \r\n          this.granularity           = jsonObject.get(JSON_FIELD_GRANULARITY).toString().replace('[',\
+        \ '').replace(']', '').split(\",\")\r\n          if (this.granularity != null\
+        \ && this.granularity.length == 1 && this.granularity[0].trim().equals(\"\"\
+        )) {\r\n            this.granularity = null\r\n          }\r\n      \r\n \
+        \         this.geographicCoverage    = jsonObject.get(JSON_FIELD_GEOGRAPHIC_COVERAGE).toString().replace('[',\
+        \ '').replace(']', '').split(\",\")\r\n          if (this.geographicCoverage\
+        \ != null && this.geographicCoverage.length == 1 && this.geographicCoverage[0].trim().equals(\"\
+        \")) {\r\n            this.geographicCoverage = null\r\n          }\r\n  \
+        \    \r\n          this.informationTypes      = jsonObject.get(JSON_FIELD_INFORMATION_TYPES).toString().replace('[',\
+        \ '').replace(']', '').split(\",\")\r\n          if (this.informationTypes\
+        \ != null && this.informationTypes.length == 1 && this.informationTypes[0].trim().equals(\"\
+        \")) {\r\n            this.informationTypes = null\r\n          }\r\n    \
+        \  \r\n          this.taxonomy              = jsonObject.get(JSON_FIELD_TAXONOMY).toString().replace('[',\
+        \ '').replace(']', '').split(\",\")\r\n          if (this.taxonomy != null\
+        \ && this.taxonomy.length == 1 && this.taxonomy[0].trim().equals(\"\")) {\r\
+        \n            this.taxonomy = null\r\n          }\r\n      \r\n          this.administrativeSources\
+        \ = jsonObject.get(JSON_FIELD_ADMINISTRATIVE_SOURCES).toString()\r\n     \
+        \ \r\n          this.shortTitle = jsonObject.get(JSON_FIELD_SHORT_TITLE).toString()\r\
+        \n          this.subTitle = jsonObject.get(JSON_FIELD_SUBTITLE).toString()\r\
+        \n          this.frequency = jsonObject.get(JSON_FIELD_FREQUENCY).toString()\r\
+        \n          if (this.frequency != null && this.frequency.toLowerCase().indexOf(\"\
+        tbc\") >= 0) {\r\n            this.frequency = \"\"\r\n          }\r\n   \
+        \       this.dateNaming = jsonObject.get(JSON_FIELD_DATE_NAMING_CONVENTION).toString()\r\
+        \n          if (this.dateNaming != null && this.dateNaming.toLowerCase().indexOf(\"\
+        tbc\") >= 0) {\r\n            this.dateNaming = \"\"\r\n          }\r\n  \
+        \        this.responsibleStastician = jsonObject.get(JSON_FIELD_RESPONSIBLE_STASTICIAN).toString()\r\
+        \n          if (this.responsibleStastician != null && this.responsibleStastician.toLowerCase().indexOf(\"\
+        tbc\") >= 0) {\r\n            this.responsibleStastician = \"\"\r\n      \
+        \    }\r\n          this.responsibleTeam = jsonObject.get(JSON_FIELD_RESPONSIBLE_TEAM).toString()\r\
+        \n          if (this.responsibleTeam != null && this.responsibleTeam.toLowerCase().indexOf(\"\
+        tbc\") >= 0) {\r\n            this.responsibleTeam = \"\"\r\n          }\r\
+        \n    }\r\n    \r\n    public String toString() {\r\n      StringBuilder sb\
+        \ = new StringBuilder();\r\n      sb.append(\"\\ntitle: \").append(title)\r\
+        \n      sb.append(\"\\n granularity: \").append(arrayToString(granularity))\r\
+        \n      sb.append(\"\\n geographicCoverage: \").append(arrayToString(geographicCoverage))\r\
+        \n      sb.append(\"\\n informationTypes: \").append(arrayToString(informationTypes))\r\
+        \n      sb.append(\"\\n taxonomy: \").append(arrayToString(taxonomy))\r\n\
+        \      sb.append(\"\\n administrativeSources: \").append(administrativeSources)\r\
+        \n\r\n      sb.append(\"\\n shortTitle: \").append(shortTitle)\r\n      sb.append(\"\
+        \\n subTitle: \").append(subTitle)\r\n      sb.append(\"\\n frequency: \"\
+        ).append(frequency)\r\n      sb.append(\"\\n dateNaming: \").append(dateNaming)\r\
+        \n      sb.append(\"\\n responsibleStastician: \").append(responsibleStastician)\r\
+        \n      sb.append(\"\\n responsibleTeam: \").append(responsibleTeam)\r\n \
+        \   }\r\n    \r\n    private String arrayToString(String[] myArray) {\r\n\
+        \      StringBuilder sb = new StringBuilder()\r\n      for (int i=0; i < myArray.length;\
+        \ i++) {\r\n        sb.append(myArray[i])\r\n        sb.append(\", \")\r\n\
+        \      }\r\n      if(sb.length() > 0) {\r\n        return sb.substring(0,\
+        \ sb.length()-2)\r\n      } else {\r\n        return \"\" \r\n      }\r\n\
+        \    }\r\n  }\r\n\r\n  SeriesNewFields getSeriesFieldsByTitle(title, myArray)\
+        \ {\r\n    try {\r\n      Iterator iterator = myArray.iterator()\r\n     \
+        \ Boolean found = false\r\n      JSONObject item\r\n      while (iterator.hasNext()\
+        \ && !found) {\r\n        item = (JSONObject) iterator.next();\r\n       \
+        \ String titleItem = item.get(JSON_FIELD_TITLE)\r\n        if (title.equals(titleItem))\
+        \ found = true;\r\n      }\r\n      if (found) {\r\n        SeriesNewFields\
+        \ series = new SeriesNewFields(item)\r\n//        log.debug(\"  series found=\"\
+        \ + series.toString())\r\n        log.debug(\"  series found\")\r\n      \
+        \  return series\r\n      } else {\r\n        log.debug(\"  series not found\"\
+        )\r\n      }\r\n    } catch (Exception ex) {\r\n      log.error(\"  Exception\
+        \ in getSeriesFieldsByTitle=\" + ex)\r\n      ex.printStackTrace()\r\n   \
+        \ }\r\n    return null\r\n  }\r\n\r\n  boolean updateProperties(Node node,\
+        \ SeriesNewFields series) { \r\n    if (series.granularity == null || series.granularity.length\
+        \ == 0) {\r\n      node.setProperty(JCR_PROPERTY_GRANULARITY, (String[]) null)\r\
+        \n    } else {\r\n      node.setProperty(JCR_PROPERTY_GRANULARITY, series.granularity)\r\
+        \n    }\r\n    \r\n    if (series.geographicCoverage == null || series.geographicCoverage.length\
+        \ == 0) {\r\n      node.setProperty(JCR_PROPERTY_GEOGRAPHIC_COVERAGE, (String[])\
+        \ null)\r\n    } else {\r\n      node.setProperty(JCR_PROPERTY_GEOGRAPHIC_COVERAGE,\
+        \ series.geographicCoverage)\r\n    }\r\n    \r\n    if (series.informationTypes\
+        \ == null || series.informationTypes.length == 0) {\r\n      node.setProperty(JCR_PROPERTY_INFORMATION_TYPE,\
+        \ (String[]) null)\r\n    } else {\r\n      node.setProperty(JCR_PROPERTY_INFORMATION_TYPE,\
+        \ series.informationTypes)\r\n    }\r\n    \r\n    if (series.taxonomy ==\
+        \ null || series.taxonomy.length == 0) {\r\n      node.setProperty(JCR_PROPERTY_FULL_TAXONOMY,\
+        \ (String[]) null)\r\n      node.setProperty(JCR_PROPERTY_TAXONOMY_KEYS, (String[])\
+        \ null)\r\n    } else {\r\n      node.setProperty(JCR_PROPERTY_TAXONOMY_KEYS,\
+        \ series.taxonomy)      \r\n      taxonomyTask.updateFullTaxonomyAndSearchableTags(node)\r\
+        \n    }\r\n    node.setProperty(JCR_PROPERTY_ADMINISTRATIVE_SOURCES, series.administrativeSources)\r\
+        \n    node.setProperty(JCR_PROPERTY_SHORT_TITLE, series.shortTitle)\r\n  \
+        \  node.setProperty(JCR_PROPERTY_SUBTITLE, series.subTitle)\r\n    node.setProperty(JCR_PROPERTY_FREQUENCY,\
+        \ getFrequencyValueInJCR(series.frequency))\r\n    node.setProperty(JCR_PROPERTY_DATE_NAMING_CONVENTION,\
+        \ getDateNamingConventionInJCR(series.dateNaming))\r\n\r\n    String responsibleStasticianUUID\
+        \ = getResponsibleStasticianUUID(series.responsibleStastician)\r\n    def\
+        \ responsibleStasticianNode = node.getNode(JCR_PROPERTY_RESPONSIBLE_STASTICIAN)\r\
+        \n    responsibleStasticianNode.setProperty(\"hippo:docbase\", (String) responsibleStasticianUUID)\r\
+        \n    \r\n    String responsibleTeamUUID = getResponsibleTeamUUID(series.responsibleTeam)\r\
+        \n    def responsibleTeamNode = node.getNode(JCR_PROPERTY_RESPONSIBLE_TEAM)\r\
+        \n    responsibleTeamNode.setProperty(\"hippo:docbase\", (String) responsibleTeamUUID)\r\
+        \n    \r\n    return true\r\n  }\r\n  \r\n  String getFrequencyValueInJCR(String\
+        \ frequency) {\r\n    String frequencyAux = frequency.toLowerCase()\r\n  \
+        \  if (frequencyAux.equals(\"twice a year\")) {\r\n      return \"twiceyear\"\
+        \r\n    } else {\r\n      return frequencyAux.replace(\" \", \"\")\r\n   \
+        \ }\r\n  }\r\n  \r\n  String getDateNamingConventionInJCR(String dateNaming)\
+        \ {\r\n    String dataNamingAux = dateNaming.toLowerCase()\r\n    String returnValue\
+        \ = \"\"\r\n    if (dataNamingAux.equalsIgnoreCase(\"At year of publication\"\
+        )) {\r\n      returnValue = \"1\"\r\n    } else if (dataNamingAux.equalsIgnoreCase(\"\
+        At year of coverage end\")) {\r\n      returnValue = \"2\"\r\n    } else if\
+        \ (dataNamingAux.equalsIgnoreCase(\"At year ending of coverage end\")) {\r\
+        \n      returnValue = \"3\"\r\n    } else if (dataNamingAux.equalsIgnoreCase(\"\
+        At month of publication\")) {\r\n      returnValue = \"4\"\r\n    } else if\
+        \ (dataNamingAux.equalsIgnoreCase(\"At month of coverage end\")) {\r\n   \
+        \   returnValue = \"5\"\r\n    } else if (dataNamingAux.equalsIgnoreCase(\"\
+        At quarter ending of coverage end\")) {\r\n      returnValue = \"6\"\r\n \
+        \   } else if (dataNamingAux.equalsIgnoreCase(\"Coverage range by year (e.g.\
+        \ 2018-19)\")) {\r\n      returnValue = \"7\"\r\n    } else if (dataNamingAux.equalsIgnoreCase(\"\
+        Coverage range by month (e.g. March 2018 - Sept 2018)\")) {\r\n      returnValue\
+        \ = \"8\"\r\n    } else if (dataNamingAux.equalsIgnoreCase(\"No date\")) {\r\
+        \n      returnValue = \"9\"\r\n    } else {\r\n      return returnValue\r\n\
+        \    }\r\n  }       \r\n  \r\n  String getResponsibleStasticianUUID(String\
+        \ stastician) {\r\n    if (stastician != null && !stastician.trim().equalsIgnoreCase(\"\
+        \")) {\r\n      QueryResult resultStasticians = queryManager.createQuery(\r\
+        \n//        \"/jcr:root/content/documents/corporate-website//*[(@jcr:primaryType='website:person')\
+        \ and (@website:shortsummary='\" + stastician + \"')]\", Query.XPATH).execute()\r\
+        \n        \"/jcr:root/content//*[(@jcr:primaryType='website:person') and (@website:shortsummary='\"\
+        \ + stastician + \"')]\", Query.XPATH).execute()\r\n\r\n      final NodeIterator\
+        \ nodes = resultStasticians.getNodes()\r\n      if (nodes.hasNext()) {\r\n\
+        \        Node node = nodes.nextNode()\r\n        if (node != null) {\r\n \
+        \         String identifier = (String) node.getIdentifier()\r\n          if\
+        \ (identifier == null || identifier.trim().equalsIgnoreCase(\"\")) {\r\n \
+        \           identifier = RESPONSIBLE_STASTICIAN_DEFAULT_VALUE_HIPPO_BASE\r\
+        \n          }\r\n          return identifier\r\n        }\r\n      }\r\n \
+        \   }\r\n    return RESPONSIBLE_STASTICIAN_DEFAULT_VALUE_HIPPO_BASE\r\n  }\r\
+        \n\r\n  String getResponsibleTeamUUID(String team) {\r\n    if (team != null\
+        \ && !team.trim().equalsIgnoreCase(\"\")) {\r\n      QueryResult resultTeams\
+        \ = queryManager.createQuery(\r\n//        \"/jcr:root/content/documents/corporate-website//*[(@jcr:primaryType='website:team')\
+        \ and (@website:shortsummary='\" + team + \"')]\", Query.XPATH).execute()\r\
+        \n        \"/jcr:root/content//*[(@jcr:primaryType='website:team') and (@website:shortsummary='\"\
+        \ + team + \"')]\", Query.XPATH).execute()\r\n\r\n      final NodeIterator\
+        \ nodes = resultTeams.getNodes()\r\n      if (nodes.hasNext()) {\r\n     \
+        \   Node node = nodes.nextNode()\r\n        if (node != null) {\r\n      \
+        \    String identifier = (String) node.getIdentifier()\r\n          if (identifier\
+        \ == null || identifier.trim().equalsIgnoreCase(\"\")) {\r\n            identifier\
+        \ = RESPONSIBLE_TEAM_DEFAULT_VALUE_HIPPO_BASE\r\n          }\r\n         \
+        \ return identifier\r\n        }\r\n      }\r\n    }\r\n    return RESPONSIBLE_TEAM_DEFAULT_VALUE_HIPPO_BASE\
+        \  \r\n  }\r\n\r\n  \r\n  /* Code taken from hippo proyect class SearchableTaxonomyTask.\
+        \ Originally that was in Java, it has been adapted to Groovy */\r\n  public\
+        \ class SearchableTaxonomyTask {\r\n\r\n    static final String HIPPO_CLASSIFIABLE_PATH\
+        \ = \"/hippo:namespaces/publicationsystem/series/editor:templates/_default_/classifiable\"\
+        ;\r\n\r\n    static final String FULL_TAXONOMY_PROPERTY = \"common:FullTaxonomy\"\
+        ;\r\n    static final String SEARCHABLE_TAGS_PROPERTY = \"common:SearchableTags\"\
+        ;\r\n\r\n    static final String TAXONOMY_NODE_NAME_PROPERTY = \"essentials-taxonomy-name\"\
+        ;\r\n    static final String TAXONOMY_CATEGORY_NODE_TYPE = \"hippotaxonomy:category\"\
+        ;\r\n\r\n    static final String TAXONOMY_CATEGORY_INFOS_PROPERTY = \"hippotaxonomy:categoryinfos\"\
+        ;\r\n    static final String TAXONOMY_NAME_PROPERTY = \"hippotaxonomy:name\"\
+        ;\r\n    static final String TAXONOMY_KEY_PROPERTY = \"hippotaxonomy:key\"\
+        ;\r\n    static final String TAXONOMY_KEYS_PROPERTY = \"hippotaxonomy:keys\"\
+        ;\r\n    static final String TAXONOMY_SYNONYMS_PROPERTY = \"hippotaxonomy:synonyms\"\
+        ;\r\n\r\n      public Object updateFullTaxonomyAndSearchableTags(Node node)\
+        \ throws RepositoryException {\r\n        try {\r\n            if (node.hasProperty(TAXONOMY_KEYS_PROPERTY))\
+        \ {\r\n                createFullTaxonomyProperty(node);\r\n             \
+        \   createSearchableTagsProperty(node);\r\n            }\r\n        } catch\
+        \ (RepositoryExceptionWrapper wrapper) {\r\n            // If a function in\
+        \ a stream has caused an exception, we wrap it in an\r\n            // unchecked\
+        \ exception so we need to rethrow it here\r\n            throw wrapper.re;\r\
+        \n        }\r\n        return null;\r\n    }\r\n\r\n    \r\n    @SuppressWarnings(\"\
+        WeakerAccess\")\r\n    protected void createSearchableTagsProperty(Node document)\
+        \ throws RepositoryException {\r\n        Value[] values = document.getProperty(TAXONOMY_KEYS_PROPERTY).getValues();\r\
+        \n        Set<String> keys = Arrays.stream(values)\r\n            .map{value\
+        \ -> getWrapExceptions(value.&getString)}\r\n            .collect(toSet());\r\
+        \n\r\n        Set<String> searchableTags = getTaxonomyTermsAndSynonyms(keys);\r\
+        \n\r\n        if (!isEmpty(searchableTags)) {\r\n            try {\r\n   \
+        \             document.setProperty(SEARCHABLE_TAGS_PROPERTY, stringsToValues(searchableTags));\r\
+        \n            } catch (RepositoryException re) {\r\n                log.error(\"\
+        Failed to set searchable tags on node: \" + document, re);\r\n           \
+        \ }\r\n        }\r\n    }\r\n\r\n    private Set<String> getTaxonomyTermsAndSynonyms(Set<String>\
+        \ keys) throws RepositoryException {\r\n      return getDescendantTaxonomyNodes(getTaxonomyTreeNode())\r\
+        \n        .filter{node -> keys.contains(getWrapExceptions({ -> getTaxonomyKey(node)}))}\r\
+        \n        .flatMap{node -> getWrapExceptions({ -> getTermsAndSynonyms(node)})}\r\
+        \n            .collect(toSet());\r\n    }\r\n\r\n    private Stream<String>\
+        \ getTermsAndSynonyms(Node taxonomyNode) throws RepositoryException {\r\n\
+        \        Node info = taxonomyNode.getNode(TAXONOMY_CATEGORY_INFOS_PROPERTY).getNode(\"\
+        en\");\r\n\r\n        String taxonomyName = info.getProperty(TAXONOMY_NAME_PROPERTY).getString();\r\
+        \n        Stream<String> stream = Stream.of(taxonomyName);\r\n\r\n       \
+        \ if (info.hasProperty(TAXONOMY_SYNONYMS_PROPERTY)) {\r\n          stream\
+        \ = Stream.concat(\r\n                stream,\r\n                Arrays.stream(info.getProperty(TAXONOMY_SYNONYMS_PROPERTY).getValues())\r\
+        \n              .map{value -> getWrapExceptions(value.&getString)}\r\n   \
+        \         );\r\n        }\r\n\r\n        return stream;\r\n    }\r\n\r\n \
+        \   @SuppressWarnings(\"WeakerAccess\")\r\n    protected void createFullTaxonomyProperty(Node\
+        \ document) throws RepositoryException {\r\n        Set<String> fullTaxonomyKeys\
+        \ = getFullTaxonomyKeys(document);\r\n        Value[] fullTaxonomy = stringsToValues(fullTaxonomyKeys);\r\
+        \n\r\n        // We have seen this happen when a document has only invalid\
+        \ taxonomy keys\r\n        // Don't create the new property in this case\r\
+        \n        if (ArrayUtils.isEmpty(fullTaxonomy)) {\r\n            return;\r\
+        \n        }\r\n\r\n        try {\r\n            document.setProperty(FULL_TAXONOMY_PROPERTY,\
+        \ fullTaxonomy);\r\n        } catch (RepositoryException re) {\r\n       \
+        \     log.error(\"Failed to set full taxonomy on node: \" + document, re);\r\
+        \n        }\r\n    }\r\n\r\n    private Value[] stringsToValues(Set<String>\
+        \ strings) {\r\n        return strings.stream()\r\n          .map {value ->\
+        \ new StringValue(value) }\r\n          .toArray {value2 -> new Value[value2]};\r\
+        \n    }\r\n\r\n    private Set<String> getFullTaxonomyKeys(Node document)\
+        \ throws RepositoryException {\r\n        Value[] values = document.getProperty(TAXONOMY_KEYS_PROPERTY).getValues();\r\
+        \n        Set<String> toReturn = Arrays.stream(values)\r\n          .map{value\
+        \ -> getWrapExceptions(value.&getString)}\r\n          .flatMap{key -> getWrapExceptions({\
+        \ -> getTaxonomyList(key)})}\r\n            .collect(toSet());\r\n      \r\
+        \n        return toReturn\r\n    }\r\n\r\n    private Node getTaxonomyTreeNode()\
+        \ throws RepositoryException {\r\n        String taxonomyName = session\r\n\
+        \            .getNode(HIPPO_CLASSIFIABLE_PATH)\r\n            .getProperty(TAXONOMY_NODE_NAME_PROPERTY)\r\
+        \n            .getString();\r\n\r\n        // get the published taxonomy\r\
+        \n        return session.getNode(\"/content/taxonomies/\" + taxonomyName +\
+        \ \"/\" + taxonomyName);\r\n    }\r\n\r\n    private Stream<String> getTaxonomyList(String\
+        \ key) throws RepositoryException {\r\n        Optional<Node> taxonomyNodeOptional\
+        \ = getDescendantTaxonomyNodes(getTaxonomyTreeNode())\r\n          .filter{node\
+        \ -> getWrapExceptions({ -> getTaxonomyKey(node)}).equals(key)}\r\n      \
+        \      .findAny();\r\n\r\n        if (!taxonomyNodeOptional.isPresent()) {\r\
+        \n            log.error(\"Couldn't find taxonomy key in tree: \" + key);\r\
+        \n            return Stream.empty();\r\n        }\r\n\r\n        Node taxonomyNode\
+        \ = taxonomyNodeOptional.get();\r\n        ArrayList<String> taxonomyKeys\
+        \ = new ArrayList<>();\r\n        while (taxonomyNode.getPrimaryNodeType()\r\
+        \n            .isNodeType(TAXONOMY_CATEGORY_NODE_TYPE)) {\r\n\r\n        \
+        \    taxonomyKeys.add(getTaxonomyKey(taxonomyNode));\r\n            taxonomyNode\
+        \ = taxonomyNode.getParent();\r\n        }\r\n\r\n        return taxonomyKeys.stream();\r\
+        \n    }\r\n\r\n    private String getTaxonomyKey(Node node) throws RepositoryException\
+        \ {\r\n        return node.getProperty(TAXONOMY_KEY_PROPERTY).getString();\r\
+        \n    }\r\n\r\n    private Stream<Node> getDescendantTaxonomyNodes(Node node)\
+        \ {\r\n      Stream<Node> toReturn = streamChildTaxonomyNodes(node)\r\n  \
+        \      .flatMap{childNode -> Stream.concat(\r\n             Stream.of(childNode),\r\
+        \n             getDescendantTaxonomyNodes(childNode))}\r\n      return toReturn\
+        \    \r\n    }\r\n\r\n    \r\n    private Stream<Node> streamChildTaxonomyNodes(Node\
+        \ parentNode) {\r\n      Stream<Node> toReturn = streamChildNodes(parentNode)\r\
+        \n        .filter { value -> getWrapExceptions(value.&getPrimaryNodeType)\r\
+        \n                .isNodeType(TAXONOMY_CATEGORY_NODE_TYPE)\r\n        }\r\n\
+        \      return toReturn;\r\n    }\r\n\r\n    @SuppressWarnings(\"unchecked\"\
+        )\r\n    private Stream<Node> streamChildNodes(Node parentNode) {\r\n    \
+        \  Iterable<Node> iterableNode = (Iterable<Node>) {-> getWrapExceptions(parentNode.&getNodes)}\r\
+        \n      Stream<Node> toReturn = StreamSupport.stream(\r\n           iterableNode.spliterator(),\r\
+        \n           false\r\n        );\r\n      return toReturn\r\n    }\r\n\r\n\
+        \    /**\r\n     * This is not used in normal operation, session is set when\
+        \ we are hooking in the the task directly in\r\n     */\r\n    /*protected\
+        \ void setSession(Session session) {\r\n        this.session = session;\r\n\
+        \    }*/\r\n\r\n    /**\r\n     * Handling for repository operations that\
+        \ throw exceptions that we can use in streams\r\n     */\r\n    static <T>\
+        \ T getWrapExceptions(RepositoryOperation<T> repositoryOperation) {\r\n  \
+        \      if (repositoryOperation == null) {\r\n            return null;\r\n\
+        \        }\r\n\r\n        try {\r\n            return repositoryOperation.get();\r\
+        \n        } catch (RepositoryException re) {\r\n            throw new RepositoryExceptionWrapper(re);\r\
+        \n        }\r\n    }\r\n\r\n    public void setVariant(DocumentVariant variant)\
+        \ {\r\n        this.variant = variant;\r\n    }\r\n\r\n    @FunctionalInterface\r\
+        \n    interface RepositoryOperation<T> {\r\n        T get() throws RepositoryException;\r\
+        \n    }\r\n\r\n    static class RepositoryExceptionWrapper extends RuntimeException\
+        \ {\r\n        private RepositoryException re;\r\n\r\n        RepositoryExceptionWrapper(RepositoryException\
+        \ re) {\r\n            this.re = re;\r\n        }\r\n\r\n    }\r\n  }\r\n}"
+      hipposys:throttle: 1000
+      jcr:primaryType: hipposys:updaterinfo

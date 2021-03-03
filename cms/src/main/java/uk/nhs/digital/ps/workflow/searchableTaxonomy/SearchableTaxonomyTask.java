@@ -25,7 +25,7 @@ public class SearchableTaxonomyTask extends AbstractDocumentTask {
 
     private static final Logger log = LoggerFactory.getLogger(SearchableTaxonomyTask.class);
 
-    static final String HIPPO_CLASSIFIABLE_PATH = "/hippo:namespaces/publicationsystem/publication/editor:templates/_default_/classifiable";
+    static final String HIPPO_CLASSIFIABLE_PATH = "/hippo:namespaces/publicationsystem/series/editor:templates/_default_/classifiable";
 
     static final String FULL_TAXONOMY_PROPERTY = "common:FullTaxonomy";
     static final String SEARCHABLE_TAGS_PROPERTY = "common:SearchableTags";

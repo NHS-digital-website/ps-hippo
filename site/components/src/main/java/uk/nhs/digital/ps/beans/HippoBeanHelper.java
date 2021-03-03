@@ -44,7 +44,7 @@ public class HippoBeanHelper {
             Session session = repository.login(configCred);
 
             taxonomyName = session.getNode(
-                "/hippo:namespaces/publicationsystem/publication/editor:templates/_default_/classifiable")
+                "/hippo:namespaces/publicationsystem/series/editor:templates/_default_/classifiable")
                 .getProperty("essentials-taxonomy-name")
                 .getString();
         } catch (RepositoryException repositoryException) {

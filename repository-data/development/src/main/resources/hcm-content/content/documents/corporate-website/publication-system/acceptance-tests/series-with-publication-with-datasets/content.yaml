@@ -13,8 +13,10 @@
     hippotranslation:id: 00000000-0000-0000-0000-000000000000
     hippotranslation:locale: en
     jcr:mixinTypes:
+    - hippotaxonomy:classifiable
     - mix:referenceable
     jcr:primaryType: publicationsystem:series
+    jcr:uuid: d5f8dc78-8213-4ad5-9e57-a8865e2e2141
     publicationsystem:ShowLatest: true
     publicationsystem:Summary: "Integer suscipit pulvinar lacus non porta. Aenean\
       \ ut tempus ex. Proin eget tortor sollicitudin, pellentesque dolor eget, aliquam\
@@ -44,9 +46,11 @@
     hippotranslation:id: 00000000-0000-0000-0000-000000000000
     hippotranslation:locale: en
     jcr:mixinTypes:
+    - hippotaxonomy:classifiable
     - mix:referenceable
     - mix:versionable
     jcr:primaryType: publicationsystem:series
+    jcr:uuid: 0f8e3b06-d167-4779-87d3-afd4f1972150
     publicationsystem:ShowLatest: true
     publicationsystem:Summary: "Integer suscipit pulvinar lacus non porta. Aenean\
       \ ut tempus ex. Proin eget tortor sollicitudin, pellentesque dolor eget, aliquam\
@@ -77,8 +81,10 @@
     hippotranslation:id: 00000000-0000-0000-0000-000000000000
     hippotranslation:locale: en
     jcr:mixinTypes:
+    - hippotaxonomy:classifiable
     - mix:referenceable
     jcr:primaryType: publicationsystem:series
+    jcr:uuid: 43eeb07c-71e3-4997-b15d-3ff9ba7584a3
     publicationsystem:ShowLatest: true
     publicationsystem:Summary: "Integer suscipit pulvinar lacus non porta. Aenean\
       \ ut tempus ex. Proin eget tortor sollicitudin, pellentesque dolor eget, aliquam\
@@ -97,3 +103,4 @@
   jcr:mixinTypes:
   - mix:referenceable
   jcr:primaryType: hippo:handle
+  jcr:uuid: e0bb884d-5e83-47f9-b453-32ea50668635

@@ -5,6 +5,10 @@ definitions:
       hipposys:className: org.onehippo.cms.services.validation.validator.RegExpValidator
       jcr:primaryType: hipposys:moduleconfig
       regexp.pattern: ^([0-9]{3}){0,3}$
+    /hippo:configuration/hippo:modules/validation/hippo:moduleconfig/issn:
+      hipposys:className: org.onehippo.cms.services.validation.validator.RegExpValidator
+      jcr:primaryType: hipposys:moduleconfig
+      regexp.pattern: \d{4}-\d{4}
     /hippo:configuration/hippo:modules/validation/hippo:moduleconfig/ordernumber:
       hipposys:className: org.onehippo.cms.services.validation.validator.RegExpValidator
       jcr:primaryType: hipposys:moduleconfig

@@ -242,6 +242,7 @@
         hippotranslation:id: ade3a6a5-b84a-4f58-904a-f22cc45642a1
         hippotranslation:locale: en
         jcr:mixinTypes:
+        - hippotaxonomy:classifiable
         - mix:referenceable
         jcr:primaryType: publicationsystem:series
         publicationsystem:Summary: series fields test with summary summaryTestBlackberries
@@ -260,6 +261,7 @@
         hippotranslation:id: ade3a6a5-b84a-4f58-904a-f22cc45642a1
         hippotranslation:locale: en
         jcr:mixinTypes:
+        - hippotaxonomy:classifiable
         - mix:referenceable
         - mix:versionable
         jcr:primaryType: publicationsystem:series
@@ -280,6 +282,7 @@
         hippotranslation:id: ade3a6a5-b84a-4f58-904a-f22cc45642a1
         hippotranslation:locale: en
         jcr:mixinTypes:
+        - hippotaxonomy:classifiable
         - mix:referenceable
         jcr:primaryType: publicationsystem:series
         publicationsystem:Summary: series fields test with summary summaryTestBlackberries
