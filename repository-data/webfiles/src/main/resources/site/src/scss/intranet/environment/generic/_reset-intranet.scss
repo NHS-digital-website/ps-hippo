@@ -1,0 +1,185 @@
+@import "../../../normalize/variables";
+@import "../../../environment/settings/colours";
+@import "../../../environment/settings/typography";
+@import "../../../environment/tools/mixins/typography";
+@import "../../../environment/tools/mixins/custom";
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+dl,
+dd,
+ol,
+ul,
+form,
+fieldset,
+legend,
+figure,
+table,
+th,
+td,
+caption,
+hr {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    color: $text-colour;
+
+    @include font-smoothing;
+    @include core-font(18);
+}
+
+body {
+    margin: 0;
+}
+
+iframe {
+    border: none;
+    outline: none;
+}
+
+input,
+select {
+    &,
+    &:focus {
+        @include no-tap-highlight;
+        outline: none;
+    }
+}
+
+input[type='text'],
+input[type='password'],
+input[type='search'],
+input[type='email'],
+input[type='url'],
+input[type='tel'],
+input[type='date'],
+input[type='month'],
+input[type='week'],
+input[type='time'],
+input[type='datetime'],
+input[type='datetime-local'],
+input[type='color'] {
+    -webkit-border-radius: 0;
+    -webkit-appearance: none;
+}
+
+input[type='text']::placeholder,
+input[type='password']::placeholder,
+input[type='search']::placeholder,
+input[type='email']::placeholder,
+input[type='url']::placeholder,
+input[type='tel']::placeholder,
+input[type='date']::placeholder,
+input[type='month']::placeholder,
+input[type='week']::placeholder,
+input[type='time']::placeholder,
+input[type='datetime']::placeholder,
+input[type='datetime-local']::placeholder,
+input[type='color']::placeholder {
+    color: $grey-1;
+    text-shadow: none;
+    -webkit-text-fill-color: initial;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    color: #000 !important;
+    -webkit-box-shadow: 0 0 0 1000px #fff inset;
+    -webkit-text-fill-color: #000;
+}
+
+textarea {
+    resize: none;
+}
+
+/* Responsive base font sizes on units */
+p,
+ul,
+ol,
+dl,
+blockquote,
+table {
+
+    @include core-font(18);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 0;
+}
+
+h1 {
+    @include bold-font($h1-font-size/1px);
+    margin-bottom: 0;
+}
+
+h2 {
+    @include bold-font($h2-font-size/1px);
+    margin-bottom: round($base-font-size * 0.9);
+
+    @include media(tablet) {
+        margin-bottom: round($base-font-size * 0.75);
+    }
+}
+
+h3 {
+    @include bold-font($h3-font-size/1px);
+    margin-bottom: round($base-font-size * 0.75);
+
+    @include media(tablet) {
+        margin-bottom: $base-font-size;
+    }
+}
+
+h4 {
+    @include bold-font($h4-font-size/1px);
+}
+
+h5 {
+    @include bold-font($h5-font-size/1px);
+}
+
+img {
+    display: block;
+    position: relative;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+}
+
+ol, ul, dl {
+    li {
+        margin-top: 0;
+    }
+}
+
+button {
+    background: none;
+    appearance: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+
+    &:focus {
+        outline: none;
+    }
+
+    @include no-tap-highlight;
+}

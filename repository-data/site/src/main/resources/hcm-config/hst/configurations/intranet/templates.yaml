@@ -6,7 +6,7 @@ definitions:
         hst:renderpath: webfile:/freemarker/intranet/announcement.ftl
         jcr:primaryType: hst:template
       /base-top-menu:
-        hst:renderpath: webfile:/freemarker/common/base-top-menu.ftl
+        hst:renderpath: webfile:/freemarker/intranet/base-top-menu.ftl
         jcr:primaryType: hst:template
       /home:
         hst:renderpath: webfile:/freemarker/intranet/home.ftl
