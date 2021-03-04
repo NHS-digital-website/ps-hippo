@@ -1,0 +1,91 @@
+@import "../environment/settings/colours";
+@import "../environment/tools/mixins/addons";
+@import "../environment/tools/mixins/custom";
+
+a {
+    @include no-tap-highlight;
+
+    // allow inline links to continue the
+    // yellow background decoration.
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+
+    &:link {
+        color: $link-colour;
+    }
+
+    &:visited {
+        color: $link-visited-colour;
+    }
+
+    &:hover {
+        background: $yellow-link-hover;
+        box-shadow: 0 0 0 4px $yellow-link-hover;
+        // outline: 1px solid $yellow-link-hover;
+        color: $link-hover-colour-nhs;
+        text-decoration: none;
+    }
+
+    &:active {
+        background: $yellow-link-active;
+        box-shadow: 0 0 0 4px $yellow-link-active;
+        color: $link-active-colour-nhs;
+    }
+
+    &:focus {
+        background: $yellow;
+        box-shadow: 0 0 0 4px $yellow;
+        color: $link-hover-colour-nhs;
+        outline: 0;
+    }
+}
+
+a.black-link {
+    &:link {
+        color: $col-16;
+    }
+
+    &:visited {
+        color: $col-16;
+    }
+}
+
+.link--reverse-polarity {
+    @include link-reverse-polarity;
+}
+
+.white-links {
+    a {
+        text-decoration: none;
+
+        &:link,
+        &:visited,
+        &:hover,
+        &:focus {
+            color: $col-septenary;
+        }
+
+        &:hover {
+            text-decoration: none;
+            color: $link-hover-colour-nhs;
+        }
+
+        &:active {
+            color: $link-active-colour-nhs;
+        }
+        &:focus {
+            color: $link-hover-colour-nhs;
+            outline: 3px solid $focus-colour;
+        }
+    }
+}
+
+.white-links--secondary {
+    a {
+        text-decoration: underline;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}

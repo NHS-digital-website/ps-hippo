@@ -10,7 +10,9 @@
 <div class="intra-box">
 
     <#if wrappingDocument.title?? && wrappingDocument.title?has_content>
-        <h2 class="intra-box__title"> ${wrappingDocument.title}</h2>
+        <div class="nhsd-t-col">
+            <h2 class="nhsd-t-heading-xl nhsd-t-text-align-center nhsd-!t-margin-bottom-7">${wrappingDocument.title}</h2>
+        </div>
     </#if>
 
     <#if pageable?? && pageable.items?has_content>
@@ -23,7 +25,7 @@
         <div class="nhsd-t-grid">
             <div class="nhsd-t-row nhsd-o-card-list__items">
                 <#list pageable.items as trending>
-                    <div class="nhsd-t-col-xs-12 nhsd-t-col-s-6 nhsd-t-col-m-4 nhsd-t-col-l-3 nhsd-t-col-xl-3">
+                    <div class="nhsd-t-col-xs-12 nhsd-t-col-s-6 nhsd-t-col-m-6 nhsd-t-col-l-3">
                         <!-- Only render Announcements if they haven't expired -->
                         <#if trending.docType == 'Announcement' && currentDate.after(trending.expirydate)>
                             <#continue>
@@ -72,6 +74,11 @@
     <#else>
         <#assign link=wrappingDocument.external/>
     </#if>
-    <@actionLink title="${wrappingDocument.getLabel()}" link="${link}" />
+
+     <nav class="nhsd-m-button-nav">
+        <a class="nhsd-a-button" href="${link}">
+            <span class="nhsd-a-button__label">${wrappingDocument.getLabel()}</span>
+        </a>
+    </nav>
 
 </div>

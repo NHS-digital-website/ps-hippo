@@ -1,0 +1,153 @@
+$is-print: true;
+
+// units
+@import "units/image";
+@import "units/list";
+@import "units/link-intranet";
+@import "units/quote";
+@import "components/site-header";
+@import "components/checklist";
+@import "components/breadcrumb";
+
+body {
+  @include core-font(16);
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+a {
+  color: $col-quaternary !important;
+  font-weight: 700;
+  text-decoration: none;
+
+  &::after {
+    font-weight: 400;
+  }
+
+  &:visited {
+    word-wrap: break-word;
+  }
+
+  &[href^="javascript:"]:after,
+  &[href^="#"]:after {
+    content: "";
+  }
+}
+
+img {
+  max-width: 15cm;
+}
+
+.media__caption {
+  font-size: .9em;
+  font-style: italic;
+  margin-top: 0;
+}
+
+select {
+  background: $white;
+}
+
+hr {
+  border: 1mm solid $grey-3;
+  margin: .8cm 0;
+}
+
+.global-header__link::after {
+  content: none !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 1cm 0 .5cm;
+  page-break-after: avoid;
+}
+
+h1 {
+    color: rgba($col-quaternary, 0.95);
+    font-size: 2em;
+    line-height: 2.4em;
+}
+
+p,
+figure {
+  margin: .5cm 0;
+}
+
+details {
+  margin: 1cm 0;
+
+  summary {
+    @include bold-font(24);
+    margin-bottom: .5cm;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
+}
+
+.tabs-panel,
+.callout {
+  page-break-inside: avoid;
+}
+
+.callout--compact {
+  display: inline-block;
+}
+
+.search-strip {
+    display: none;
+}
+
+.site-header__search-wrapper {
+    display: none;
+}
+
+.main-nav__burger {
+    display: none;
+}
+
+.article-header h1 {
+    margin-top: 0;
+
+}
+
+.article-header__stamp {
+    img {
+        width: 0.75cm;
+        height: 0.75cm;
+    }
+}
+
+.article--filtered-list {
+    .page-block--sidebar {
+        display: none;
+    }
+}
+
+.site-header__logo {
+    width: 3cm;
+}
+
+hr {
+    max-width: 15cm;
+    margin: 0;
+    height: 1px;
+    border: none;
+    border-bottom: 1px solid $col-quaternary;
+}
+
+// hide the unnecessary page elements
+// sass-lint:disable class-name-format
+body footer,
+.visuallyhidden,
+.skiplinks,
+.local-header .link-list {
+  display: none;
+}
