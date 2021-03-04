@@ -4,15 +4,15 @@
 <#macro trendingArticleShortSummary trending index>
     <#if trending.docType == 'Blog' || trending.docType == 'NewsInternal'>
         <#if trending.shortsummary?? && trending.shortsummary?has_content>
-            <div class="intra-home-article-grid-article__summary"
+            <div class="nhsd-t-body-s"
                  id="summary-${index}">
-                <p>${trending.shortsummary}</p>
+                <p class="nhsd-t-body-s">${trending.shortsummary}</p>
             </div>
 
         </#if>
     <#elseif trending.docType == 'Announcement'>
         <#if trending.details?? && trending.details?has_content>
-            <div class="intra-home-article-grid-article__summary"
+            <div class="nhsd-t-body-s"
                  id="summary-${index}">
                 <@hst.html hippohtml=trending.details />
             </div>
