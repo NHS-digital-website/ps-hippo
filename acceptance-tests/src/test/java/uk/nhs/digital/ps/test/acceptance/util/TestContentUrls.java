@@ -296,7 +296,7 @@ public class TestContentUrls {
 
         // API specifications
         addSiteUrl("Static API Catalogue",
-            "/website-acceptance-tests/developer/api-catalogue");
+            "/api-catalogue-preview");
         addSiteUrl("Static API Specification",
             "/website-acceptance-tests/api-specifications/static-api-specification");
     }

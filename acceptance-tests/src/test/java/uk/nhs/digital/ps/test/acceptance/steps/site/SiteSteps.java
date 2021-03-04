@@ -36,6 +36,7 @@ import uk.nhs.digital.ps.test.acceptance.util.TestContentUrls;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -80,6 +81,24 @@ public class SiteSteps extends AbstractSpringSteps {
         // Note: this is temporary while we have some pages that don't have the new cookie banner (old RPS style)
         sitePage.clickCookieAcceptButton();
     }
+    
+    @When("^I (?:can )?click on the label for \"([^\"]+)\"$")
+    public void whenIClickOnLabel(String labelledElement) throws Throwable {
+        String xPathExpression = buildXPathExpressionFromElementAttributes(
+            Collections.singletonList("for"),
+            Collections.singletonList(labelledElement)
+        );
+        WebElement element = sitePage.findElementWithXPath(xPathExpression);
+
+        assertThat("I can find element with title: " + labelledElement,
+            element, is(notNullValue()));
+
+        sitePage.clickOnElement(element);
+
+        // Note: this is temporary while we have some pages that don't have the new cookie banner (old RPS style)
+        sitePage.clickCookieAcceptButton();
+    }
+
 
     @Then("^I (?:can )?see \"([^\"]+)\" (?:link|button|image)$")
     public void thenISeeLink(String linkTitle) throws Throwable {

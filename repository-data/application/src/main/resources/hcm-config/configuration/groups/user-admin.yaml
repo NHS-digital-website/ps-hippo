@@ -8,7 +8,8 @@ definitions:
         .meta:add-new-system-values: true
         .meta:category: system
         type: string
-        value: []
+        value:
+        - resetpassword
       hipposys:securityprovider: internal
       hipposys:userroles:
         .meta:add-new-system-values: true

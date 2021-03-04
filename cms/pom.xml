@@ -83,6 +83,12 @@
         <dependency>
             <groupId>io.swagger.codegen.v3</groupId>
             <artifactId>swagger-codegen-generators</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.mail</groupId>
+                    <artifactId>mailapi</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.github.jknack</groupId>
@@ -298,7 +304,21 @@
             <artifactId>feed-repository</artifactId>
             <version>${bloomreach.forge.feed.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.bloomreach.forge.resetpassword</groupId>
+            <artifactId>resetpassword-cms</artifactId>
+            <version>${forge.resetpassword.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bloomreach.forge.resetpassword</groupId>
+            <artifactId>resetpassword-bootstrap-configuration</artifactId>
+            <version>${forge.resetpassword.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bloomreach.forge.resetpassword</groupId>
+            <artifactId>resetpassword-bootstrap-content</artifactId>
+            <version>${forge.resetpassword.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>cms</finalName>

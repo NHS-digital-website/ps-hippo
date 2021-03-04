@@ -37,7 +37,7 @@ public class ApiSpecRerenderJob implements RepositoryJob {
             log.debug("API Specifications refresh: done.");
 
         } catch (final Exception ex) {
-            log.error("Failed to publish specifications.", ex);
+            log.error("Failed to rerender specifications.", ex);
         } finally {
             Optional.ofNullable(session).ifPresent(Session::logout);
         }

@@ -82,7 +82,7 @@ public class ApiSpecSyncFromApigeeJob implements RepositoryJob {
             log.debug("API Specifications sync from Apigee: done.");
 
         } catch (final Exception ex) {
-            log.error("Failed to publish specifications.", ex);
+            log.error("Failed to sync specifications from Apigee.", ex);
         } finally {
             Optional.ofNullable(session).ifPresent(Session::logout);
         }

@@ -1,0 +1,87 @@
+.api-catalogue {
+
+  & .filters {
+
+    & li {
+      list-style-type: none;
+    }
+
+    & ul {
+      padding: 0;
+    }
+
+    & ul ul {
+      padding-left: 1em;
+    }
+
+    & .section-heading,
+    & .filter-label {
+      cursor: pointer;
+      padding: 0.33em 0.5em;
+      margin-bottom: 0.5em;
+      border-radius: 0.5em;
+    }
+
+    & .section-heading {
+      display: block;
+
+      background-color: $grey-4;
+    }
+
+    & .filter-label {
+      display: inline-block;
+
+      width: 15.6em;
+      background-color: $blue-10;
+
+      text-decoration: none;
+    }
+
+    & .filter-label-unavailable {
+      display: inline-block;
+
+      width: 15.6em;
+      padding: 0.33em 0.5em;
+
+      margin-bottom: 0.5em;
+      border-radius: 0.5em;
+
+      color: $grey-2;
+      background-color: $blue-10;
+
+      text-decoration: none;
+    }
+
+    & .filter-label-unavailable:hover {
+      cursor: default;
+    }
+
+    & .section-heading:hover,
+    & .filter-label:hover {
+      background: $yellow-link-hover;
+      box-shadow: 0 0 0 4px $yellow-link-hover;
+      outline: 1px solid $yellow-link-hover;
+      color: $link-hover-colour-nhs;
+      text-decoration: none;
+    }
+
+    & .section-content {
+      display: none;
+    }
+
+    & input:checked ~ .section-content {
+      display: block;
+    }
+
+    & input {
+      display: none;
+    }
+
+    & .selected {
+      background-color: $link-colour;
+      color: $blue-10;
+      font-weight: bold;
+    }
+  }
+
+}

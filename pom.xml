@@ -134,6 +134,7 @@
         <hystrix-javanica.version>1.5.18</hystrix-javanica.version>
         <bloomreach.forge.feed.version>6.0.0</bloomreach.forge.feed.version>
         <bloomreach.text-search-replace.version>2.0.0</bloomreach.text-search-replace.version>
+        <forge.resetpassword.version>5.0</forge.resetpassword.version>
     </properties>
 
     <repositories>

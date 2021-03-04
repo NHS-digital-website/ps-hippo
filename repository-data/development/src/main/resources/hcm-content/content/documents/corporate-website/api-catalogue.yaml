@@ -1,0 +1,783 @@
+---
+/content/documents/corporate-website/developer:
+  /api-catalogue:
+    /doc-with-mapped-taxonomy-tags-a:
+      /doc-with-mapped-taxonomy-tags-a[1]:
+        /website:seosummary:
+          hippostd:content: Doc With Mapped Taxonomy Tags A
+          jcr:primaryType: hippostd:html
+        /website:summary:
+          hippostd:content: <p>Doc With Mapped Taxonomy Tags A</p>
+          jcr:primaryType: hippostd:html
+        common:FacetType: apispecification
+        common:FullTaxonomy:
+        - health-services
+        - people-and-places
+        - data-and-information
+        - inpatients
+        - national-health-service
+        - hospital
+        - secondary-care
+        - demographics
+        common:SearchableTags:
+        - Demographic
+        - Inpatient
+        common:searchRank: 5
+        common:searchable: true
+        hippo:availability:
+        - preview
+        hippostd:retainable: false
+        hippostd:state: unpublished
+        hippostdpubwf:createdBy: admin
+        hippostdpubwf:creationDate: 2021-02-26T14:57:40.102Z
+        hippostdpubwf:lastModificationDate: 2021-02-26T15:28:00.188Z
+        hippostdpubwf:lastModifiedBy: admin
+        hippotaxonomy:keys:
+        - inpatients
+        - demographics
+        hippotranslation:id: 87313450-63ab-4686-9c62-37f459de6762
+        hippotranslation:locale: en
+        jcr:mixinTypes:
+        - hippotaxonomy:classifiable
+        - mix:versionable
+        jcr:primaryType: website:apispecification
+        jcr:uuid: 607371a0-af66-4242-82a0-a1bb2634c42e
+        website:html: ''
+        website:json: ''
+        website:seosummary: ''
+        website:shortsummary: Doc With Mapped Taxonomy Tags A
+        website:specification_id: '123456'
+        website:summary: ''
+        website:title: A Doc With Mapped Taxonomy Tags
+      /doc-with-mapped-taxonomy-tags-a[2]:
+        /website:seosummary:
+          hippostd:content: Doc With Mapped Taxonomy Tags A
+          jcr:primaryType: hippostd:html
+        /website:summary:
+          hippostd:content: <p>Doc With Mapped Taxonomy Tags A</p>
+          jcr:primaryType: hippostd:html
+        common:FacetType: apispecification
+        common:FullTaxonomy:
+        - health-services
+        - people-and-places
+        - data-and-information
+        - inpatients
+        - national-health-service
+        - hospital
+        - secondary-care
+        - demographics
+        common:SearchableTags:
+        - Demographic
+        - Inpatient
+        common:searchRank: 5
+        common:searchable: true
+        hippo:availability:
+        - live
+        hippostd:retainable: false
+        hippostd:state: published
+        hippostdpubwf:createdBy: admin
+        hippostdpubwf:creationDate: 2021-02-26T14:57:40.102Z
+        hippostdpubwf:lastModificationDate: 2021-02-26T15:28:00.188Z
+        hippostdpubwf:lastModifiedBy: admin
+        hippostdpubwf:publicationDate: 2021-02-26T15:28:16.920Z
+        hippotaxonomy:keys:
+        - inpatients
+        - demographics
+        hippotranslation:id: 87313450-63ab-4686-9c62-37f459de6762
+        hippotranslation:locale: en
+        jcr:mixinTypes:
+        - hippotaxonomy:classifiable
+        - mix:referenceable
+        jcr:primaryType: website:apispecification
+        jcr:uuid: a0efc7d4-f0ca-47bc-a5ea-ff63b0170430
+        website:html: ''
+        website:json: ''
+        website:seosummary: ''
+        website:shortsummary: Doc With Mapped Taxonomy Tags A
+        website:specification_id: '123456'
+        website:summary: ''
+        website:title: A Doc With Mapped Taxonomy Tags
+      /doc-with-mapped-taxonomy-tags-a[3]:
+        /website:seosummary:
+          hippostd:content: Doc With Mapped Taxonomy Tags A
+          jcr:primaryType: hippostd:html
+        /website:summary:
+          hippostd:content: <p>Doc With Mapped Taxonomy Tags A</p>
+          jcr:primaryType: hippostd:html
+        common:FacetType: apispecification
+        common:FullTaxonomy:
+        - health-services
+        - people-and-places
+        - data-and-information
+        - inpatients
+        - national-health-service
+        - hospital
+        - secondary-care
+        - demographics
+        common:SearchableTags:
+        - Demographic
+        - Inpatient
+        common:searchRank: 5
+        common:searchable: true
+        hippo:availability: []
+        hippostd:retainable: false
+        hippostd:state: draft
+        hippostdpubwf:createdBy: admin
+        hippostdpubwf:creationDate: 2021-02-26T14:57:40.102Z
+        hippostdpubwf:lastModificationDate: 2021-02-26T15:27:52.013Z
+        hippostdpubwf:lastModifiedBy: admin
+        hippotaxonomy:keys:
+        - inpatients
+        - demographics
+        hippotranslation:id: 87313450-63ab-4686-9c62-37f459de6762
+        hippotranslation:locale: en
+        jcr:mixinTypes:
+        - hippotaxonomy:classifiable
+        - mix:referenceable
+        jcr:primaryType: website:apispecification
+        jcr:uuid: 1c9917f5-4cdc-44b1-8f02-1105b0f9f0ea
+        website:html: ''
+        website:json: ''
+        website:seosummary: ''
+        website:shortsummary: Doc With Mapped Taxonomy Tags A
+        website:specification_id: '123456'
+        website:summary: ''
+        website:title: A Doc With Mapped Taxonomy Tags
+      hippo:name: Doc With Mapped Taxonomy Tags A
+      hippo:versionHistory: 52a114ba-2b00-418a-8827-eaab6e892f07
+      jcr:mixinTypes:
+      - hippo:named
+      - hippo:versionInfo
+      - mix:referenceable
+      jcr:primaryType: hippo:handle
+      jcr:uuid: 6681acac-59a6-4f6e-918f-119c989cbd8d
+    /doc-with-mapped-taxonomy-tags-b:
+      /doc-with-mapped-taxonomy-tags-b[1]:
+        /website:seosummary:
+          hippostd:content: Doc With Mapped Taxonomy Tags B
+          jcr:primaryType: hippostd:html
+        /website:summary:
+          hippostd:content: <p>Doc With Mapped Taxonomy Tags B</p>
+          jcr:primaryType: hippostd:html
+        common:FacetType: apispecification
+        common:FullTaxonomy:
+        - health-services
+        - data-and-information
+        - inpatients
+        - national-health-service
+        - outpatients
+        - hospital
+        - secondary-care
+        common:SearchableTags:
+        - Inpatient
+        - Outpatient
+        common:searchRank: 5
+        common:searchable: true
+        hippo:availability:
+        - preview
+        hippostd:retainable: false
+        hippostd:state: unpublished
+        hippostdpubwf:createdBy: admin
+        hippostdpubwf:creationDate: 2021-02-26T14:57:40.102Z
+        hippostdpubwf:lastModificationDate: 2021-02-26T15:28:08.059Z
+        hippostdpubwf:lastModifiedBy: admin
+        hippotaxonomy:keys:
+        - inpatients
+        - outpatients
+        hippotranslation:id: 3ed96582-6590-4fe0-909a-a827b2943b80
+        hippotranslation:locale: en
+        jcr:mixinTypes:
+        - hippotaxonomy:classifiable
+        - mix:versionable
+        jcr:primaryType: website:apispecification
+        jcr:uuid: 1c95a8c2-84e0-47e3-bead-9bcf9bf213ec
+        website:html: ''
+        website:json: ''
+        website:seosummary: ''
+        website:shortsummary: Doc With Mapped Taxonomy Tags B
+        website:specification_id: '123456'
+        website:summary: ''
+        website:title: B Doc With Mapped Taxonomy Tags
+      /doc-with-mapped-taxonomy-tags-b[2]:
+        /website:seosummary:
+          hippostd:content: Doc With Mapped Taxonomy Tags B
+          jcr:primaryType: hippostd:html
+        /website:summary:
+          hippostd:content: <p>Doc With Mapped Taxonomy Tags B</p>
+          jcr:primaryType: hippostd:html
+        common:FacetType: apispecification
+        common:FullTaxonomy:
+        - health-services
+        - data-and-information
+        - inpatients
+        - national-health-service
+        - outpatients
+        - hospital
+        - secondary-care
+        common:SearchableTags:
+        - Inpatient
+        - Outpatient
+        common:searchRank: 5
+        common:searchable: true
+        hippo:availability: []
+        hippostd:retainable: false
+        hippostd:state: draft
+        hippostdpubwf:createdBy: admin
+        hippostdpubwf:creationDate: 2021-02-26T14:57:40.102Z
+        hippostdpubwf:lastModificationDate: 2021-02-26T15:28:03.237Z
+        hippostdpubwf:lastModifiedBy: admin
+        hippotaxonomy:keys:
+        - inpatients
+        - outpatients
+        hippotranslation:id: 3ed96582-6590-4fe0-909a-a827b2943b80
+        hippotranslation:locale: en
+        jcr:mixinTypes:
+        - hippotaxonomy:classifiable
+        - mix:referenceable
+        jcr:primaryType: website:apispecification
+        jcr:uuid: 4048b040-273c-4755-b2ce-c7684010e5df
+        website:html: ''
+        website:json: ''
+        website:seosummary: ''
+        website:shortsummary: Doc With Mapped Taxonomy Tags B
+        website:specification_id: '123456'
+        website:summary: ''
+        website:title: B Doc With Mapped Taxonomy Tags
+      /doc-with-mapped-taxonomy-tags-b[3]:
+        /website:seosummary:
+          hippostd:content: Doc With Mapped Taxonomy Tags B
+          jcr:primaryType: hippostd:html
+        /website:summary:
+          hippostd:content: <p>Doc With Mapped Taxonomy Tags B</p>
+          jcr:primaryType: hippostd:html
+        common:FacetType: apispecification
+        common:FullTaxonomy:
+        - health-services
+        - data-and-information
+        - inpatients
+        - national-health-service
+        - outpatients
+        - hospital
+        - secondary-care
+        common:SearchableTags:
+        - Inpatient
+        - Outpatient
+        common:searchRank: 5
+        common:searchable: true
+        hippo:availability:
+        - live
+        hippostd:retainable: false
+        hippostd:state: published
+        hippostdpubwf:createdBy: admin
+        hippostdpubwf:creationDate: 2021-02-26T14:57:40.102Z
+        hippostdpubwf:lastModificationDate: 2021-02-26T15:28:08.059Z
+        hippostdpubwf:lastModifiedBy: admin
+        hippostdpubwf:publicationDate: 2021-02-26T15:28:16.979Z
+        hippotaxonomy:keys:
+        - inpatients
+        - outpatients
+        hippotranslation:id: 3ed96582-6590-4fe0-909a-a827b2943b80
+        hippotranslation:locale: en
+        jcr:mixinTypes:
+        - hippotaxonomy:classifiable
+        - mix:referenceable
+        jcr:primaryType: website:apispecification
+        jcr:uuid: 2d43e2cb-78a6-4983-90a4-3ce2478b31c6
+        website:html: ''
+        website:json: ''
+        website:seosummary: ''
+        website:shortsummary: Doc With Mapped Taxonomy Tags B
+        website:specification_id: '123456'
+        website:summary: ''
+        website:title: B Doc With Mapped Taxonomy Tags
+      hippo:name: Doc With Mapped Taxonomy Tags B
+      hippo:versionHistory: 5cd2f28a-c54b-429e-a895-ec3dfdf64bcc
+      jcr:mixinTypes:
+      - hippo:named
+      - hippo:versionInfo
+      - mix:referenceable
+      jcr:primaryType: hippo:handle
+      jcr:uuid: 218e4b29-3223-41a0-9c02-beb76df6f1dd
+    /doc-with-no-mapped-taxonomy-tags:
+      /doc-with-no-mapped-taxonomy-tags[1]:
+        /website:component:
+          hippostd:content: ''
+          jcr:primaryType: hippostd:html
+        /website:friendlyurls:
+          jcr:primaryType: website:friendlyurls
+          website:alternativeurls: []
+          website:destination: ''
+        /website:image:
+          hippo:docbase: cafebabe-cafe-babe-cafe-babecafebabe
+          hippo:facets: []
+          hippo:modes: []
+          hippo:values: []
+          jcr:primaryType: hippogallerypicker:imagelink
+        /website:leadimage:
+          hippo:docbase: cafebabe-cafe-babe-cafe-babecafebabe
+          hippo:facets: []
+          hippo:modes: []
+          hippo:values: []
+          jcr:primaryType: hippogallerypicker:imagelink
+        /website:pageicon:
+          hippo:docbase: cafebabe-cafe-babe-cafe-babecafebabe
+          hippo:facets: []
+          hippo:modes: []
+          hippo:values: []
+          jcr:primaryType: hippogallerypicker:imagelink
+        /website:seosummary:
+          hippostd:content: Doc With No Mapped Taxonomy Tags
+          jcr:primaryType: hippostd:html
+        /website:summary:
+          hippostd:content: <p>Doc With No Mapped Taxonomy Tags</p>
+          jcr:primaryType: hippostd:html
+        /website:userContact:
+          /website:userContactnotes:
+            hippostd:content: ''
+            jcr:primaryType: hippostd:html
+          jcr:primaryType: website:userContact
+          website:userContactPhone: ''
+          website:userContactemail: hgfhfghfhf
+          website:userContactname: ''
+          website:userContactprimarycontact: false
+        /website:userNeed:
+          jcr:primaryType: website:userNeed
+          website:asA: ''
+          website:iNeedto: ''
+          website:soThat: ''
+        /website:userNeedandcontact:
+          /website:briefDescription:
+            hippostd:content: ''
+            jcr:primaryType: hippostd:html
+          /website:teampicker:
+            hippo:docbase: cafebabe-cafe-babe-cafe-babecafebabe
+            jcr:primaryType: hippo:mirror
+          jcr:primaryType: website:userNeedandcontact
+          website:portfolioCode: ''
+          website:responsibleTeam: ''
+          website:userNeedismet:
+          - ''
+        common:FullTaxonomy:
+        - document
+        - audiences
+        - content-type
+        common:SearchableTags:
+        - Viewpoint
+        - Audiences
+        - Document
+        common:searchRank: 3
+        common:searchable: true
+        hippo:availability: []
+        hippostd:retainable: false
+        hippostd:state: draft
+        hippostdpubwf:createdBy: admin
+        hippostdpubwf:creationDate: 2021-02-26T14:58:49.505Z
+        hippostdpubwf:lastModificationDate: 2021-02-26T15:27:12.545Z
+        hippostdpubwf:lastModifiedBy: admin
+        hippotaxonomy:keys:
+        - audiences
+        - document
+        hippotranslation:id: 6dca2d86-725d-443b-a57d-069ce6e47158
+        hippotranslation:locale: en
+        jcr:mixinTypes:
+        - hippotaxonomy:classifiable
+        - mix:referenceable
+        jcr:primaryType: website:general
+        jcr:uuid: 33d75e43-527d-4b83-9ff4-a383e6facc08
+        website:gossid: 0
+        website:metadata: []
+        website:navigationcontroller: withNav
+        website:shortsummary: Doc With No Mapped Taxonomy Tags
+        website:title: No Mapped Taxonomy Tags
+        website:type: ''
+      /doc-with-no-mapped-taxonomy-tags[2]:
+        /website:component:
+          hippostd:content: ''
+          jcr:primaryType: hippostd:html
+        /website:friendlyurls:
+          jcr:primaryType: website:friendlyurls
+          website:alternativeurls: []
+          website:destination: ''
+        /website:image:
+          hippo:docbase: cafebabe-cafe-babe-cafe-babecafebabe
+          hippo:facets: []
+          hippo:modes: []
+          hippo:values: []
+          jcr:primaryType: hippogallerypicker:imagelink
+        /website:leadimage:
+          hippo:docbase: cafebabe-cafe-babe-cafe-babecafebabe
+          hippo:facets: []
+          hippo:modes: []
+          hippo:values: []
+          jcr:primaryType: hippogallerypicker:imagelink
+        /website:pageicon:
+          hippo:docbase: cafebabe-cafe-babe-cafe-babecafebabe
+          hippo:facets: []
+          hippo:modes: []
+          hippo:values: []
+          jcr:primaryType: hippogallerypicker:imagelink
+        /website:seosummary:
+          hippostd:content: Doc With No Mapped Taxonomy Tags
+          jcr:primaryType: hippostd:html
+        /website:summary:
+          hippostd:content: <p>Doc With No Mapped Taxonomy Tags</p>
+          jcr:primaryType: hippostd:html
+        /website:userContact:
+          /website:userContactnotes:
+            hippostd:content: ''
+            jcr:primaryType: hippostd:html
+          jcr:primaryType: website:userContact
+          website:userContactPhone: ''
+          website:userContactemail: hgfhfghfhf
+          website:userContactname: ''
+          website:userContactprimarycontact: false
+        /website:userNeed:
+          jcr:primaryType: website:userNeed
+          website:asA: ''
+          website:iNeedto: ''
+          website:soThat: ''
+        /website:userNeedandcontact:
+          /website:briefDescription:
+            hippostd:content: ''
+            jcr:primaryType: hippostd:html
+          /website:teampicker:
+            hippo:docbase: cafebabe-cafe-babe-cafe-babecafebabe
+            jcr:primaryType: hippo:mirror
+          jcr:primaryType: website:userNeedandcontact
+          website:portfolioCode: ''
+          website:responsibleTeam: ''
+          website:userNeedismet:
+          - ''
+        common:FullTaxonomy:
+        - document
+        - audiences
+        - content-type
+        common:SearchableTags:
+        - Viewpoint
+        - Audiences
+        - Document
+        common:searchRank: 3
+        common:searchable: true
+        hippo:availability:
+        - preview
+        hippostd:retainable: false
+        hippostd:state: unpublished
+        hippostdpubwf:createdBy: admin
+        hippostdpubwf:creationDate: 2021-02-26T14:58:49.505Z
+        hippostdpubwf:lastModificationDate: 2021-02-26T15:27:46.701Z
+        hippostdpubwf:lastModifiedBy: admin
+        hippotaxonomy:keys:
+        - audiences
+        - document
+        hippotranslation:id: 6dca2d86-725d-443b-a57d-069ce6e47158
+        hippotranslation:locale: en
+        jcr:mixinTypes:
+        - hippotaxonomy:classifiable
+        - mix:referenceable
+        - mix:versionable
+        jcr:primaryType: website:general
+        jcr:uuid: fcc3ee02-cebb-4895-8848-df4d83d02b42
+        website:gossid: 0
+        website:metadata: []
+        website:navigationcontroller: withNav
+        website:shortsummary: Doc With No Mapped Taxonomy Tags
+        website:title: No Mapped Taxonomy Tags
+        website:type: ''
+      /doc-with-no-mapped-taxonomy-tags[3]:
+        /website:component:
+          hippostd:content: ''
+          jcr:primaryType: hippostd:html
+        /website:friendlyurls:
+          jcr:primaryType: website:friendlyurls
+          website:alternativeurls: []
+          website:destination: ''
+        /website:image:
+          hippo:docbase: cafebabe-cafe-babe-cafe-babecafebabe
+          hippo:facets: []
+          hippo:modes: []
+          hippo:values: []
+          jcr:primaryType: hippogallerypicker:imagelink
+        /website:leadimage:
+          hippo:docbase: cafebabe-cafe-babe-cafe-babecafebabe
+          hippo:facets: []
+          hippo:modes: []
+          hippo:values: []
+          jcr:primaryType: hippogallerypicker:imagelink
+        /website:pageicon:
+          hippo:docbase: cafebabe-cafe-babe-cafe-babecafebabe
+          hippo:facets: []
+          hippo:modes: []
+          hippo:values: []
+          jcr:primaryType: hippogallerypicker:imagelink
+        /website:seosummary:
+          hippostd:content: Doc With No Mapped Taxonomy Tags
+          jcr:primaryType: hippostd:html
+        /website:summary:
+          hippostd:content: <p>Doc With No Mapped Taxonomy Tags</p>
+          jcr:primaryType: hippostd:html
+        /website:userContact:
+          /website:userContactnotes:
+            hippostd:content: ''
+            jcr:primaryType: hippostd:html
+          jcr:primaryType: website:userContact
+          website:userContactPhone: ''
+          website:userContactemail: hgfhfghfhf
+          website:userContactname: ''
+          website:userContactprimarycontact: false
+        /website:userNeed:
+          jcr:primaryType: website:userNeed
+          website:asA: ''
+          website:iNeedto: ''
+          website:soThat: ''
+        /website:userNeedandcontact:
+          /website:briefDescription:
+            hippostd:content: ''
+            jcr:primaryType: hippostd:html
+          /website:teampicker:
+            hippo:docbase: cafebabe-cafe-babe-cafe-babecafebabe
+            jcr:primaryType: hippo:mirror
+          jcr:primaryType: website:userNeedandcontact
+          website:portfolioCode: ''
+          website:responsibleTeam: ''
+          website:userNeedismet:
+          - ''
+        common:FullTaxonomy:
+        - document
+        - audiences
+        - content-type
+        common:SearchableTags:
+        - Viewpoint
+        - Audiences
+        - Document
+        common:searchRank: 3
+        common:searchable: true
+        hippo:availability:
+        - live
+        hippostd:retainable: false
+        hippostd:state: published
+        hippostdpubwf:createdBy: admin
+        hippostdpubwf:creationDate: 2021-02-26T14:58:49.505Z
+        hippostdpubwf:lastModificationDate: 2021-02-26T15:27:46.701Z
+        hippostdpubwf:lastModifiedBy: admin
+        hippostdpubwf:publicationDate: 2021-02-26T15:28:17.060Z
+        hippotaxonomy:keys:
+        - audiences
+        - document
+        hippotranslation:id: 6dca2d86-725d-443b-a57d-069ce6e47158
+        hippotranslation:locale: en
+        jcr:mixinTypes:
+        - hippotaxonomy:classifiable
+        - mix:referenceable
+        jcr:primaryType: website:general
+        jcr:uuid: 9fe769e0-d061-4e22-84c2-0e10f70cdc78
+        website:gossid: 0
+        website:metadata: []
+        website:navigationcontroller: withNav
+        website:shortsummary: Doc With No Mapped Taxonomy Tags
+        website:title: No Mapped Taxonomy Tags
+        website:type: ''
+      hippo:name: Doc With No Mapped Taxonomy Tags
+      hippo:versionHistory: dcd29082-a5ce-411d-837c-5508db4b58cf
+      jcr:mixinTypes:
+      - hippo:named
+      - hippo:versionInfo
+      - mix:referenceable
+      jcr:primaryType: hippo:handle
+      jcr:uuid: b6cadc10-ea1e-4059-8cf2-0a2184509273
+    /preview:
+      /preview[1]:
+        /website:body:
+          hippostd:content: ''
+          jcr:primaryType: hippostd:html
+        /website:friendlyurls:
+          jcr:primaryType: website:friendlyurls
+          website:alternativeurls: []
+          website:destination: ''
+        /website:items[1]:
+          /website:link:
+            hippo:docbase: 6681acac-59a6-4f6e-918f-119c989cbd8d
+            jcr:primaryType: hippo:mirror
+          jcr:primaryType: website:internallink
+        /website:items[2]:
+          /website:link:
+            hippo:docbase: 218e4b29-3223-41a0-9c02-beb76df6f1dd
+            jcr:primaryType: hippo:mirror
+          jcr:primaryType: website:internallink
+        /website:items[3]:
+          /website:link:
+            hippo:docbase: b6cadc10-ea1e-4059-8cf2-0a2184509273
+            jcr:primaryType: hippo:mirror
+          jcr:primaryType: website:internallink
+        /website:items[4]:
+          jcr:primaryType: website:externallink
+          website:link: https://google.com
+          website:shortsummary: External Resource summary
+          website:title: External Resource
+        /website:seosummary:
+          hippostd:content: <p>Test API catalogue for smoke tests</p>
+          jcr:primaryType: hippostd:html
+        /website:summary:
+          hippostd:content: <p>Test API catalogue for smoke tests</p>
+          jcr:primaryType: hippostd:html
+        common:searchRank: 3
+        common:searchable: true
+        hippo:availability: []
+        hippostd:retainable: false
+        hippostd:state: draft
+        hippostdpubwf:createdBy: admin
+        hippostdpubwf:creationDate: 2021-02-24T14:35:21.682Z
+        hippostdpubwf:lastModificationDate: 2021-02-26T15:33:33.655Z
+        hippostdpubwf:lastModifiedBy: admin
+        hippotranslation:id: 61b0c0b8-971a-4fbd-8608-d40f9aadb1de
+        hippotranslation:locale: en
+        jcr:mixinTypes:
+        - hippotaxonomy:classifiable
+        - mix:referenceable
+        jcr:primaryType: website:componentlist
+        jcr:uuid: 8045d8f2-4def-4c3f-b981-07b0e2c8384c
+        website:anchor: true
+        website:gossid: 0
+        website:shortsummary: Test API catalogue for smoke tests
+        website:title: Test API catalogue
+      /preview[2]:
+        /website:body:
+          hippostd:content: ''
+          jcr:primaryType: hippostd:html
+        /website:friendlyurls:
+          jcr:primaryType: website:friendlyurls
+          website:alternativeurls: []
+          website:destination: ''
+        /website:items[1]:
+          /website:link:
+            hippo:docbase: 6681acac-59a6-4f6e-918f-119c989cbd8d
+            jcr:primaryType: hippo:mirror
+          jcr:primaryType: website:internallink
+        /website:items[2]:
+          /website:link:
+            hippo:docbase: 218e4b29-3223-41a0-9c02-beb76df6f1dd
+            jcr:primaryType: hippo:mirror
+          jcr:primaryType: website:internallink
+        /website:items[3]:
+          /website:link:
+            hippo:docbase: b6cadc10-ea1e-4059-8cf2-0a2184509273
+            jcr:primaryType: hippo:mirror
+          jcr:primaryType: website:internallink
+        /website:items[4]:
+          jcr:primaryType: website:externallink
+          website:link: https://google.com
+          website:shortsummary: External Resource summary
+          website:title: External Resource
+        /website:seosummary:
+          hippostd:content: <p>Test API catalogue for smoke tests</p>
+          jcr:primaryType: hippostd:html
+        /website:summary:
+          hippostd:content: <p>Test API catalogue for smoke tests</p>
+          jcr:primaryType: hippostd:html
+        common:searchRank: 3
+        common:searchable: true
+        hippo:availability:
+        - preview
+        hippostd:retainable: false
+        hippostd:state: unpublished
+        hippostdpubwf:createdBy: admin
+        hippostdpubwf:creationDate: 2021-02-24T14:35:21.682Z
+        hippostdpubwf:lastModificationDate: 2021-02-26T15:34:00.182Z
+        hippostdpubwf:lastModifiedBy: admin
+        hippotranslation:id: 61b0c0b8-971a-4fbd-8608-d40f9aadb1de
+        hippotranslation:locale: en
+        jcr:mixinTypes:
+        - hippotaxonomy:classifiable
+        - mix:referenceable
+        - mix:versionable
+        jcr:primaryType: website:componentlist
+        jcr:uuid: a943a220-9f9b-4384-9e86-15381d2fc6df
+        website:anchor: true
+        website:gossid: 0
+        website:shortsummary: Test API catalogue for smoke tests
+        website:title: Test API catalogue
+      /preview[3]:
+        /website:body:
+          hippostd:content: ''
+          jcr:primaryType: hippostd:html
+        /website:friendlyurls:
+          jcr:primaryType: website:friendlyurls
+          website:alternativeurls: []
+          website:destination: ''
+        /website:items[1]:
+          /website:link:
+            hippo:docbase: 6681acac-59a6-4f6e-918f-119c989cbd8d
+            jcr:primaryType: hippo:mirror
+          jcr:primaryType: website:internallink
+        /website:items[2]:
+          /website:link:
+            hippo:docbase: 218e4b29-3223-41a0-9c02-beb76df6f1dd
+            jcr:primaryType: hippo:mirror
+          jcr:primaryType: website:internallink
+        /website:items[3]:
+          /website:link:
+            hippo:docbase: b6cadc10-ea1e-4059-8cf2-0a2184509273
+            jcr:primaryType: hippo:mirror
+          jcr:primaryType: website:internallink
+        /website:items[4]:
+          jcr:primaryType: website:externallink
+          website:link: https://google.com
+          website:shortsummary: External Resource summary
+          website:title: External Resource
+        /website:seosummary:
+          hippostd:content: <p>Test API catalogue for smoke tests</p>
+          jcr:primaryType: hippostd:html
+        /website:summary:
+          hippostd:content: <p>Test API catalogue for smoke tests</p>
+          jcr:primaryType: hippostd:html
+        common:searchRank: 3
+        common:searchable: true
+        hippo:availability:
+        - live
+        hippostd:retainable: false
+        hippostd:state: published
+        hippostdpubwf:createdBy: admin
+        hippostdpubwf:creationDate: 2021-02-24T14:35:21.682Z
+        hippostdpubwf:lastModificationDate: 2021-02-26T15:34:00.182Z
+        hippostdpubwf:lastModifiedBy: admin
+        hippostdpubwf:publicationDate: 2021-02-26T15:34:03.936Z
+        hippotranslation:id: 61b0c0b8-971a-4fbd-8608-d40f9aadb1de
+        hippotranslation:locale: en
+        jcr:mixinTypes:
+        - hippotaxonomy:classifiable
+        - mix:referenceable
+        jcr:primaryType: website:componentlist
+        jcr:uuid: 76042466-7949-428d-b36b-5538f48c9b90
+        website:anchor: true
+        website:gossid: 0
+        website:shortsummary: Test API catalogue for smoke tests
+        website:title: Test API catalogue
+      hippo:versionHistory: 1e142ff2-a22c-47bd-98fe-74fa6ea85aa2
+      jcr:mixinTypes:
+      - hippo:versionInfo
+      - mix:referenceable
+      jcr:primaryType: hippo:handle
+      jcr:uuid: bcd0ee45-2ff2-429d-8679-5d494184dbbc
+    hippo:name: API Catalogue
+    hippostd:foldertype:
+    - new-digital-website-folder
+    - new-digital-website-document
+    hippotranslation:id: 4bd2b94c-3563-4c18-b12f-a7d42c0e0fc0
+    hippotranslation:locale: en
+    jcr:mixinTypes:
+    - hippo:named
+    - hippotranslation:translated
+    - mix:versionable
+    jcr:primaryType: hippostd:folder
+    jcr:uuid: 62f17dec-5d85-4060-8aa9-0fbd09d074e1
+  hippo:name: Developer
+  hippostd:foldertype:
+  - new-digital-website-folder
+  - new-digital-website-document
+  hippotranslation:id: 4b3f5331-e4c1-4b9c-a300-b680c6ae1188
+  hippotranslation:locale: en
+  jcr:mixinTypes:
+  - hippo:named
+  - hippotranslation:translated
+  - mix:versionable
+  jcr:primaryType: hippostd:folder
+  jcr:uuid: 3e447b55-c0fe-4d4c-9130-07b5b01c0f49
