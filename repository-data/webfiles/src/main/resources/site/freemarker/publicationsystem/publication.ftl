@@ -179,7 +179,8 @@
         </div>
     </#if>
 
-                <#assign administrativeSources = publication.parentDocument?has_content?then(publication.parentDocument.administrativeSources?has_content?then(publication.parentDocument.administrativeSources, publication.administrativeSources), publication.administrativeSources) />
+                <#assign administrativeSources = publication.parentDocument?has_content?then(publication.parentDocument.administrativeSources?has_content?then(publication.parentDocument.administrativeSources, ""), "") />
+
                 <#if administrativeSources?has_content>
                     <div class="article-section" id="administrative-sources">
                         <h2>${administrativeResourcesHeader}</h2>

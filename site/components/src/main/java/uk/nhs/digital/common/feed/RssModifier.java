@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.nhs.digital.ps.beans.Publication;
+import uk.nhs.digital.ps.beans.Series;
 import uk.nhs.digital.website.beans.*;
 
 import java.text.SimpleDateFormat;
@@ -296,25 +297,30 @@ public class RssModifier extends RSS20Modifier {
     }
 
     private String getCategory(Publication publicationBean) {
-        StringBuilder category = new StringBuilder();
-        try {
-            if (publicationBean.getFullTaxonomyList() != null && publicationBean.getFullTaxonomyList().size() > 0) {
-
-                category.append(Arrays.toString(publicationBean.getFullTaxonomyList().toArray()));
+        HippoBean parentDocument = publicationBean.getParentDocument();
+        if (parentDocument instanceof Series) {
+            Series series = (Series) parentDocument;
+            StringBuilder category = new StringBuilder();
+            try {
+                if (series.getFullTaxonomyList() != null && series.getFullTaxonomyList().size() > 0) {
+                    category.append(Arrays.toString(series.getFullTaxonomyList().toArray()));
+                }
+            } catch (Exception ex) {
+                LOGGER.warn(" Failed to get the Full Taxonomy.", ex.getMessage());
             }
-        } catch (Exception ex) {
-            LOGGER.warn(" Failed to get the Full Taxonomy.", ex.getMessage());
+            if (series.getInformationType() != null && series.getInformationType().length > 0) {
+                category.append(Arrays.toString(series.getInformationType()));
+            }
+            if (series.getGranularity() != null && series.getGranularity().length > 0) {
+                category.append(Arrays.toString(series.getGranularity()));
+            }
+            if (series.getGeographicCoverage() != null && series.getGeographicCoverage().length > 0) {
+                category.append(Arrays.toString(Arrays.stream(series.getGeographicCoverage()).toArray()));
+            }
+            return category.toString();
+        } else {
+            return "";
         }
-        if (publicationBean.getInformationType() != null && publicationBean.getInformationType().length > 0) {
-            category.append(Arrays.toString(publicationBean.getInformationType()));
-        }
-        if (publicationBean.getGranularity() != null && publicationBean.getGranularity().length > 0) {
-            category.append(Arrays.toString(publicationBean.getGranularity()));
-        }
-        if (publicationBean.getGeographicCoverage() != null && publicationBean.getGeographicCoverage().length > 0) {
-            category.append(Arrays.toString(Arrays.stream(publicationBean.getGeographicCoverage()).toArray()));
-        }
-        return category.toString();
     }
 
     @NotNull

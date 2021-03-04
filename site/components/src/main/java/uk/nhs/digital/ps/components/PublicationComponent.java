@@ -59,8 +59,7 @@ public class PublicationComponent extends EssentialsContentComponent {
             index.add(KEY_FACTS_ID);
         }
 
-        // TODO remove publication check in DW-1285
-        if (parentIsSeriesAndAdminSourcesNotBlank(publication) || parentIsArchiveAndAdminSourcesNotBlank(publication) || isNotBlank(publication.getAdministrativeSources())) {
+        if (parentIsSeriesAndAdminSourcesNotBlank(publication) || parentIsArchiveAndAdminSourcesNotBlank(publication)) {
             index.add(ADMIN_SOURCES_ID);
         }
 

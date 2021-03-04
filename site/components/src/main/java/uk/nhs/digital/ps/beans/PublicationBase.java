@@ -109,22 +109,6 @@ public abstract class PublicationBase extends BaseDocument {
         return hippoBeans;
     }
 
-    @HippoEssentialsGenerated(internalName = PropertyKeys.TAXONOMY)
-    public String[] getKeys() {
-        return getPropertyIfPermittedMultiple(PropertyKeys.TAXONOMY);
-    }
-
-    @HippoEssentialsGenerated(internalName = PropertyKeys.INFORMATION_TYPE)
-    public String[] getInformationType() {
-        return getPropertyIfPermittedMultiple(PropertyKeys.INFORMATION_TYPE);
-    }
-
-    public List<String> getFullTaxonomyList() {
-        assertPropertyPermitted(Dataset.PropertyKeys.TAXONOMY);
-
-        return HippoBeanHelper.getFullTaxonomyList(this);
-    }
-
     /**
      * <p>
      * Returns Publication Date. If the date is more than {@linkplain #WEEKS_TO_CUTOFF} ahead
@@ -170,21 +154,6 @@ public abstract class PublicationBase extends BaseDocument {
     @HippoEssentialsGenerated(internalName = PropertyKeys.COVERAGE_END)
     public Calendar getCoverageEnd() {
         return getPropertyIfPermittedSingle(PropertyKeys.COVERAGE_END);
-    }
-
-    @HippoEssentialsGenerated(internalName = PropertyKeys.GEOGRAPHIC_COVERAGE)
-    public String[] getGeographicCoverage() {
-        return geographicCoverageValuesToRegionValue(getPropertyIfPermittedMultiple(PropertyKeys.GEOGRAPHIC_COVERAGE));
-    }
-
-    @HippoEssentialsGenerated(internalName = PropertyKeys.GRANULARITY)
-    public String[] getGranularity() {
-        return getPropertyIfPermittedMultiple(PropertyKeys.GRANULARITY);
-    }
-
-    @HippoEssentialsGenerated(internalName = PropertyKeys.ADMINISTRATIVE_SOURCES)
-    public String getAdministrativeSources() {
-        return getPropertyIfPermittedSingle(PropertyKeys.ADMINISTRATIVE_SOURCES);
     }
 
     @HippoEssentialsGenerated(internalName = PropertyKeys.TITLE)

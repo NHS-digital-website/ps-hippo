@@ -17,11 +17,12 @@
 <#include "../common/macro/metaTags.ftl">
 <@metaTags></@metaTags>
 
-<#assign informationTypes = legacyPublication.parentDocument?has_content?then(legacyPublication.parentDocument.informationType?has_content?then(legacyPublication.parentDocument.informationType, legacyPublication.informationType), legacyPublication.informationType) />
-<#assign fullTaxonomyList = legacyPublication.parentDocument?has_content?then(legacyPublication.parentDocument.fullTaxonomyList?has_content?then(legacyPublication.parentDocument.fullTaxonomyList, legacyPublication.fullTaxonomyList), legacyPublication.fullTaxonomyList) />
-<#assign geographicCoverage = legacyPublication.parentDocument?has_content?then(legacyPublication.parentDocument.geographicCoverage?has_content?then(legacyPublication.parentDocument.geographicCoverage, legacyPublication.geographicCoverage), legacyPublication.geographicCoverage) />
-<#assign granularity = legacyPublication.parentDocument?has_content?then(legacyPublication.parentDocument.granularity?has_content?then(legacyPublication.parentDocument.granularity, legacyPublication.granularity), legacyPublication.granularity) />
-<#assign administrativeSources = legacyPublication.parentDocument?has_content?then(legacyPublication.parentDocument.administrativeSources?has_content?then(legacyPublication.parentDocument.administrativeSources, legacyPublication.administrativeSources), legacyPublication.administrativeSources) />
+<#assign informationTypes = legacyPublication.parentDocument?has_content?then(legacyPublication.parentDocument.informationType?has_content?then(legacyPublication.parentDocument.informationType, {}), {}) />
+<#assign fullTaxonomyList = legacyPublication.parentDocument?has_content?then(legacyPublication.parentDocument.fullTaxonomyList?has_content?then(legacyPublication.parentDocument.fullTaxonomyList, {}), {}) />
+<#assign geographicCoverage = legacyPublication.parentDocument?has_content?then(legacyPublication.parentDocument.geographicCoverage?has_content?then(legacyPublication.parentDocument.geographicCoverage, {}), {}) />
+<#assign granularity = legacyPublication.parentDocument?has_content?then(legacyPublication.parentDocument.granularity?has_content?then(legacyPublication.parentDocument.granularity, {}), {}) />
+<#assign administrativeSources = legacyPublication.parentDocument?has_content?then(legacyPublication.parentDocument.administrativeSources?has_content?then(legacyPublication.parentDocument.administrativeSources, ""), "") />
+
 
 <#assign hasSummary = legacyPublication.summary.content?has_content>
 <#assign hasAdministrativeSources = administrativeSources?has_content>
