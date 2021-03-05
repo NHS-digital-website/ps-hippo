@@ -175,7 +175,6 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
         public String responsibleStastician
         public String responsibleTeam
 
-
         public SeriesNewFields(JSONObject jsonObject) {
             this.title                 = jsonObject.get(JSON_FIELD_TITLE).toString()
 
@@ -204,21 +203,25 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
             this.shortTitle = jsonObject.get(JSON_FIELD_SHORT_TITLE).toString()
             this.subTitle = jsonObject.get(JSON_FIELD_SUBTITLE).toString()
             this.frequency = jsonObject.get(JSON_FIELD_FREQUENCY).toString()
-            if (this.frequency != null && this.frequency.toLowerCase().indexOf("tbc") >= 0) {
+            if (shouldResetToEmpty(this.frequency)) {
                 this.frequency = ""
             }
             this.dateNaming = jsonObject.get(JSON_FIELD_DATE_NAMING_CONVENTION).toString()
-            if (this.dateNaming != null && this.dateNaming.toLowerCase().indexOf("tbc") >= 0) {
+            if (shouldResetToEmpty(this.dateNaming)) {
                 this.dateNaming = ""
             }
             this.responsibleStastician = jsonObject.get(JSON_FIELD_RESPONSIBLE_STASTICIAN).toString()
-            if (this.responsibleStastician != null && this.responsibleStastician.toLowerCase().indexOf("tbc") >= 0) {
+            if (shouldResetToEmpty(this.responsibleStastician)) {
                 this.responsibleStastician = ""
             }
             this.responsibleTeam = jsonObject.get(JSON_FIELD_RESPONSIBLE_TEAM).toString()
-            if (this.responsibleTeam != null && this.responsibleTeam.toLowerCase().indexOf("tbc") >= 0) {
+            if (shouldResetToEmpty(this.responsibleTeam)) {
                 this.responsibleTeam = ""
             }
+        }
+
+        private boolean shouldResetToEmpty(String value) {
+            return (value != null && (value.toLowerCase().indexOf("tbc") >= 0 || value.toLowerCase().indexOf("?") >= 0))
         }
 
         public String toString() {
@@ -306,21 +309,21 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
         node.setProperty(JCR_PROPERTY_ADMINISTRATIVE_SOURCES, series.administrativeSources)
         node.setProperty(JCR_PROPERTY_SHORT_TITLE, series.shortTitle)
         node.setProperty(JCR_PROPERTY_SUBTITLE, series.subTitle)
-        node.setProperty(JCR_PROPERTY_FREQUENCY, getFrequencyValueInJCR(series.frequency))
-        node.setProperty(JCR_PROPERTY_DATE_NAMING_CONVENTION, getDateNamingConventionInJCR(series.dateNaming))
+        node.setProperty(JCR_PROPERTY_FREQUENCY, getFrequencyValueForJCR(series.frequency))
+        node.setProperty(JCR_PROPERTY_DATE_NAMING_CONVENTION, getDateNamingConventionForJCR(series.dateNaming))
 
-        String responsibleStasticianUUID = getResponsibleStasticianUUID(series.responsibleStastician)
+        String responsibleStasticianUUID = getResponsibleStasticianUUIDForJCR(series.responsibleStastician)
         def responsibleStasticianNode = node.getNode(JCR_PROPERTY_RESPONSIBLE_STASTICIAN)
         responsibleStasticianNode.setProperty("hippo:docbase", (String) responsibleStasticianUUID)
 
-        String responsibleTeamUUID = getResponsibleTeamUUID(series.responsibleTeam)
+        String responsibleTeamUUID = getResponsibleTeamUUIDForJCR(series.responsibleTeam)
         def responsibleTeamNode = node.getNode(JCR_PROPERTY_RESPONSIBLE_TEAM)
         responsibleTeamNode.setProperty("hippo:docbase", (String) responsibleTeamUUID)
 
         return true
     }
 
-    String getFrequencyValueInJCR(String frequency) {
+    String getFrequencyValueForJCR(String frequency) {
         String frequencyAux = frequency.toLowerCase()
         if (frequencyAux.equals("twice a year")) {
             return "twiceyear"
@@ -329,7 +332,7 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
         }
     }
 
-    String getDateNamingConventionInJCR(String dateNaming) {
+    String getDateNamingConventionForJCR(String dateNaming) {
         String dataNamingAux = dateNaming.toLowerCase()
         String returnValue = ""
         if (dataNamingAux.equalsIgnoreCase("At year of publication")) {
@@ -355,38 +358,54 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
         }
     }
 
-    String getResponsibleStasticianUUID(String stastician) {
-        if (stastician != null && !stastician.trim().equalsIgnoreCase("")) {
-            QueryResult resultStasticians = queryManager.createQuery(
-//        "/jcr:root/content/documents/corporate-website//*[(@jcr:primaryType='website:person') and (@website:shortsummary='" + stastician + "')]", Query.XPATH).execute()
-                    "/jcr:root/content//*[(@jcr:primaryType='website:person') and (@website:shortsummary='" + stastician + "')]", Query.XPATH).execute()
+    String getResponsibleStasticianUUIDForJCR(String stastitician) {
+        if (stastitician != null && !stastitician.trim().equalsIgnoreCase("")) {
+            String[] stastiticianParts = stastitician.split(" ");
+            if (stastiticianParts.length >= 2) {
+                String stastiticianFirstName = stastiticianParts[0]
+                String stastiticianLastName = stastiticianParts[1]
+                if (stastiticianFirstName != null && !stastiticianFirstName.trim().equalsIgnoreCase("")
+                        && stastiticianLastName != null && !stastiticianLastName.trim().equalsIgnoreCase("")) {
 
-            final NodeIterator nodes = resultStasticians.getNodes()
-            if (nodes.hasNext()) {
-                Node node = nodes.nextNode()
-                if (node != null) {
-                    String identifier = (String) node.getIdentifier()
-                    if (identifier == null || identifier.trim().equalsIgnoreCase("")) {
-                        identifier = RESPONSIBLE_STASTICIAN_DEFAULT_VALUE_HIPPO_BASE
+                    QueryResult resultStasticians = queryManager.createQuery(
+                            //        "/jcr:root/content/documents/corporate-website//*[(@jcr:primaryType='website:person') and (@website:shortsummary='" + stastician + "')]", Query.XPATH).execute()
+                            "/jcr:root/content//*[(@jcr:primaryType='website:personalinfo') and (@website:firstname='" + stastiticianFirstName + "') and (@website:lastname='" + stastiticianLastName + "')]", Query.XPATH).execute()
+
+                    final NodeIterator nodes = resultStasticians.getNodes()
+                    if (nodes.hasNext()) {
+                        Node node = nodes.nextNode()
+                        if (node != null) {
+                            Node websitePerson = node.getParent()
+                            if (websitePerson != null) {
+                                Node hippoHandle = websitePerson.getParent()
+                                if (hippoHandle != null) {
+                                    String identifier = (String) hippoHandle.getIdentifier()
+                                    if (identifier == null || identifier.trim().equalsIgnoreCase("")) {
+                                        identifier = RESPONSIBLE_STASTICIAN_DEFAULT_VALUE_HIPPO_BASE
+                                    }
+                                    return identifier
+                                }
+                            }
+                        }
                     }
-                    return identifier
                 }
             }
         }
         return RESPONSIBLE_STASTICIAN_DEFAULT_VALUE_HIPPO_BASE
     }
 
-    String getResponsibleTeamUUID(String team) {
+    String getResponsibleTeamUUIDForJCR(String team) {
         if (team != null && !team.trim().equalsIgnoreCase("")) {
             QueryResult resultTeams = queryManager.createQuery(
 //        "/jcr:root/content/documents/corporate-website//*[(@jcr:primaryType='website:team') and (@website:shortsummary='" + team + "')]", Query.XPATH).execute()
-                    "/jcr:root/content//*[(@jcr:primaryType='website:team') and (@website:shortsummary='" + team + "')]", Query.XPATH).execute()
+                    "/jcr:root/content//*[(@jcr:primaryType='website:team') and (@website:title='" + team + "')]", Query.XPATH).execute()
 
             final NodeIterator nodes = resultTeams.getNodes()
             if (nodes.hasNext()) {
                 Node node = nodes.nextNode()
                 if (node != null) {
-                    String identifier = (String) node.getIdentifier()
+                    Node hippoHandle = node.getParent()
+                    String identifier = (String) hippoHandle.getIdentifier()
                     if (identifier == null || identifier.trim().equalsIgnoreCase("")) {
                         identifier = RESPONSIBLE_TEAM_DEFAULT_VALUE_HIPPO_BASE
                     }
