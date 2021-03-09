@@ -85,7 +85,7 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
     private final static JCR_PROPERTY_SUBTITLE = "publicationsystem:subTitle"
     private final static JCR_PROPERTY_FREQUENCY = "publicationsystem:frequency"
     private final static JCR_PROPERTY_DATE_NAMING_CONVENTION = "publicationsystem:dateNaming"
-    private final static JCR_PROPERTY_RESPONSIBLE_STASTICIAN = "publicationsystem:statistician"
+    private final static JCR_PROPERTY_RESPONSIBLE_STATISTICIAN = "publicationsystem:statistician"
     private final static JCR_PROPERTY_RESPONSIBLE_TEAM = "publicationsystem:team"
 
     private final static RESPONSIBLE_STASTICIAN_DEFAULT_VALUE_HIPPO_BASE  = "cafebabe-cafe-babe-cafe-babecafebabe"
@@ -124,9 +124,7 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
         // Query returns the hippo:handle node for the document
         // (which has the 3 variants)
         try {
-            if (node.hasNodes()) {
-                return updateNode(node)
-            }
+            return updateNode(node)
         } catch (e) {
             log.error("Failed to process node: " + node.getPath() + ", exception: " + e)
         }
@@ -172,7 +170,7 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
         public String subTitle
         public String frequency
         public String dateNaming
-        public String responsibleStastician
+        public String responsibleStatistician
         public String responsibleTeam
 
         public SeriesNewFields(JSONObject jsonObject) {
@@ -210,9 +208,9 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
             if (shouldResetToEmpty(this.dateNaming)) {
                 this.dateNaming = ""
             }
-            this.responsibleStastician = jsonObject.get(JSON_FIELD_RESPONSIBLE_STASTICIAN).toString()
-            if (shouldResetToEmpty(this.responsibleStastician)) {
-                this.responsibleStastician = ""
+            this.responsibleStatistician = jsonObject.get(JSON_FIELD_RESPONSIBLE_STASTICIAN).toString()
+            if (shouldResetToEmpty(this.responsibleStatistician)) {
+                this.responsibleStatistician = ""
             }
             this.responsibleTeam = jsonObject.get(JSON_FIELD_RESPONSIBLE_TEAM).toString()
             if (shouldResetToEmpty(this.responsibleTeam)) {
@@ -237,7 +235,7 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
             sb.append("\n subTitle: ").append(subTitle)
             sb.append("\n frequency: ").append(frequency)
             sb.append("\n dateNaming: ").append(dateNaming)
-            sb.append("\n responsibleStastician: ").append(responsibleStastician)
+            sb.append("\n responsibleStastician: ").append(responsibleStatistician)
             sb.append("\n responsibleTeam: ").append(responsibleTeam)
         }
 
@@ -263,7 +261,7 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
             while (iterator.hasNext() && !found) {
                 item = (JSONObject) iterator.next();
                 String titleItem = item.get(JSON_FIELD_TITLE)
-                if (title.equals(titleItem)) found = true;
+                if (title.trim().equalsIgnoreCase(titleItem.trim())) found = true;
             }
             if (found) {
                 SeriesNewFields series = new SeriesNewFields(item)
@@ -309,21 +307,27 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
         node.setProperty(JCR_PROPERTY_ADMINISTRATIVE_SOURCES, series.administrativeSources)
         node.setProperty(JCR_PROPERTY_SHORT_TITLE, series.shortTitle)
         node.setProperty(JCR_PROPERTY_SUBTITLE, series.subTitle)
-        node.setProperty(JCR_PROPERTY_FREQUENCY, getFrequencyValueForJCR(series.frequency))
+        node.setProperty(JCR_PROPERTY_FREQUENCY, getFrequencyForJCR(series.frequency))
         node.setProperty(JCR_PROPERTY_DATE_NAMING_CONVENTION, getDateNamingConventionForJCR(series.dateNaming))
 
-        String responsibleStasticianUUID = getResponsibleStasticianUUIDForJCR(series.responsibleStastician)
-        def responsibleStasticianNode = node.getNode(JCR_PROPERTY_RESPONSIBLE_STASTICIAN)
-        responsibleStasticianNode.setProperty("hippo:docbase", (String) responsibleStasticianUUID)
+        String responsibleStatisticianUUID = getResponsibleStatisticianUUIDForJCR(series.responsibleStatistician)
+        if (!node.hasNode(JCR_PROPERTY_RESPONSIBLE_STATISTICIAN)) {
+            node.addNode(JCR_PROPERTY_RESPONSIBLE_STATISTICIAN, "hippo:mirror")
+        }
+        def responsibleStatisticianNode = node.getNode(JCR_PROPERTY_RESPONSIBLE_STATISTICIAN)
+        responsibleStatisticianNode.setProperty("hippo:docbase", (String) responsibleStatisticianUUID)
 
         String responsibleTeamUUID = getResponsibleTeamUUIDForJCR(series.responsibleTeam)
+        if (!node.hasNode(JCR_PROPERTY_RESPONSIBLE_TEAM)) {
+            node.addNode(JCR_PROPERTY_RESPONSIBLE_TEAM, "hippo:mirror")
+        }
         def responsibleTeamNode = node.getNode(JCR_PROPERTY_RESPONSIBLE_TEAM)
         responsibleTeamNode.setProperty("hippo:docbase", (String) responsibleTeamUUID)
 
         return true
     }
 
-    String getFrequencyValueForJCR(String frequency) {
+    String getFrequencyForJCR(String frequency) {
         String frequencyAux = frequency.toLowerCase()
         if (frequencyAux.equals("twice a year")) {
             return "twiceyear"
@@ -354,24 +358,24 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
         } else if (dataNamingAux.equalsIgnoreCase("No date")) {
             returnValue = "9"
         } else {
-            return returnValue
+            log.info("dataNaming '" + dateNaming + "' was not found")
+            returnValue = ""
         }
+        return returnValue
     }
 
-    String getResponsibleStasticianUUIDForJCR(String stastitician) {
-        if (stastitician != null && !stastitician.trim().equalsIgnoreCase("")) {
-            String[] stastiticianParts = stastitician.split(" ");
-            if (stastiticianParts.length >= 2) {
-                String stastiticianFirstName = stastiticianParts[0]
-                String stastiticianLastName = stastiticianParts[1]
+    String getResponsibleStatisticianUUIDForJCR(String statistician) {
+        if (statistician != null && !statistician.trim().equalsIgnoreCase("")) {
+            String[] statisticianParts = statistician.split(" ");
+            if (statisticianParts.length >= 2) {
+                String stastiticianFirstName = statisticianParts[0]
+                String stastiticianLastName = statisticianParts[1]
                 if (stastiticianFirstName != null && !stastiticianFirstName.trim().equalsIgnoreCase("")
                         && stastiticianLastName != null && !stastiticianLastName.trim().equalsIgnoreCase("")) {
-
-                    QueryResult resultStasticians = queryManager.createQuery(
-                            //        "/jcr:root/content/documents/corporate-website//*[(@jcr:primaryType='website:person') and (@website:shortsummary='" + stastician + "')]", Query.XPATH).execute()
+                    QueryResult resultStatisticians = queryManager.createQuery(
                             "/jcr:root/content//*[(@jcr:primaryType='website:personalinfo') and (@website:firstname='" + stastiticianFirstName + "') and (@website:lastname='" + stastiticianLastName + "')]", Query.XPATH).execute()
 
-                    final NodeIterator nodes = resultStasticians.getNodes()
+                    final NodeIterator nodes = resultStatisticians.getNodes()
                     if (nodes.hasNext()) {
                         Node node = nodes.nextNode()
                         if (node != null) {
@@ -390,6 +394,7 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
                     }
                 }
             }
+            log.info("Statistician '" + statistician + "' not found. Using default which is empty")
         }
         return RESPONSIBLE_STASTICIAN_DEFAULT_VALUE_HIPPO_BASE
     }
@@ -397,7 +402,6 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
     String getResponsibleTeamUUIDForJCR(String team) {
         if (team != null && !team.trim().equalsIgnoreCase("")) {
             QueryResult resultTeams = queryManager.createQuery(
-//        "/jcr:root/content/documents/corporate-website//*[(@jcr:primaryType='website:team') and (@website:shortsummary='" + team + "')]", Query.XPATH).execute()
                     "/jcr:root/content//*[(@jcr:primaryType='website:team') and (@website:title='" + team + "')]", Query.XPATH).execute()
 
             final NodeIterator nodes = resultTeams.getNodes()
@@ -412,6 +416,7 @@ class DW1284MigrationFromPublicationToSeries extends BaseNodeUpdateVisitor {
                     return identifier
                 }
             }
+            log.info("Team '" + team + "' not found. Using default which is empty")
         }
         return RESPONSIBLE_TEAM_DEFAULT_VALUE_HIPPO_BASE
     }

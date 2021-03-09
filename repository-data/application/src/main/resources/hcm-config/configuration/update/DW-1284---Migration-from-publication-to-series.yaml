@@ -4,7 +4,7 @@ definitions:
       hipposys:batchsize: 10
       hipposys:description: ''
       hipposys:dryrun: false
-      hipposys:loglevel: DEBUG
+      hipposys:loglevel: TRACE
       hipposys:parameters: "{\r\n    \"inputFile\" :  \"/content/assets/assetsmiguel/seriesinfoexport2.json/seriesinfoexport2.json/hippogallery:asset\"\
         \ \r\n}"
       hipposys:query: /jcr:root/content/documents/corporate-website//*[(@jcr:primaryType='publicationsystem:series')]
@@ -65,7 +65,7 @@ definitions:
         \r\n    private final static JCR_PROPERTY_SUBTITLE = \"publicationsystem:subTitle\"\
         \r\n    private final static JCR_PROPERTY_FREQUENCY = \"publicationsystem:frequency\"\
         \r\n    private final static JCR_PROPERTY_DATE_NAMING_CONVENTION = \"publicationsystem:dateNaming\"\
-        \r\n    private final static JCR_PROPERTY_RESPONSIBLE_STASTICIAN = \"publicationsystem:statistician\"\
+        \r\n    private final static JCR_PROPERTY_RESPONSIBLE_STATISTICIAN = \"publicationsystem:statistician\"\
         \r\n    private final static JCR_PROPERTY_RESPONSIBLE_TEAM = \"publicationsystem:team\"\
         \r\n\r\n    private final static RESPONSIBLE_STASTICIAN_DEFAULT_VALUE_HIPPO_BASE\
         \  = \"cafebabe-cafe-babe-cafe-babecafebabe\"\r\n    private final static\
@@ -87,11 +87,10 @@ definitions:
         \ \", e)\r\n            e.printStackTrace()\r\n        }\r\n    }\r\n\r\n\
         \    boolean doUpdate(Node node) {\r\n        // Query returns the hippo:handle\
         \ node for the document\r\n        // (which has the 3 variants)\r\n     \
-        \   try {\r\n            if (node.hasNodes()) {\r\n                return\
-        \ updateNode(node)\r\n            }\r\n        } catch (e) {\r\n         \
-        \   log.error(\"Failed to process node: \" + node.getPath() + \", exception:\
-        \ \" + e)\r\n        }\r\n        return false\r\n    }\r\n\r\n    boolean\
-        \ undoUpdate(Node node) {\r\n        throw new UnsupportedOperationException('Updater\
+        \   try {\r\n            return updateNode(node)\r\n        } catch (e) {\r\
+        \n            log.error(\"Failed to process node: \" + node.getPath() + \"\
+        , exception: \" + e)\r\n        }\r\n        return false\r\n    }\r\n\r\n\
+        \    boolean undoUpdate(Node node) {\r\n        throw new UnsupportedOperationException('Updater\
         \ does not implement undoUpdate method')\r\n    }\r\n\r\n    boolean updateNode(Node\
         \ n) {\r\n        JcrUtils.ensureIsCheckedOut(n)\r\n\r\n        def path =\
         \ n.getPath()\r\n        def nodeType = n.getPrimaryNodeType().getName()\r\
@@ -108,7 +107,7 @@ definitions:
         \n        public String[] taxonomy\r\n        public String administrativeSources\r\
         \n\r\n        public String shortTitle\r\n        public String subTitle\r\
         \n        public String frequency\r\n        public String dateNaming\r\n\
-        \        public String responsibleStastician\r\n        public String responsibleTeam\r\
+        \        public String responsibleStatistician\r\n        public String responsibleTeam\r\
         \n\r\n        public SeriesNewFields(JSONObject jsonObject) {\r\n        \
         \    this.title                 = jsonObject.get(JSON_FIELD_TITLE).toString()\r\
         \n\r\n            this.granularity           = jsonObject.get(JSON_FIELD_GRANULARITY).toString().replace('[',\
@@ -135,10 +134,10 @@ definitions:
         \  this.frequency = \"\"\r\n            }\r\n            this.dateNaming =\
         \ jsonObject.get(JSON_FIELD_DATE_NAMING_CONVENTION).toString()\r\n       \
         \     if (shouldResetToEmpty(this.dateNaming)) {\r\n                this.dateNaming\
-        \ = \"\"\r\n            }\r\n            this.responsibleStastician = jsonObject.get(JSON_FIELD_RESPONSIBLE_STASTICIAN).toString()\r\
-        \n            if (shouldResetToEmpty(this.responsibleStastician)) {\r\n  \
-        \              this.responsibleStastician = \"\"\r\n            }\r\n    \
-        \        this.responsibleTeam = jsonObject.get(JSON_FIELD_RESPONSIBLE_TEAM).toString()\r\
+        \ = \"\"\r\n            }\r\n            this.responsibleStatistician = jsonObject.get(JSON_FIELD_RESPONSIBLE_STASTICIAN).toString()\r\
+        \n            if (shouldResetToEmpty(this.responsibleStatistician)) {\r\n\
+        \                this.responsibleStatistician = \"\"\r\n            }\r\n\
+        \            this.responsibleTeam = jsonObject.get(JSON_FIELD_RESPONSIBLE_TEAM).toString()\r\
         \n            if (shouldResetToEmpty(this.responsibleTeam)) {\r\n        \
         \        this.responsibleTeam = \"\"\r\n            }\r\n        }\r\n\r\n\
         \        private boolean shouldResetToEmpty(String value) {\r\n          \
@@ -155,7 +154,7 @@ definitions:
         \           sb.append(\"\\n subTitle: \").append(subTitle)\r\n           \
         \ sb.append(\"\\n frequency: \").append(frequency)\r\n            sb.append(\"\
         \\n dateNaming: \").append(dateNaming)\r\n            sb.append(\"\\n responsibleStastician:\
-        \ \").append(responsibleStastician)\r\n            sb.append(\"\\n responsibleTeam:\
+        \ \").append(responsibleStatistician)\r\n            sb.append(\"\\n responsibleTeam:\
         \ \").append(responsibleTeam)\r\n        }\r\n\r\n        private String arrayToString(String[]\
         \ myArray) {\r\n            StringBuilder sb = new StringBuilder()\r\n   \
         \         for (int i=0; i < myArray.length; i++) {\r\n                sb.append(myArray[i])\r\
@@ -167,13 +166,13 @@ definitions:
         \n            Boolean found = false\r\n            JSONObject item\r\n   \
         \         while (iterator.hasNext() && !found) {\r\n                item =\
         \ (JSONObject) iterator.next();\r\n                String titleItem = item.get(JSON_FIELD_TITLE)\r\
-        \n                if (title.equals(titleItem)) found = true;\r\n         \
-        \   }\r\n            if (found) {\r\n                SeriesNewFields series\
-        \ = new SeriesNewFields(item)\r\n//        log.debug(\"  series found=\" +\
-        \ series.toString())\r\n                log.debug(\"  series found\")\r\n\
-        \                return series\r\n            } else {\r\n               \
-        \ log.debug(\"  series not found\")\r\n            }\r\n        } catch (Exception\
-        \ ex) {\r\n            log.error(\"  Exception in getSeriesFieldsByTitle=\"\
+        \n                if (title.trim().equalsIgnoreCase(titleItem.trim())) found\
+        \ = true;\r\n            }\r\n            if (found) {\r\n               \
+        \ SeriesNewFields series = new SeriesNewFields(item)\r\n//        log.debug(\"\
+        \  series found=\" + series.toString())\r\n                log.debug(\"  series\
+        \ found\")\r\n                return series\r\n            } else {\r\n  \
+        \              log.debug(\"  series not found\")\r\n            }\r\n    \
+        \    } catch (Exception ex) {\r\n            log.error(\"  Exception in getSeriesFieldsByTitle=\"\
         \ + ex)\r\n            ex.printStackTrace()\r\n        }\r\n        return\
         \ null\r\n    }\r\n\r\n    boolean updateProperties(Node node, SeriesNewFields\
         \ series) {\r\n        if (series.granularity == null || series.granularity.length\
@@ -193,15 +192,19 @@ definitions:
         \n        }\r\n        node.setProperty(JCR_PROPERTY_ADMINISTRATIVE_SOURCES,\
         \ series.administrativeSources)\r\n        node.setProperty(JCR_PROPERTY_SHORT_TITLE,\
         \ series.shortTitle)\r\n        node.setProperty(JCR_PROPERTY_SUBTITLE, series.subTitle)\r\
-        \n        node.setProperty(JCR_PROPERTY_FREQUENCY, getFrequencyValueForJCR(series.frequency))\r\
+        \n        node.setProperty(JCR_PROPERTY_FREQUENCY, getFrequencyForJCR(series.frequency))\r\
         \n        node.setProperty(JCR_PROPERTY_DATE_NAMING_CONVENTION, getDateNamingConventionForJCR(series.dateNaming))\r\
-        \n\r\n        String responsibleStasticianUUID = getResponsibleStasticianUUIDForJCR(series.responsibleStastician)\r\
-        \n        def responsibleStasticianNode = node.getNode(JCR_PROPERTY_RESPONSIBLE_STASTICIAN)\r\
-        \n        responsibleStasticianNode.setProperty(\"hippo:docbase\", (String)\
-        \ responsibleStasticianUUID)\r\n\r\n        String responsibleTeamUUID = getResponsibleTeamUUIDForJCR(series.responsibleTeam)\r\
-        \n        def responsibleTeamNode = node.getNode(JCR_PROPERTY_RESPONSIBLE_TEAM)\r\
+        \n\r\n        String responsibleStatisticianUUID = getResponsibleStatisticianUUIDForJCR(series.responsibleStatistician)\r\
+        \n        if (!node.hasNode(JCR_PROPERTY_RESPONSIBLE_STATISTICIAN)) {\r\n\
+        \            node.addNode(JCR_PROPERTY_RESPONSIBLE_STATISTICIAN, \"hippo:mirror\"\
+        )\r\n        }\r\n        def responsibleStatisticianNode = node.getNode(JCR_PROPERTY_RESPONSIBLE_STATISTICIAN)\r\
+        \n        responsibleStatisticianNode.setProperty(\"hippo:docbase\", (String)\
+        \ responsibleStatisticianUUID)\r\n\r\n        String responsibleTeamUUID =\
+        \ getResponsibleTeamUUIDForJCR(series.responsibleTeam)\r\n        if (!node.hasNode(JCR_PROPERTY_RESPONSIBLE_TEAM))\
+        \ {\r\n            node.addNode(JCR_PROPERTY_RESPONSIBLE_TEAM, \"hippo:mirror\"\
+        )\r\n        }\r\n        def responsibleTeamNode = node.getNode(JCR_PROPERTY_RESPONSIBLE_TEAM)\r\
         \n        responsibleTeamNode.setProperty(\"hippo:docbase\", (String) responsibleTeamUUID)\r\
-        \n\r\n        return true\r\n    }\r\n\r\n    String getFrequencyValueForJCR(String\
+        \n\r\n        return true\r\n    }\r\n\r\n    String getFrequencyForJCR(String\
         \ frequency) {\r\n        String frequencyAux = frequency.toLowerCase()\r\n\
         \        if (frequencyAux.equals(\"twice a year\")) {\r\n            return\
         \ \"twiceyear\"\r\n        } else {\r\n            return frequencyAux.replace(\"\
@@ -222,21 +225,21 @@ definitions:
         \ by month (e.g. March 2018 - Sept 2018)\")) {\r\n            returnValue\
         \ = \"8\"\r\n        } else if (dataNamingAux.equalsIgnoreCase(\"No date\"\
         )) {\r\n            returnValue = \"9\"\r\n        } else {\r\n          \
-        \  return returnValue\r\n        }\r\n    }\r\n\r\n    String getResponsibleStasticianUUIDForJCR(String\
-        \ stastitician) {\r\n        if (stastitician != null && !stastitician.trim().equalsIgnoreCase(\"\
-        \")) {\r\n            String[] stastiticianParts = stastitician.split(\" \"\
-        );\r\n            if (stastiticianParts.length >= 2) {\r\n               \
-        \ String stastiticianFirstName = stastiticianParts[0]\r\n                String\
-        \ stastiticianLastName = stastiticianParts[1]\r\n                if (stastiticianFirstName\
+        \  log.info(\"dataNaming '\" + dateNaming + \"' was not found\")\r\n     \
+        \       returnValue = \"\"\r\n        }\r\n        return returnValue\r\n\
+        \    }\r\n\r\n    String getResponsibleStatisticianUUIDForJCR(String statistician)\
+        \ {\r\n        if (statistician != null && !statistician.trim().equalsIgnoreCase(\"\
+        \")) {\r\n            String[] statisticianParts = statistician.split(\" \"\
+        );\r\n            if (statisticianParts.length >= 2) {\r\n               \
+        \ String stastiticianFirstName = statisticianParts[0]\r\n                String\
+        \ stastiticianLastName = statisticianParts[1]\r\n                if (stastiticianFirstName\
         \ != null && !stastiticianFirstName.trim().equalsIgnoreCase(\"\")\r\n    \
         \                    && stastiticianLastName != null && !stastiticianLastName.trim().equalsIgnoreCase(\"\
-        \")) {\r\n\r\n                    QueryResult resultStasticians = queryManager.createQuery(\r\
-        \n                            //        \"/jcr:root/content/documents/corporate-website//*[(@jcr:primaryType='website:person')\
-        \ and (@website:shortsummary='\" + stastician + \"')]\", Query.XPATH).execute()\r\
+        \")) {\r\n                    QueryResult resultStatisticians = queryManager.createQuery(\r\
         \n                            \"/jcr:root/content//*[(@jcr:primaryType='website:personalinfo')\
         \ and (@website:firstname='\" + stastiticianFirstName + \"') and (@website:lastname='\"\
         \ + stastiticianLastName + \"')]\", Query.XPATH).execute()\r\n\r\n       \
-        \             final NodeIterator nodes = resultStasticians.getNodes()\r\n\
+        \             final NodeIterator nodes = resultStatisticians.getNodes()\r\n\
         \                    if (nodes.hasNext()) {\r\n                        Node\
         \ node = nodes.nextNode()\r\n                        if (node != null) {\r\
         \n                            Node websitePerson = node.getParent()\r\n  \
@@ -249,26 +252,27 @@ definitions:
         \n                                    }\r\n                              \
         \      return identifier\r\n                                }\r\n        \
         \                    }\r\n                        }\r\n                  \
-        \  }\r\n                }\r\n            }\r\n        }\r\n        return\
-        \ RESPONSIBLE_STASTICIAN_DEFAULT_VALUE_HIPPO_BASE\r\n    }\r\n\r\n    String\
-        \ getResponsibleTeamUUIDForJCR(String team) {\r\n        if (team != null\
-        \ && !team.trim().equalsIgnoreCase(\"\")) {\r\n            QueryResult resultTeams\
-        \ = queryManager.createQuery(\r\n//        \"/jcr:root/content/documents/corporate-website//*[(@jcr:primaryType='website:team')\
-        \ and (@website:shortsummary='\" + team + \"')]\", Query.XPATH).execute()\r\
-        \n                    \"/jcr:root/content//*[(@jcr:primaryType='website:team')\
-        \ and (@website:title='\" + team + \"')]\", Query.XPATH).execute()\r\n\r\n\
-        \            final NodeIterator nodes = resultTeams.getNodes()\r\n       \
-        \     if (nodes.hasNext()) {\r\n                Node node = nodes.nextNode()\r\
+        \  }\r\n                }\r\n            }\r\n            log.info(\"Statistician\
+        \ '\" + statistician + \"' not found. Using default which is empty\")\r\n\
+        \        }\r\n        return RESPONSIBLE_STASTICIAN_DEFAULT_VALUE_HIPPO_BASE\r\
+        \n    }\r\n\r\n    String getResponsibleTeamUUIDForJCR(String team) {\r\n\
+        \        if (team != null && !team.trim().equalsIgnoreCase(\"\")) {\r\n  \
+        \          QueryResult resultTeams = queryManager.createQuery(\r\n       \
+        \             \"/jcr:root/content//*[(@jcr:primaryType='website:team') and\
+        \ (@website:title='\" + team + \"')]\", Query.XPATH).execute()\r\n\r\n   \
+        \         final NodeIterator nodes = resultTeams.getNodes()\r\n          \
+        \  if (nodes.hasNext()) {\r\n                Node node = nodes.nextNode()\r\
         \n                if (node != null) {\r\n                    Node hippoHandle\
         \ = node.getParent()\r\n                    String identifier = (String) hippoHandle.getIdentifier()\r\
         \n                    if (identifier == null || identifier.trim().equalsIgnoreCase(\"\
         \")) {\r\n                        identifier = RESPONSIBLE_TEAM_DEFAULT_VALUE_HIPPO_BASE\r\
         \n                    }\r\n                    return identifier\r\n     \
-        \           }\r\n            }\r\n        }\r\n        return RESPONSIBLE_TEAM_DEFAULT_VALUE_HIPPO_BASE\r\
-        \n    }\r\n\r\n\r\n    /* Code taken from hippo proyect class SearchableTaxonomyTask.\
-        \ Originally that was in Java, it has been adapted to Groovy */\r\n    public\
-        \ class SearchableTaxonomyTask {\r\n\r\n        static final String HIPPO_CLASSIFIABLE_PATH\
-        \ = \"/hippo:namespaces/publicationsystem/series/editor:templates/_default_/classifiable\"\
+        \           }\r\n            }\r\n            log.info(\"Team '\" + team +\
+        \ \"' not found. Using default which is empty\")\r\n        }\r\n        return\
+        \ RESPONSIBLE_TEAM_DEFAULT_VALUE_HIPPO_BASE\r\n    }\r\n\r\n\r\n    /* Code\
+        \ taken from hippo proyect class SearchableTaxonomyTask. Originally that was\
+        \ in Java, it has been adapted to Groovy */\r\n    public class SearchableTaxonomyTask\
+        \ {\r\n\r\n        static final String HIPPO_CLASSIFIABLE_PATH = \"/hippo:namespaces/publicationsystem/series/editor:templates/_default_/classifiable\"\
         ;\r\n\r\n        static final String FULL_TAXONOMY_PROPERTY = \"common:FullTaxonomy\"\
         ;\r\n        static final String SEARCHABLE_TAGS_PROPERTY = \"common:SearchableTags\"\
         ;\r\n\r\n        static final String TAXONOMY_NODE_NAME_PROPERTY = \"essentials-taxonomy-name\"\
