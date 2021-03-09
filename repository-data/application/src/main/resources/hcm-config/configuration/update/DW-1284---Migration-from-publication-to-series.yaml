@@ -1,3 +1,4 @@
+---
 definitions:
   config:
     /hippo:configuration/hippo:update/hippo:registry/DW-1284 - Migration from publication to series:
