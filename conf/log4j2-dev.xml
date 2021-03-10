@@ -47,17 +47,61 @@
             <PatternLayout pattern="%%d{HH:mm:ss} %-5p [%C{1}] %m%n"/>
         </Console>
 
+        <SplunkHttp
+            name="splunk-cms"
+            url="https://inputs.prd-p-h4e53.splunkcloud.com:8088/"
+            token="65b68f26-6d1e-4629-b6d1-8afb370f5e43"
+            index="main"
+            sourcetype="splunk-cms"
+            disableCertificateValidation="true"
+        >
+            <PatternLayout pattern="%m"/>
+        </SplunkHttp>
+
+        <SplunkHttp
+            name="splunk-site"
+            url="https://inputs.prd-p-h4e53.splunkcloud.com:8088/"
+            token="65b68f26-6d1e-4629-b6d1-8afb370f5e43"
+            index="main"
+            sourcetype="splunk-site"
+            disableCertificateValidation="true"
+        >
+            <PatternLayout pattern="%m"/>
+        </SplunkHttp>
+
+        <SplunkHttp
+            name="splunk-audit"
+            url="https://inputs.prd-p-h4e53.splunkcloud.com:8088/"
+            token="65b68f26-6d1e-4629-b6d1-8afb370f5e43"
+            index="main"
+            sourcetype="splunk-audit"
+            disableCertificateValidation="true"
+        >
+            <PatternLayout pattern="%m"/>
+        </SplunkHttp>
     </Appenders>
 
     <Loggers>
 
         <!-- CMS logging -->
-        <Logger name="org.apache.jackrabbit.core" level="warn" />
-        <Logger name="org.apache.jackrabbit.extractor" level="warn" />
-        <Logger name="org.apache.jackrabbit" level="warn" />
-        <Logger name="org.hippoecm.repository" level="warn" />
-        <Logger name="org.hippoecm.frontend" level="warn" />
-        <Logger name="org.apache.wicket" level="warn" />
+        <Logger name="org.apache.jackrabbit.core" level="warn" >
+            <AppenderRef ref="splunk-cms"/>
+        </Logger>
+        <Logger name="org.apache.jackrabbit.extractor" level="warn" >
+            <AppenderRef ref="splunk-cms"/>
+        </Logger>
+        <Logger name="org.apache.jackrabbit" level="warn" >
+            <AppenderRef ref="splunk-cms"/>
+        </Logger>
+        <Logger name="org.hippoecm.repository" level="warn" >
+            <AppenderRef ref="splunk-cms"/>
+        </Logger>
+        <Logger name="org.hippoecm.frontend" level="warn" >
+            <AppenderRef ref="splunk-cms"/>
+        </Logger>
+        <Logger name="org.apache.wicket" level="warn" >
+            <AppenderRef ref="splunk-cms"/>
+        </Logger>
 
         <!-- DiagnosticsRequestCycleListener only logs when diagnostics are enabled in the repository at
                  /hippo:configuration/hippo:modules/diagnostics. Hence can be here on level 'info' -->
@@ -66,33 +110,48 @@
         <!-- audit logging -->
         <Logger additivity="false" name="org.hippoecm.repository.api.Workflow" level="info">
             <AppenderRef ref="audit"/>
+            <AppenderRef ref="splunk-audit"/>
         </Logger>
         <Logger additivity="false" name="org.onehippo.audit" level="info">
             <AppenderRef ref="audit"/>
+            <AppenderRef ref="splunk-audit"/>
         </Logger>
 
         <!-- Site logging -->
-        <Logger name="org.hippoecm.hst" level="warn" />
+        <Logger name="org.hippoecm.hst" level="warn">
+        <AppenderRef ref="splunk-site"/>
+        </Logger>
 
         <!-- DiagnosticReportingValve only logs when diagnostics enabled in hst:hosts config in repo hence
                  can be here on level 'info' -->
         <Logger name="org.hippoecm.hst.core.container.DiagnosticReportingValve" level="info"/>
 
-        <Logger name="freemarker" level="warn"/>
+        <Logger name="freemarker" level="warn">
+            <AppenderRef ref="splunk-site"/>
+        </Logger>
 
         <!-- Freemarker errors - debug because we want the stack traces when this happens -->
         <Logger name="org.hippoecm.hst.servlet.HstFreemarkerServlet" additivity="false" level="debug">
             <AppenderRef ref="warnings"/>
+            <AppenderRef ref="splunk-site"/>
         </Logger>
         <Logger name="freemarker.servlet" additivity="false" level="fatal">
             <!-- freemarker servlet errors will be logged by HstFreemarkerServlet -->
             <AppenderRef ref="warnings"/>
+            <AppenderRef ref="splunk-site"/>
         </Logger>
-
-        <Logger name="org.apache.cxf" level="warn"/>
-        <Logger name="javax.ws.rs.core" level="warn"/>
-        <Logger name="org.apache.commons.pool" level="warn"/>
-        <Logger name="org.apache.commons.beanutils" level="warn"/>
+        <Logger name="org.apache.cxf" level="warn">
+            <AppenderRef ref="splunk-site"/>
+        </Logger>
+        <Logger name="javax.ws.rs.core" level="warn">
+            <AppenderRef ref="splunk-site"/>
+        </Logger>
+        <Logger name="org.apache.commons.pool" level="warn">
+            <AppenderRef ref="splunk-site"/>
+        </Logger>
+        <Logger name="org.apache.commons.beanutils" level="warn">
+            <AppenderRef ref="splunk-site"/>
+        </Logger>
 
         <!-- too many caching warnings -->
         <Logger name="org.apache.jackrabbit.core.state" level="error"/>
@@ -133,12 +192,12 @@
         <Logger name="com.onehippo.cms7.targeting" level="warn"/>
         <Logger name="io.swagger.v3.parser.OpenAPIV3Parser" level="warn"/>
 
-        <Root level="warn">
+        <Root level="ALL">
             <AppenderRef ref="site"/>
             <AppenderRef ref="cms"/>
-            <AppenderRef ref="console"/>
+            <AppenderRef ref="splunk-cms"/>
+            <AppenderRef ref="splunk-site"/>
+            <AppenderRef ref="splunk-audit"/>
         </Root>
-
     </Loggers>
-
 </Configuration>

@@ -105,11 +105,14 @@
             <groupId>com.warrenstrange</groupId>
             <artifactId>googleauth</artifactId>
         </dependency>
-
-        <!--<dependency>
+        <dependency>
             <groupId>com.splunk.logging</groupId>
             <artifactId>splunk-library-javalogging</artifactId>
-        </dependency>-->
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.onehippo.forge.content-exim</groupId>
             <artifactId>content-exim-core</artifactId>
