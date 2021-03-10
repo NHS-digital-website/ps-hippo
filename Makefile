@@ -38,7 +38,7 @@ serve.noexport: essentials/target/essentials.war
 
 ## Start server using cargo.run
 run:
-	mvn $(MVN_OPTS) -P $(PROFILE_RUN) -Drepo.path=./storage
+	mvn $(MVN_OPTS) -P $(PROFILE_RUN) $(REPO_PATH)
 
 # we don't have to recompile it every time.
 essentials/target/essentials.war:

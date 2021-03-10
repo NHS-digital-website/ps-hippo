@@ -33,7 +33,7 @@
 @import "units/hr";
 @import "units/image";
 @import "units/inline";
-@import "units/link-intranet";
+@import "intranet/units/link-intranet";
 @import "units/list";
 @import "units/paragraph";
 @import "units/quote";
@@ -72,7 +72,7 @@
 @import "components/static-ui";
 @import "components/filter";
 @import "components/pill";
-@import "components/tag-intranet";
+@import "intranet/components/intra-tag";
 @import "components/pagination";
 @import "components/chapter-pagination";
 @import "components/tabs-nav";

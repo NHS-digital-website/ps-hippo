@@ -1,13 +1,13 @@
 $is-print: true;
 
 // units
-@import "units/image";
-@import "units/list";
+@import "../units/image";
+@import "../units/list";
 @import "units/link-intranet";
-@import "units/quote";
-@import "components/site-header";
-@import "components/checklist";
-@import "components/breadcrumb";
+@import "../units/quote";
+@import "../components/site-header";
+@import "../components/checklist";
+@import "../components/breadcrumb";
 
 body {
   @include core-font(16);

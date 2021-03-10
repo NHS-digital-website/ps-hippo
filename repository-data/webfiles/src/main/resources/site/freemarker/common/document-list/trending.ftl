@@ -67,6 +67,7 @@
                 </#list>
             </div>
         </div>
+    </div>
     </#if>
 
     <#if wrappingDocument.internal?has_content>
