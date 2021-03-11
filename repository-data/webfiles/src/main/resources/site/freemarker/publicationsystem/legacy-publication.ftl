@@ -249,6 +249,10 @@
             </#if>
             <#-- [FTL-END] mandatory 'Summary' section -->
 
+            <#if hasSectionContent>
+                <@sections legacyPublication.sections></@sections>
+            </#if>
+
             <#-- [FTL-BEGIN] optional list of 'Key facts' section -->
             <#if hasKeyFacts>
             <div class="article-section article-section--highlighted" id="${slugify(keyFactsHeader)}">
@@ -345,10 +349,6 @@
             </div>
             </#if>
             <#-- [FTL-END] Optional 'Related links' section -->
-
-            <#if hasSectionContent>
-                <@sections legacyPublication.sections></@sections>
-            </#if>
 
             <@lastModified legacyPublication.lastModified></@lastModified>
 
