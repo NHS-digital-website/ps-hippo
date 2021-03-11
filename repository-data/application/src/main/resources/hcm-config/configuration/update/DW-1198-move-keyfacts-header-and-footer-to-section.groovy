@@ -45,7 +45,7 @@ class MoveKeyfactsToSection extends BaseNodeUpdateVisitor {
 
                     NodeIterator it = publicationNode.getNodes(subNode)
                     while (it.hasNext()) {
-                        Node infoGraphicNode = publicationNode.addNode("publicationsystem:highlights", "website:infographic")
+                        Node infoGraphicNode = publicationNode.addNode("website:sections", "website:infographic")
                         JcrUtils.copyTo(it.nextNode(), infoGraphicNode)
                     }
                     NodeIterator it2 = publicationNode.getNodes(subNode)
@@ -59,7 +59,7 @@ class MoveKeyfactsToSection extends BaseNodeUpdateVisitor {
 
                     if(StringUtils.isNotEmpty(publicationNode.getNode(subNode).getProperty("hippostd:content").toString())) {
                         def body = publicationNode.getNode(subNode)
-                        Node section = publicationNode.addNode("publicationsystem:highlights","website:section")
+                        Node section = publicationNode.addNode("website:sections","website:section")
                         Node bodyNode = section.addNode("website:html", "hippostd:html")
 
                         String property = body.getProperty("hippostd:content").toString()

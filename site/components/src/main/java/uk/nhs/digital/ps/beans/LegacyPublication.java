@@ -35,8 +35,8 @@ public class LegacyPublication extends PublicationBase {
         return getSingleProperty("publicationsystem:gossid");
     }
 
-    @HippoEssentialsGenerated(internalName = PropertyKeys.HIGHLIGHTS)
-    public List<HippoBean> getHighlights() {
-        return getChildBeansIfPermitted(PropertyKeys.HIGHLIGHTS, HippoBean.class);
+    @HippoEssentialsGenerated(internalName = "website:sections")
+    public List<HippoBean> getSections() {
+        return getChildBeansIfPermitted("website:sections", HippoBean.class);
     }
 }

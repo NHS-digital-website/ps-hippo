@@ -60,7 +60,7 @@ public class PublicationTest {
     private static final String KEY_FACT_IMAGES_KEY = "publicationsystem:KeyFactImages";
     private static final String KEY_FACT_INFOGRAPHIC_KEY = "website:infographic";
     private static final String KEY_FACT_INFOGRAPHICS = "publicationsystem:keyFactInfographics";
-    private static final String HIGHLIGHTS = "publicationsystem:Highlights";
+    private static final String SECTIONS = "website:sections";
     private static final String INTERACTIVE_TOOL_KEY = "publicationsystem:interactivetool";
     private static final String CHANGE_NOTICE_KEY = "publicationsystem:changenotice";
 
@@ -102,7 +102,7 @@ public class PublicationTest {
         given(node.getNodes(KEY_FACT_IMAGES_KEY)).willReturn(nodeIterator);
         given(node.getNodes(KEY_FACT_INFOGRAPHIC_KEY)).willReturn(nodeIterator);
         given(node.getNodes(KEY_FACT_INFOGRAPHICS)).willReturn(nodeIterator);
-        given(node.getNodes(HIGHLIGHTS)).willReturn(nodeIterator);
+        given(node.getNodes(SECTIONS)).willReturn(nodeIterator);
         given(node.getNodes(INTERACTIVE_TOOL_KEY)).willReturn(nodeIterator);
         given(node.getNodes(CHANGE_NOTICE_KEY)).willReturn(nodeIterator);
 

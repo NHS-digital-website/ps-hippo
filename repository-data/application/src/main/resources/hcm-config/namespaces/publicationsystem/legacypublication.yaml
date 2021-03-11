@@ -241,13 +241,13 @@ definitions:
             jcr:primaryType: frontend:plugin
             plugin.class: org.hippoecm.frontend.editor.plugins.field.PropertyFieldPlugin
             wicket.id: ${cluster.id}.right.item
-          /highlights:
+          /sections:
             /cluster.options:
               jcr:primaryType: frontend:pluginconfig
             caption: Highlights
             compoundList: website:section,website:emphasisBox,website:infographic
             contentPickerType: links
-            field: highlights
+            field: sections
             hint: ''
             jcr:primaryType: frontend:plugin
             plugin.class: org.onehippo.forge.contentblocks.ContentBlocksFieldPlugin
@@ -321,14 +321,6 @@ definitions:
             hipposysedit:primary: false
             hipposysedit:type: StaticDropdown
             jcr:primaryType: hipposysedit:field
-          /highlights:
-            hipposysedit:multiple: true
-            hipposysedit:ordered: true
-            hipposysedit:path: publicationsystem:highlights
-            hipposysedit:type: hippo:compound
-            hipposysedit:validators:
-            - contentblocks-validator
-            jcr:primaryType: hipposysedit:field
           /information_type:
             hipposysedit:mandatory: false
             hipposysedit:multiple: true
@@ -381,6 +373,14 @@ definitions:
             hipposysedit:path: publicationsystem:RelatedLinks
             hipposysedit:primary: false
             hipposysedit:type: publicationsystem:relatedlink
+            jcr:primaryType: hipposysedit:field
+          /sections:
+            hipposysedit:multiple: true
+            hipposysedit:ordered: true
+            hipposysedit:path: website:sections
+            hipposysedit:type: hippo:compound
+            hipposysedit:validators:
+            - contentblocks-validator
             jcr:primaryType: hipposysedit:field
           /seosummary:
             hipposysedit:mandatory: false

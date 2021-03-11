@@ -3,6 +3,7 @@
 <#-- @ftlvariable name="legacyPublication" type="uk.nhs.digital.ps.beans.LegacyPublication" -->
 
 <#include "../include/imports.ftl">
+<#include "../common/macro/sections/sections.ftl">
 <#include "../common/macro/stickyNavSections.ftl">
 <#include "../common/macro/fileMetaAppendix.ftl">
 <#include "../common/macro/component/lastModified.ftl">
@@ -26,7 +27,7 @@
 <#assign hasRelatedLinks = legacyPublication.relatedLinks?has_content>
 <#assign hasRelatedNews = legacyPublication.relatedNews?has_content>
 <#assign hasResources = hasAttachments || hasResourceLinks || hasDataSets>
-
+<#assign hasSectionContent = legacyPublication.sections?has_content />
 <#assign idsuffix = slugify(legacyPublication.title) />
 
 <#assign sectionCounter = 0 />
@@ -344,6 +345,10 @@
             </div>
             </#if>
             <#-- [FTL-END] Optional 'Related links' section -->
+
+            <#if hasSectionContent>
+                <@sections legacyPublication.sections></@sections>
+            </#if>
 
             <@lastModified legacyPublication.lastModified></@lastModified>
 
