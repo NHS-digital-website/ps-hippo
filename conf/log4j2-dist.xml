@@ -40,22 +40,64 @@
       </Policies>
     </RollingFile>
 
+      <SplunkHttp
+          name="splunk-cms"
+          url="https://inputs.prd-p-h4e53.splunkcloud.com:8088/"
+          token="65b68f26-6d1e-4629-b6d1-8afb370f5e43"
+          index="main"
+          sourcetype="splunk-cms"
+          disableCertificateValidation="true"
+          >
+          <PatternLayout pattern="%m"/>
+      </SplunkHttp>
+
+      <SplunkHttp
+          name="splunk-site"
+          url="https://inputs.prd-p-h4e53.splunkcloud.com:8088/"
+          token="65b68f26-6d1e-4629-b6d1-8afb370f5e43"
+          index="main"
+          sourcetype="splunk-site"
+          disableCertificateValidation="true"
+      >
+          <PatternLayout pattern="%m"/>
+      </SplunkHttp>
+
+      <SplunkHttp
+          name="splunk-audit"
+          url="https://inputs.prd-p-h4e53.splunkcloud.com:8088/"
+          token="65b68f26-6d1e-4629-b6d1-8afb370f5e43"
+          index="main"
+          sourcetype="splunk-audit"
+          disableCertificateValidation="true"
+      >
+      <PatternLayout pattern="%m"/>
+      </SplunkHttp>
   </Appenders>
 
   <Loggers>
 
     <!-- CMS logging -->
-    <Logger name="org.apache" level="error"/>
-    <Logger name="org.hippoecm" level="error"/>
-    <Logger name="com.onehippo" level="error"/>
-    <Logger name="org.onehippo" level="error"/>
+    <Logger name="org.apache" level="error">
+        <AppenderRef ref="splunk-cms"/>
+    </Logger>
+    <Logger name="org.hippoecm" level="error">
+        <AppenderRef ref="splunk-cms"/>
+    </Logger>
+    <Logger name="com.onehippo" level="error">
+        <AppenderRef ref="splunk-cms"/>
+    </Logger>
+    <Logger name="org.onehippo" level="error">
+        <AppenderRef ref="splunk-cms"/>
+    </Logger>
 
     <!-- audit logging -->
     <Logger additivity="false" name="org.hippoecm.repository.api.Workflow" level="info">
       <AppenderRef ref="audit"/>
+        <AppenderRef ref="splunk-audit"/>
     </Logger>
     <Logger additivity="false" name="org.onehippo.audit" level="info">
       <AppenderRef ref="audit"/>
+        <AppenderRef ref="splunk-audit"/>
     </Logger>
 
     <!-- Site logging -->
@@ -65,11 +107,21 @@
          can be here on level 'info' -->
     <Logger name="org.hippoecm.hst.core.container.DiagnosticReportingValve" level="info"/>
 
-    <Logger name="freemarker" level="error"/>
-    <Logger name="org.apache.cxf" level="error"/>
-    <Logger name="javax.ws.rs.core" level="error"/>
-    <Logger name="org.apache.commons.pool" level="error"/>
-    <Logger name="org.apache.commons.beanutils" level="error"/>
+    <Logger name="freemarker" level="error">
+        <AppenderRef ref="splunk-site"/>
+    </Logger>
+    <Logger name="org.apache.cxf" level="error">
+        <AppenderRef ref="splunk-site"/>
+    </Logger>
+    <Logger name="javax.ws.rs.core" level="error">
+        <AppenderRef ref="splunk-site"/>
+    </Logger>
+    <Logger name="org.apache.commons.pool" level="error">
+        <AppenderRef ref="splunk-site"/>
+    </Logger>
+    <Logger name="org.apache.commons.beanutils" level="error">
+        <AppenderRef ref="splunk-site"/>
+    </Logger>
 
     <!-- too many caching warnings -->
     <Logger name="org.apache.jackrabbit.core.state" level="error"/>
@@ -93,10 +145,13 @@
     <Logger name="com.onehippo.cms7.targeting" level="warn"/>
     <Logger name="io.swagger.v3.parser.OpenAPIV3Parser" level="warn"/>
 
-    <Root level="warn">
-      <AppenderRef ref="site"/>
-      <AppenderRef ref="cms"/>
-    </Root>
+      <Root level="ALL">
+          <AppenderRef ref="site"/>
+          <AppenderRef ref="cms"/>
+          <AppenderRef ref="splunk-cms"/>
+          <AppenderRef ref="splunk-site"/>
+          <AppenderRef ref="splunk-audit"/>
+      </Root>
 
   </Loggers>
 
