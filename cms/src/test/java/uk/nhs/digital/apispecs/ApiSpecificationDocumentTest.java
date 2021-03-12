@@ -29,7 +29,7 @@ public class ApiSpecificationDocumentTest {
         apiSpecificationDocument.setHtml(updatedHtmlContent);
 
         // then
-        then(jcrDocumentLifecycleSupport).should().setProperty("website:html", updatedHtmlContent);
+        then(jcrDocumentLifecycleSupport).should().setStringProperty("website:html", updatedHtmlContent);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class ApiSpecificationDocumentTest {
         apiSpecificationDocument.setSpecJson(updatedSpecJsonContent);
 
         // then
-        then(jcrDocumentLifecycleSupport).should().setProperty("website:json", updatedSpecJsonContent);
+        then(jcrDocumentLifecycleSupport).should().setStringProperty("website:json", updatedSpecJsonContent);
     }
 
     @Test

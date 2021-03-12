@@ -15,10 +15,13 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 public class ApiSpecificationPublicationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApiSpecificationPublicationService.class);
+
+    private static final Pattern VERSION_FIELD_PATTERN = Pattern.compile("\"version\"\\s*:\\s*\"[^\"]+\"");
 
     private OpenApiSpecificationJsonToHtmlConverter openApiSpecificationJsonToHtmlConverter;
     private OpenApiSpecificationRepository openApiSpecificationRepository;
@@ -76,11 +79,16 @@ public class ApiSpecificationPublicationService {
         return apiSpecificationDocumentRepository.findAllApiSpecifications();
     }
 
+    /**
+     * See additional filtering done in {@linkplain #updateAndPublish(ApiSpecificationDocument)} method.
+     */
     private List<ApiSpecificationDocument> identifySpecsEligibleForUpdateAndPublication(
         final List<ApiSpecificationDocument> cmsSpecs,
         final List<OpenApiSpecificationStatus> apigeeSpecStatuses
     ) {
-        final Map<String, OpenApiSpecificationStatus> apigeeSpecsById = Maps.uniqueIndex(apigeeSpecStatuses, OpenApiSpecificationStatus::getId);
+        final Map<String, OpenApiSpecificationStatus> apigeeSpecsById = Maps.uniqueIndex(
+            apigeeSpecStatuses, OpenApiSpecificationStatus::getId
+        );
 
         return cmsSpecs.stream()
             .filter(specificationsPresentInBothSystems(apigeeSpecsById))
@@ -94,7 +102,7 @@ public class ApiSpecificationPublicationService {
             final OpenApiSpecificationStatus apigeeSpec = apigeeSpecsById.get(apiSpecification.getId());
 
             final Instant cmsSpecificationLastPublicationInstant =
-                apiSpecification.getLastPublicationInstant().orElse(Instant.EPOCH);
+                apiSpecification.getLastCheckedInstant().orElse(Instant.EPOCH);
 
             return apigeeSpec.getModified().isAfter(cmsSpecificationLastPublicationInstant);
         };
@@ -122,6 +130,20 @@ public class ApiSpecificationPublicationService {
 
             final String openApiSpecJson = getOpenApiSpecJsonFor(apiSpecificationDocument);
 
+            final String specJson = apiSpecificationDocument.getSpecJson();
+
+            // Don't re-render/re-publish if the actual content has not changed.
+            // This often happens when spec is published without changes
+            // as part of deployment of the updated, corresponding API proxy.
+            try {
+                if (specContentRemainsTheSameIgnoringVersion(openApiSpecJson, specJson)) {
+                    return SKIPPED;
+                }
+            } finally {
+                apiSpecificationDocument.setLastCheckedTimestamp(Instant.now());
+                apiSpecificationDocument.save();
+            }
+
             final String specHtml = specHtmlFrom(openApiSpecJson);
 
             apiSpecificationDocument.setSpecJson(openApiSpecJson);
@@ -139,6 +161,18 @@ public class ApiSpecificationPublicationService {
 
             return FAIL;
         }
+    }
+
+    private boolean specContentRemainsTheSameIgnoringVersion(final String specJsonIncoming, final String specJsonLocal) {
+        // We're ignoring version field because it often is the only piece of spec's content that actually changes.
+        // It is calculated from git tags which are incremented on each merge to master (of the API repo)
+        // and that incrementation often takes place as a result of the API itself being updated with no
+        // change to the spec itself.
+
+        final String specJsonIncomingNoVersion = VERSION_FIELD_PATTERN.matcher(specJsonIncoming).replaceFirst("");
+        final String specJsonLocalNoVersion = VERSION_FIELD_PATTERN.matcher(specJsonLocal).replaceFirst("");
+
+        return specJsonIncomingNoVersion.equals(specJsonLocalNoVersion);
     }
 
     private void rerender(final List<ApiSpecificationDocument> specsToPublish) {
@@ -202,7 +236,8 @@ public class ApiSpecificationPublicationService {
 
     enum PublicationResult {
         PASS,
-        FAIL;
+        FAIL,
+        SKIPPED;
 
         public boolean failed() {
             return this == FAIL;

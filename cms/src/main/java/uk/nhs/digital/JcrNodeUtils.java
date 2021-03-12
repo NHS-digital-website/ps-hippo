@@ -6,7 +6,9 @@ import static uk.nhs.digital.ExceptionUtils.wrapCheckedException;
 import org.apache.commons.lang3.Validate;
 import org.hippoecm.repository.util.JcrUtils;
 
+import java.sql.Date;
 import java.time.Instant;
+import java.util.Calendar;
 import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
@@ -47,11 +49,14 @@ public abstract class JcrNodeUtils {
         wrapCheckedException(() -> node.setProperty(propertyName, value));
     }
 
+    public static void setInstantPropertyQuietly(final Node node, final String propertyName, final Instant instant) {
+        wrapCheckedException(() -> node.setProperty(propertyName, calendarFrom(instant)));
+    }
+
     public static Optional<Instant> getInstantPropertyQuietly(final Node node, final String propertyName) {
-        return Optional.ofNullable(
-            wrapCheckedException(() -> JcrUtils.getStringProperty(node, propertyName, null))
-        )
-            .map(Instant::parse);
+        return wrapCheckedException(() ->
+                Optional.ofNullable(JcrUtils.getDateProperty(node, propertyName, null)).map(Calendar::toInstant)
+        );
     }
 
     public static void validateIsOfTypeHandle(final Node documentHandleCandidateNode) {
@@ -59,5 +64,9 @@ public abstract class JcrNodeUtils {
             wrapCheckedException(() -> documentHandleCandidateNode.isNodeType("hippo:handle")),
             "Node's 'jcr:primaryType' property has to be of type 'hippo:handle'"
         );
+    }
+
+    private static Calendar calendarFrom(final Instant instant) {
+        return new Calendar.Builder().setInstant(Date.from(instant)).build();
     }
 }

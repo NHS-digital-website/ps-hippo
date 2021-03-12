@@ -42,7 +42,7 @@ public class JcrDocumentLifecycleSupport {
     /**
      * Sets property on 'draft' node.
      */
-    public void setProperty(final String propertyName, final String value) {
+    public void setStringProperty(final String propertyName, final String value) {
         try {
             ensureInitialisedForEditing();
 
@@ -61,13 +61,28 @@ public class JcrDocumentLifecycleSupport {
             .flatMap(node -> JcrNodeUtils.getStringPropertyQuietly(node, propertyName));
     }
 
+    public Optional<Instant> getInstantProperty(final String propertyName,
+                                              final WorkflowUtils.Variant documentVariantType
+    ) {
+        return WorkflowUtils.getDocumentVariantNode(documentHandleNode, documentVariantType)
+            .flatMap(node -> JcrNodeUtils.getInstantPropertyQuietly(node, propertyName));
+    }
+
+    public void setInstantProperty(final String propertyName,
+                                   final WorkflowUtils.Variant documentVariantType,
+                                   final Instant instant
+    ) {
+        WorkflowUtils.getDocumentVariantNode(documentHandleNode, documentVariantType)
+            .ifPresent(node -> JcrNodeUtils.setInstantPropertyQuietly(node, propertyName, instant));
+    }
+
     /**
      * @return Date of last publication or {@linkplain Optional#empty()} if the document has not been published, yet.
      */
     public Optional<Instant> getLastPublicationInstant() {
 
         return WorkflowUtils.getDocumentVariantNode(documentHandleNode, PUBLISHED)
-            .flatMap(node -> JcrNodeUtils.getInstantPropertyQuietly(node, PUBLICATION_DATE.value()));
+            .flatMap(node -> JcrNodeUtils.getInstantPropertyQuietly(node, PUBLICATION_DATE.jcrName()));
     }
 
     public void saveAndPublish() {
@@ -79,17 +94,17 @@ public class JcrDocumentLifecycleSupport {
         return "DocumentLifecycleSupport{documentHandleNode=" + getNodePathQuietly(documentHandleNode) + '}';
     }
 
-    private void save() {
-        if (isDirty()) {
-            try {
-                JcrDocumentUtils.saveQuietly(getSession());
+    public void save() {
+        try {
+            saveSession();
 
+            if (isDirty()) {
                 documentManager.commitEditableDocument(draftDocumentVariant);
 
                 dirtyUnset();
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to save session for " + documentHandleNode, e);
             }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to save session for " + documentHandleNode, e);
         }
     }
 
@@ -111,6 +126,10 @@ public class JcrDocumentLifecycleSupport {
 
     private Session getSession() {
         return JcrNodeUtils.getSessionQuietly(documentHandleNode);
+    }
+
+    private void saveSession() {
+        JcrDocumentUtils.saveQuietly(getSession());
     }
 
     private void ensureInitialisedForEditing() {
@@ -138,14 +157,14 @@ public class JcrDocumentLifecycleSupport {
     enum StandardPropertyNames {
         PUBLICATION_DATE("hippostdpubwf:publicationDate");
 
-        private final String value;
+        private final String jcrName;
 
-        StandardPropertyNames(final String value) {
-            this.value = value;
+        StandardPropertyNames(final String jcrName) {
+            this.jcrName = jcrName;
         }
 
-        public String value() {
-            return value;
+        public String jcrName() {
+            return jcrName;
         }
     }
 }

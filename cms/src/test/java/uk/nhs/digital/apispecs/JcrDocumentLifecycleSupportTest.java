@@ -70,7 +70,7 @@ public class JcrDocumentLifecycleSupportTest {
         final String expectedPropertyValue = "aPropertyValue";
 
         // when
-        jcrDocumentLifecycleSupport.setProperty(expectedPropertyName, expectedPropertyValue);
+        jcrDocumentLifecycleSupport.setStringProperty(expectedPropertyName, expectedPropertyValue);
 
         // then
         then(draftNodeCheckedOut).should().setProperty(expectedPropertyName, expectedPropertyValue);
@@ -93,7 +93,7 @@ public class JcrDocumentLifecycleSupportTest {
         expectedException.expectCause(sameInstance(originalException));
 
         // when
-        jcrDocumentLifecycleSupport.setProperty(expectedPropertyName, expectedPropertyValue);
+        jcrDocumentLifecycleSupport.setStringProperty(expectedPropertyName, expectedPropertyValue);
 
         // then
         // expectations set in 'given' are satisfied
@@ -215,7 +215,7 @@ public class JcrDocumentLifecycleSupportTest {
     public void saveAndPublish_savesChangeAndPublishesDocument_whenChangesMade() {
 
         // given
-        jcrDocumentLifecycleSupport.setProperty("aPropertyName", "aPropertyValue");
+        jcrDocumentLifecycleSupport.setStringProperty("aPropertyName", "aPropertyValue");
 
         // when
         jcrDocumentLifecycleSupport.saveAndPublish();
@@ -250,7 +250,7 @@ public class JcrDocumentLifecycleSupportTest {
 
         // given
         jcrDocumentLifecycleSupport // sets 'dirty' flag which enables 'save' and 'publish'
-            .setProperty("aPropertyName", "aPropertyValue");
+            .setStringProperty("aPropertyName", "aPropertyValue");
 
         final RuntimeException collaboratorException = new RuntimeException();
 
@@ -274,7 +274,7 @@ public class JcrDocumentLifecycleSupportTest {
 
         // given
         jcrDocumentLifecycleSupport // sets 'dirty' flag which enables 'save' and 'publish'
-            .setProperty("aPropertyName", "aPropertyValue");
+            .setStringProperty("aPropertyName", "aPropertyValue");
 
         final RuntimeException collaboratorException = new RuntimeException();
 

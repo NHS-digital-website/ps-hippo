@@ -1,9 +1,9 @@
 package uk.nhs.digital.apispecs.model;
 
 import static org.hippoecm.repository.util.WorkflowUtils.Variant.DRAFT;
+import static org.hippoecm.repository.util.WorkflowUtils.Variant.PUBLISHED;
 import static uk.nhs.digital.apispecs.model.ApiSpecificationDocument.Properties.*;
 
-import org.hippoecm.repository.util.WorkflowUtils;
 import uk.nhs.digital.apispecs.jcr.JcrDocumentLifecycleSupport;
 
 import java.time.Instant;
@@ -22,27 +22,31 @@ public class ApiSpecificationDocument {
     }
 
     public String getId() {
-        return jcrDocument().getStringProperty(SPECIFICATION_ID.value(), DRAFT)
+        return jcrDocument().getStringProperty(SPECIFICATION_ID.jcrName(), DRAFT)
             .orElseThrow(() -> new RuntimeException("Specification id not available"))
             ;
     }
 
     public String getHtml() {
-        Optional<String> html = jcrDocument().getStringProperty(HTML.value(), WorkflowUtils.Variant.PUBLISHED);
+        Optional<String> html = jcrDocument().getStringProperty(HTML.jcrName(), PUBLISHED);
         return html.orElse("");
     }
 
     public void setHtml(final String html) {
-        jcrDocument().setProperty(HTML.value(), html);
+        jcrDocument().setStringProperty(HTML.jcrName(), html);
     }
 
     public String getSpecJson() {
-        Optional<String> json = jcrDocument().getStringProperty(JSON.value(), WorkflowUtils.Variant.PUBLISHED);
+        Optional<String> json = jcrDocument().getStringProperty(JSON.jcrName(), PUBLISHED);
         return json.orElse("");
     }
 
     public void setSpecJson(final String specificationJson) {
-        jcrDocument().setProperty(JSON.value(), specificationJson);
+        jcrDocument().setStringProperty(JSON.jcrName(), specificationJson);
+    }
+
+    public void save() {
+        jcrDocument().save();
     }
 
     public void saveAndPublish() {
@@ -61,10 +65,20 @@ public class ApiSpecificationDocument {
         return jcrDocumentLifecycleSupport;
     }
 
+    public void setLastCheckedTimestamp(final Instant instant) {
+        jcrDocument().setInstantProperty(LAST_CHECKED_TIMESTAMP.jcrName, PUBLISHED, instant);
+    }
+
+    public Optional<Instant> getLastCheckedInstant() {
+        return jcrDocument().getInstantProperty(LAST_CHECKED_TIMESTAMP.jcrName, PUBLISHED);
+    }
+
     enum Properties {
         HTML("website:html"),
         JSON("website:json"),
-        SPECIFICATION_ID("website:specification_id");
+        SPECIFICATION_ID("website:specification_id"),
+        LAST_CHECKED_TIMESTAMP("website:lastCheckedTimestamp"),
+        ;
 
         private final String jcrName;
 
@@ -72,7 +86,7 @@ public class ApiSpecificationDocument {
             this.jcrName = jcrName;
         }
 
-        public String value() {
+        public String jcrName() {
             return jcrName;
         }
     }
