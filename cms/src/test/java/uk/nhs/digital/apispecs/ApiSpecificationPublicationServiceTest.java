@@ -8,6 +8,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static uk.nhs.digital.test.util.TimeProviderTestUtils.fixNowTo;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -46,8 +47,45 @@ public class ApiSpecificationPublicationServiceTest {
         );
     }
 
+
     @Test
-    public void publish_publishesSpecification_thatChangedInApigeeAfterItWasPublishedInCms() {
+    public void publish_publishesSpecifications_existingInCmsButNeverPublished() {
+
+        // given
+        final String specificationId = "248569";
+
+        // @formatter:off
+        final String lastApigeeModificationTimestamp = "2020-05-20T10:30:00.000Z";
+        // @formatter:on
+
+        final ApiSpecificationDocument cmsSpecPublished = apiSpecDoc(specificationId);
+        when(apiSpecDocumentRepo.findAllApiSpecifications()).thenReturn(singletonList(cmsSpecPublished));
+
+        final OpenApiSpecificationStatus apigeeSpec = remoteSpecStatus(specificationId, lastApigeeModificationTimestamp);
+        when(apigeeService.apiSpecificationStatuses()).thenReturn(singletonList(apigeeSpec));
+
+        final String specificationJson = "{ \"json\": \"payload\" }";
+        when(apigeeService.apiSpecificationJsonForSpecId(specificationId)).thenReturn(specificationJson);
+
+        final String specificationHtml = "<html><body> Some spec content </body></html>";
+        when(apiSpecHtmlProvider.htmlFrom(specificationJson)).thenReturn(specificationHtml);
+
+        final Instant lastCheckTimestamp = fixNowTo("2020-05-10T10:30:00.001Z");
+
+        // when
+        apiSpecificationPublicationService.syncEligibleSpecifications();
+
+        // then
+        then(cmsSpecPublished).should().setLastCheckedTimestamp(lastCheckTimestamp);
+        then(cmsSpecPublished).should().save();
+
+        then(cmsSpecPublished).should().setSpecJson(specificationJson);
+        then(cmsSpecPublished).should().setHtml(specificationHtml);
+        then(cmsSpecPublished).should().saveAndPublish();
+    }
+
+    @Test
+    public void publish_publishesSpecifications_thatChangedInApigeeAfterItWasPublishedInCms() {
 
         // given
         final String specificationId = "248569";
@@ -57,7 +95,7 @@ public class ApiSpecificationPublicationServiceTest {
         final String lastApigeeModificationTimestamp = "2020-05-20T10:30:00.000Z";
         // @formatter:on
 
-        final ApiSpecificationDocument cmsSpecPublished = apiSpecDoc(specificationId, lastCmsPublicationTimestamp);
+        final ApiSpecificationDocument cmsSpecPublished = apiSpecDoc(specificationId, lastCmsPublicationTimestamp, "{\"spec\":\"json\"}");
         when(apiSpecDocumentRepo.findAllApiSpecifications()).thenReturn(singletonList(cmsSpecPublished));
 
         final OpenApiSpecificationStatus apigeeSpecUpdateSincePublished = remoteSpecStatus(specificationId, lastApigeeModificationTimestamp);
@@ -69,17 +107,62 @@ public class ApiSpecificationPublicationServiceTest {
         final String specificationHtml = "<html><body> Some spec content </body></html>";
         when(apiSpecHtmlProvider.htmlFrom(specificationJson)).thenReturn(specificationHtml);
 
+        final Instant lastCheckTimestamp = fixNowTo("2020-05-10T10:30:00.001Z");
+
         // when
-        apiSpecificationPublicationService.updateAndPublishEligibleSpecifications();
+        apiSpecificationPublicationService.syncEligibleSpecifications();
 
         // then
+        then(cmsSpecPublished).should().setLastCheckedTimestamp(lastCheckTimestamp);
+        then(cmsSpecPublished).should().save();
+
         then(cmsSpecPublished).should().setSpecJson(specificationJson);
         then(cmsSpecPublished).should().setHtml(specificationHtml);
         then(cmsSpecPublished).should().saveAndPublish();
     }
 
     @Test
-    public void publish_doesNotChangeNorPublishSpecifications_ifTheyHaveNotChangedInApigeeAfterTheyWerePublishedInCms() {
+    public void publish_doesNotChangeNorPublishSpecifications_whereApigeeReportsChangeAfterLastCheckInCms_butApigeeContentHasNotActuallyChanged() {
+
+        // given
+        final String specificationId = "248569";
+
+        // @formatter:off
+        final String lastCmsPublicationTimestamp     = "2020-05-10T10:30:00.000Z";
+        final String lastApigeeModificationTimestamp = "2020-05-20T10:30:00.000Z";
+
+        // Specs differ in version only; this field is ignored when comparing specs' JSON for changes.
+        final String specJsonCms    = "{ \"info\": {\"version\": \"v1.2.525-beta\"}, \"json\": \"payload\" }";
+        final String specJsonApigee = "{ \"info\": {\"version\": \"v1.2.526-beta\"}, \"json\": \"payload\" }";
+        // @formatter:on
+
+        final ApiSpecificationDocument cmsSpecPublished = apiSpecDoc(specificationId, lastCmsPublicationTimestamp, specJsonCms);
+        when(apiSpecDocumentRepo.findAllApiSpecifications()).thenReturn(singletonList(cmsSpecPublished));
+
+        final OpenApiSpecificationStatus apigeeSpecUpdateSincePublished = remoteSpecStatus(specificationId, lastApigeeModificationTimestamp);
+        when(apigeeService.apiSpecificationStatuses()).thenReturn(singletonList(apigeeSpecUpdateSincePublished));
+
+        when(apigeeService.apiSpecificationJsonForSpecId(specificationId)).thenReturn(specJsonApigee);
+
+        final String specificationHtml = "<html><body> Some spec content </body></html>";
+        when(apiSpecHtmlProvider.htmlFrom(specJsonApigee)).thenReturn(specificationHtml);
+
+        final Instant lastCheckTimestamp = fixNowTo("2020-05-10T10:30:00.001Z");
+
+        // when
+        apiSpecificationPublicationService.syncEligibleSpecifications();
+
+        // then
+        then(cmsSpecPublished).should().setLastCheckedTimestamp(lastCheckTimestamp);
+        then(cmsSpecPublished).should().save();
+
+        then(cmsSpecPublished).should(never()).setSpecJson(specJsonApigee);
+        then(cmsSpecPublished).should(never()).setHtml(specificationHtml);
+        then(cmsSpecPublished).should(never()).saveAndPublish();
+    }
+
+    @Test
+    public void publish_doesNotChangeNorPublishSpecifications_ifApigeeReportsNoChangeAfterLastCheckInCms() {
 
         // given
         final String specificationId = "248569";
@@ -89,16 +172,21 @@ public class ApiSpecificationPublicationServiceTest {
         final String lastApigeeModificationTimestamp = "2020-05-10T10:30:00.000Z";
         // @formatter:on
 
-        final ApiSpecificationDocument cmsSpecPublished = apiSpecDoc(specificationId, lastCmsPublicationTimestamp);
+        final ApiSpecificationDocument cmsSpecPublished = apiSpecDoc(specificationId, lastCmsPublicationTimestamp, "{\"spec\":\"json\"}");
         when(apiSpecDocumentRepo.findAllApiSpecifications()).thenReturn(singletonList(cmsSpecPublished));
 
         final OpenApiSpecificationStatus apigeeSpecNotUpdatedSincePublished = remoteSpecStatus(specificationId, lastApigeeModificationTimestamp);
         when(apigeeService.apiSpecificationStatuses()).thenReturn(singletonList(apigeeSpecNotUpdatedSincePublished));
 
+        final Instant lastCheckTimestamp = fixNowTo("2020-05-10T10:30:00.001Z");
+
         // when
-        apiSpecificationPublicationService.updateAndPublishEligibleSpecifications();
+        apiSpecificationPublicationService.syncEligibleSpecifications();
 
         // then
+        then(cmsSpecPublished).should().setLastCheckedTimestamp(lastCheckTimestamp);
+        then(cmsSpecPublished).should().save();
+
         then(cmsSpecPublished).should(never()).setSpecJson(any());
         then(cmsSpecPublished).should(never()).setHtml(any());
         then(cmsSpecPublished).should(never()).saveAndPublish();
@@ -116,14 +204,14 @@ public class ApiSpecificationPublicationServiceTest {
         final String lastApigeeModificationTimestamp = "2020-05-20T10:30:00.000Z";
         // @formatter:on
 
-        final ApiSpecificationDocument cmsSpecPublished = apiSpecDoc(cmsSpecificationId, lastCmsPublicationTimestamp);
+        final ApiSpecificationDocument cmsSpecPublished = apiSpecDoc(cmsSpecificationId, lastCmsPublicationTimestamp, "{\"spec\":\"json\"}");
         when(apiSpecDocumentRepo.findAllApiSpecifications()).thenReturn(singletonList(cmsSpecPublished));
 
         final OpenApiSpecificationStatus apigeeSpecUpdateSincePublished = remoteSpecStatus(remoteSpecificationId, lastApigeeModificationTimestamp);
         when(apigeeService.apiSpecificationStatuses()).thenReturn(singletonList(apigeeSpecUpdateSincePublished));
 
         // when
-        apiSpecificationPublicationService.updateAndPublishEligibleSpecifications();
+        apiSpecificationPublicationService.syncEligibleSpecifications();
 
         // then
         then(cmsSpecPublished).should(never()).setSpecJson(any());
@@ -138,7 +226,7 @@ public class ApiSpecificationPublicationServiceTest {
         when(apiSpecDocumentRepo.findAllApiSpecifications()).thenReturn(emptyList());
 
         // when
-        apiSpecificationPublicationService.updateAndPublishEligibleSpecifications();
+        apiSpecificationPublicationService.syncEligibleSpecifications();
 
         // then
         then(apigeeService).shouldHaveZeroInteractions();
@@ -151,8 +239,8 @@ public class ApiSpecificationPublicationServiceTest {
         final String specificationAId = "248569";
         final String specificationBId = "965842";
 
-        final ApiSpecificationDocument cmsSpecAPublished = apiSpecDoc(specificationAId, "2020-05-11T10:30:00.000Z");
-        final ApiSpecificationDocument cmsSpecBPublished = apiSpecDoc(specificationBId, "2020-05-10T10:30:00.000Z");
+        final ApiSpecificationDocument cmsSpecAPublished = apiSpecDoc(specificationAId, "2020-05-11T10:30:00.000Z", "{\"spec\":\"json\"}");
+        final ApiSpecificationDocument cmsSpecBPublished = apiSpecDoc(specificationBId, "2020-05-10T10:30:00.000Z", "{\"spec\":\"json\"}");
         when(apiSpecDocumentRepo.findAllApiSpecifications()).thenReturn(asList(
             cmsSpecAPublished,
             cmsSpecBPublished
@@ -176,7 +264,7 @@ public class ApiSpecificationPublicationServiceTest {
         when(apiSpecHtmlProvider.htmlFrom(specificationBJson)).thenReturn(specificationBHtml);
 
         // when
-        apiSpecificationPublicationService.updateAndPublishEligibleSpecifications();
+        apiSpecificationPublicationService.syncEligibleSpecifications();
 
         // then
         then(cmsSpecAPublished).should().setSpecJson(specificationAJson);
@@ -197,7 +285,7 @@ public class ApiSpecificationPublicationServiceTest {
         final String lastCmsPublicationTimestamp     = "2020-05-10T10:30:00.000Z";
         // @formatter:on
 
-        final ApiSpecificationDocument cmsSpecPublished = apiSpecDoc(specificationId, lastCmsPublicationTimestamp);
+        final ApiSpecificationDocument cmsSpecPublished = apiSpecDoc(specificationId, lastCmsPublicationTimestamp, "{\"spec\":\"json\"}");
         final String cmsSpecificationJson = "{ \"json\": \"payload\" }";
         final String publishedSpecificationHtml = "<html><body> Some spec content </body></html>";
 
@@ -241,12 +329,25 @@ public class ApiSpecificationPublicationServiceTest {
     }
 
 
-    private ApiSpecificationDocument apiSpecDoc(final String specificationId, final String lastModTimestamp) {
+    private ApiSpecificationDocument apiSpecDoc(final String specificationId) {
+        return apiSpecDoc(specificationId, null, "{\"spec\":\"json\"}");
+    }
+
+    private ApiSpecificationDocument apiSpecDoc(final String specificationId, final String json) {
+        return apiSpecDoc(specificationId, null, json);
+    }
+
+    private ApiSpecificationDocument apiSpecDoc(final String specificationId, final String lastModTimestamp, final String json) {
 
         final ApiSpecificationDocument apiSpecificationDocument = mock(ApiSpecificationDocument.class);
 
         given(apiSpecificationDocument.getId()).willReturn(specificationId);
-        given(apiSpecificationDocument.getLastPublicationInstant()).willReturn(Optional.of(Instant.parse(lastModTimestamp)));
+
+        given(apiSpecificationDocument.getLastCheckedInstant()).willReturn(
+            Optional.ofNullable(lastModTimestamp).map(Instant::parse)
+        );
+
+        given(apiSpecificationDocument.getSpecJson()).willReturn(json);
 
         return apiSpecificationDocument;
     }

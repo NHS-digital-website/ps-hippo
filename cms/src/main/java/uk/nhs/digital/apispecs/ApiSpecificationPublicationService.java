@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.nhs.digital.apispecs.model.ApiSpecificationDocument;
 import uk.nhs.digital.apispecs.model.OpenApiSpecificationStatus;
+import uk.nhs.digital.common.util.TimeProvider;
 
 import java.time.Instant;
 import java.util.List;
@@ -35,7 +36,7 @@ public class ApiSpecificationPublicationService {
         this.openApiSpecificationJsonToHtmlConverter = openApiSpecificationJsonToHtmlConverter;
     }
 
-    public void updateAndPublishEligibleSpecifications() {
+    public void syncEligibleSpecifications() {
 
         final List<ApiSpecificationDocument> cmsApiSpecificationDocuments = findCmsApiSpecifications();
 
@@ -97,14 +98,15 @@ public class ApiSpecificationPublicationService {
     }
 
     private Predicate<ApiSpecificationDocument> specificationsChangedInApigeeAfterPublishedInCms(
-        final Map<String, OpenApiSpecificationStatus> apigeeSpecsById) {
+        final Map<String, OpenApiSpecificationStatus> apigeeSpecsById
+    ) {
         return apiSpecification -> {
             final OpenApiSpecificationStatus apigeeSpec = apigeeSpecsById.get(apiSpecification.getId());
 
-            final Instant cmsSpecificationLastPublicationInstant =
+            final Instant cmsSpecificationLastCheckInstant =
                 apiSpecification.getLastCheckedInstant().orElse(Instant.EPOCH);
 
-            return apigeeSpec.getModified().isAfter(cmsSpecificationLastPublicationInstant);
+            return apigeeSpec.getModified().isAfter(cmsSpecificationLastCheckInstant);
         };
     }
 
@@ -132,6 +134,12 @@ public class ApiSpecificationPublicationService {
 
             final String specJson = apiSpecificationDocument.getSpecJson();
 
+            // Convert JSON to HTML _before_ saving 'last checked' timestamp,
+            // so that if the conversion fails, we won't risk flagging the spec
+            // as successfully checked/published even though conversion has
+            // failed.
+            final String specHtml = specHtmlFrom(openApiSpecJson);
+
             // Don't re-render/re-publish if the actual content has not changed.
             // This often happens when spec is published without changes
             // as part of deployment of the updated, corresponding API proxy.
@@ -140,11 +148,9 @@ public class ApiSpecificationPublicationService {
                     return SKIPPED;
                 }
             } finally {
-                apiSpecificationDocument.setLastCheckedTimestamp(Instant.now());
+                apiSpecificationDocument.setLastCheckedTimestamp(TimeProvider.getNowInstant());
                 apiSpecificationDocument.save();
             }
-
-            final String specHtml = specHtmlFrom(openApiSpecJson);
 
             apiSpecificationDocument.setSpecJson(openApiSpecJson);
 

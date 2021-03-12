@@ -77,7 +77,7 @@ public class ApiSpecSyncFromApigeeJob implements RepositoryJob {
                     new SwaggerCodeGenOpenApiSpecificationJsonToHtmlConverter()
                 );
 
-            apiSpecificationPublicationService.updateAndPublishEligibleSpecifications();
+            apiSpecificationPublicationService.syncEligibleSpecifications();
 
             log.debug("API Specifications sync from Apigee: done.");
 

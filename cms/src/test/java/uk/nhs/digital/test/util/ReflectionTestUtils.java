@@ -15,4 +15,8 @@ public class ReflectionTestUtils {
     public static <T> void setField(final Object target, final String fieldName, final Object value) {
         wrapCheckedException(() -> getDeclaredField(target.getClass(), fieldName, true).set(target, value));
     }
+
+    public static <T> void setFieldOnClass(final Class<?> target, final String fieldName, final Object value) {
+        wrapCheckedException(() -> getDeclaredField(target, fieldName, true).set(target, value));
+    }
 }
