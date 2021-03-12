@@ -6,5 +6,5 @@ definitions:
         hst:componentclassname: uk.nhs.digital.common.components.DocumentChildComponent
         hst:template: general-article
         jcr:primaryType: hst:component
-      hst:referencecomponent: hst:abstractpages/apppage
+      hst:referencecomponent: hst:abstractpages/nhsd-apppage
       jcr:primaryType: hst:component
