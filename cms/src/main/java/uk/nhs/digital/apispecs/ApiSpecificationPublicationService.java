@@ -3,9 +3,11 @@ package uk.nhs.digital.apispecs;
 import static java.lang.String.format;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
-import static uk.nhs.digital.apispecs.ApiSpecificationPublicationService.PublicationResult.*;
+import static uk.nhs.digital.apispecs.ApiSpecificationPublicationService.PublicationResult.FAIL;
+import static uk.nhs.digital.apispecs.ApiSpecificationPublicationService.PublicationResult.PASS;
 
 import com.google.common.collect.Maps;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.nhs.digital.apispecs.model.ApiSpecificationDocument;
@@ -15,6 +17,7 @@ import uk.nhs.digital.common.util.TimeProvider;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -44,14 +47,74 @@ public class ApiSpecificationPublicationService {
             ? emptyList()
             : getApigeeSpecStatuses();
 
-        final List<ApiSpecificationDocument> specsEligibleToUpdateAndPublish = identifySpecsEligibleForUpdateAndPublication(
-            cmsApiSpecificationDocuments,
-            apigeeSpecsStatuses
+        final Map<String, OpenApiSpecificationStatus> apigeeSpecsById = Maps.uniqueIndex(
+            apigeeSpecsStatuses, OpenApiSpecificationStatus::getId
         );
 
-        reportNumbersOfSpecsFound(cmsApiSpecificationDocuments, apigeeSpecsStatuses, specsEligibleToUpdateAndPublish);
+        final List<SpecPublicationData> fullyProcessedSpecPublicationData = cmsApiSpecificationDocuments.stream()
+            .filter(specificationsPresentInBothSystems(apigeeSpecsById))
+            .map(toBasicSpecPublicationData(apigeeSpecsById))
+            .map(toSpecPublicationDataWithRenderedHtml())
+            .map(toSpecPublicationDataWithUpdatedLastCheckTimestamp())
+            .map(toPublishedSpecPublicationData())
+            .collect(toList());
 
-        updateAndPublish(specsEligibleToUpdateAndPublish);
+        reportPublicationStatusFor(fullyProcessedSpecPublicationData);
+    }
+
+    private void reportPublicationStatusFor(final List<SpecPublicationData> specPublicationData) {
+        System.out.println(specPublicationData);
+    }
+
+    private Function<SpecPublicationData, SpecPublicationData> toPublishedSpecPublicationData() {
+        return specPublicationData -> {
+            if (specPublicationData.noFailure() && specPublicationData.isSpecContentChanged()) {
+                updateAndPublish(specPublicationData);
+            }
+            return specPublicationData;
+        };
+    }
+
+    private Function<SpecPublicationData, SpecPublicationData> toSpecPublicationDataWithUpdatedLastCheckTimestamp() {
+        return specPublicationData -> {
+
+            if (specPublicationData.noFailure()) {
+                try {
+                    specPublicationData.localSpec.setLastCheckedTimestamp(TimeProvider.getNowInstant());
+                    specPublicationData.localSpec.save();
+                } catch (final Exception e) {
+                    specPublicationData.setError("Failed to record time of last check.", e);
+                }
+            }
+
+            return specPublicationData;
+        };
+    }
+
+    private Function<SpecPublicationData, SpecPublicationData> toSpecPublicationDataWithRenderedHtml() {
+        return specPublicationData -> {
+            if (specPublicationData.isSpecContentChanged()) {
+                try {
+                    final String html = openApiSpecificationJsonToHtmlConverter.htmlFrom(
+                        specPublicationData.remoteSpec.getSpecJson()
+                    );
+
+                    specPublicationData.setHtml(html);
+
+                } catch (final Exception e) {
+                    specPublicationData.setError("Failed to render.", e);
+                }
+            }
+            return specPublicationData;
+        };
+    }
+
+    private Function<ApiSpecificationDocument, SpecPublicationData> toBasicSpecPublicationData(
+        final Map<String, OpenApiSpecificationStatus> apigeeSpecsById) {
+        return cmsSpec -> SpecPublicationData.with(
+            cmsSpec,
+            apigeeSpecsById.get(cmsSpec.getId())
+        );
     }
 
     public void rerenderSpecifications() {
@@ -61,16 +124,16 @@ public class ApiSpecificationPublicationService {
         rerender(cmsApiSpecificationDocuments);
     }
 
-    private void reportNumbersOfSpecsFound(final List<ApiSpecificationDocument> cmsApiSpecificationDocuments,
-                                           final List<OpenApiSpecificationStatus> apigeeSpecsStatuses,
-                                           final List<ApiSpecificationDocument> specsEligibleToUpdateAndPublish) {
-
-        LOGGER.info(
-            "API Specifications found: in CMS: {}, in Apigee: {}, updated in Apigee and eligible to publish in CMS: {}",
-            cmsApiSpecificationDocuments.size(),
-            cmsApiSpecificationDocuments.isEmpty() ? "not checked" : apigeeSpecsStatuses.size(),
-            specsEligibleToUpdateAndPublish.size());
-    }
+    // private void reportNumbersOfSpecsFound(final List<ApiSpecificationDocument> cmsApiSpecificationDocuments,
+    //                                        final List<OpenApiSpecificationStatus> apigeeSpecsStatuses,
+    //                                        final List<ApiSpecificationDocument> specsEligibleToUpdateAndPublish) {
+    //
+    //     LOGGER.info(
+    //         "API Specifications found: in CMS: {}, in Apigee: {}, updated in Apigee and eligible to publish in CMS: {}",
+    //         cmsApiSpecificationDocuments.size(),
+    //         cmsApiSpecificationDocuments.isEmpty() ? "not checked" : apigeeSpecsStatuses.size(),
+    //         specsEligibleToUpdateAndPublish.size());
+    // }
 
     private List<OpenApiSpecificationStatus> getApigeeSpecStatuses() {
         return openApiSpecificationRepository.apiSpecificationStatuses();
@@ -80,105 +143,27 @@ public class ApiSpecificationPublicationService {
         return apiSpecificationDocumentRepository.findAllApiSpecifications();
     }
 
-    /**
-     * See additional filtering done in {@linkplain #updateAndPublish(ApiSpecificationDocument)} method.
-     */
-    private List<ApiSpecificationDocument> identifySpecsEligibleForUpdateAndPublication(
-        final List<ApiSpecificationDocument> cmsSpecs,
-        final List<OpenApiSpecificationStatus> apigeeSpecStatuses
-    ) {
-        final Map<String, OpenApiSpecificationStatus> apigeeSpecsById = Maps.uniqueIndex(
-            apigeeSpecStatuses, OpenApiSpecificationStatus::getId
-        );
-
-        return cmsSpecs.stream()
-            .filter(specificationsPresentInBothSystems(apigeeSpecsById))
-            .filter(specificationsChangedInApigeeAfterPublishedInCms(apigeeSpecsById))
-            .collect(toList());
-    }
-
-    private Predicate<ApiSpecificationDocument> specificationsChangedInApigeeAfterPublishedInCms(
-        final Map<String, OpenApiSpecificationStatus> apigeeSpecsById
-    ) {
-        return apiSpecification -> {
-            final OpenApiSpecificationStatus apigeeSpec = apigeeSpecsById.get(apiSpecification.getId());
-
-            final Instant cmsSpecificationLastCheckInstant =
-                apiSpecification.getLastCheckedInstant().orElse(Instant.EPOCH);
-
-            return apigeeSpec.getModified().isAfter(cmsSpecificationLastCheckInstant);
-        };
-    }
-
     private Predicate<ApiSpecificationDocument> specificationsPresentInBothSystems(
         final Map<String, OpenApiSpecificationStatus> apigeeSpecsById) {
         return apiSpecification -> apigeeSpecsById.containsKey(apiSpecification.getId());
     }
 
-    private void updateAndPublish(final List<ApiSpecificationDocument> specsToPublish) {
-
-        final long failedSpecificationsCount = specsToPublish.stream()
-            .map(this::updateAndPublish)
-            .filter(PublicationResult::failed)
-            .count();
-
-        reportErrorIfAnySpecificationsFailed(failedSpecificationsCount, specsToPublish.size());
-    }
-
-    private PublicationResult updateAndPublish(final ApiSpecificationDocument apiSpecificationDocument) {
+    private void updateAndPublish(final SpecPublicationData specPublicationData) {
 
         try {
-            LOGGER.info("Publishing API Specification: {}", apiSpecificationDocument);
+            final ApiSpecificationDocument localSpec = specPublicationData.localSpec;
 
-            final String openApiSpecJson = getOpenApiSpecJsonFor(apiSpecificationDocument);
+            localSpec.setSpecJson(specPublicationData.remoteSpec.getSpecJson());
 
-            final String specJson = apiSpecificationDocument.getSpecJson();
+            localSpec.setHtml(specPublicationData.html);
 
-            // Convert JSON to HTML _before_ saving 'last checked' timestamp,
-            // so that if the conversion fails, we won't risk flagging the spec
-            // as successfully checked/published even though conversion has
-            // failed.
-            final String specHtml = specHtmlFrom(openApiSpecJson);
+            localSpec.saveAndPublish();
 
-            // Don't re-render/re-publish if the actual content has not changed.
-            // This often happens when spec is published without changes
-            // as part of deployment of the updated, corresponding API proxy.
-            try {
-                if (specContentRemainsTheSameIgnoringVersion(openApiSpecJson, specJson)) {
-                    return SKIPPED;
-                }
-            } finally {
-                apiSpecificationDocument.setLastCheckedTimestamp(TimeProvider.getNowInstant());
-                apiSpecificationDocument.save();
-            }
-
-            apiSpecificationDocument.setSpecJson(openApiSpecJson);
-
-            apiSpecificationDocument.setHtml(specHtml);
-
-            apiSpecificationDocument.saveAndPublish();
-
-            LOGGER.info("API Specification has been published: {}", apiSpecificationDocument.getId());
-
-            return PASS;
+            specPublicationData.markPublished();
 
         } catch (final Exception e) {
-            LOGGER.error("Failed to publish API Specification: " + apiSpecificationDocument, e);
-
-            return FAIL;
+            specPublicationData.setError("Failed to publish.", e);
         }
-    }
-
-    private boolean specContentRemainsTheSameIgnoringVersion(final String specJsonIncoming, final String specJsonLocal) {
-        // We're ignoring version field because it often is the only piece of spec's content that actually changes.
-        // It is calculated from git tags which are incremented on each merge to master (of the API repo)
-        // and that incrementation often takes place as a result of the API itself being updated with no
-        // change to the spec itself.
-
-        final String specJsonIncomingNoVersion = VERSION_FIELD_PATTERN.matcher(specJsonIncoming).replaceFirst("");
-        final String specJsonLocalNoVersion = VERSION_FIELD_PATTERN.matcher(specJsonLocal).replaceFirst("");
-
-        return specJsonIncomingNoVersion.equals(specJsonLocalNoVersion);
     }
 
     private void rerender(final List<ApiSpecificationDocument> specsToPublish) {
@@ -224,10 +209,6 @@ public class ApiSpecificationPublicationService {
         return openApiSpecificationJsonToHtmlConverter.htmlFrom(openApiSpecJson);
     }
 
-    private String getOpenApiSpecJsonFor(final ApiSpecificationDocument apiSpecificationDocument) {
-        return openApiSpecificationRepository.apiSpecificationJsonForSpecId(apiSpecificationDocument.getId());
-    }
-
     private void reportErrorIfAnySpecificationsFailed(final long failedSpecificationsCount,
                                                       final long specificationsToPublishCount
     ) {
@@ -251,6 +232,87 @@ public class ApiSpecificationPublicationService {
 
         public boolean passed() {
             return this == PASS;
+        }
+    }
+
+    private static class SpecPublicationData {
+
+        private final ApiSpecificationDocument localSpec;
+        private final OpenApiSpecificationStatus remoteSpec;
+        private final Instant lastChecked;
+        private Boolean specContentChanged;
+        private String html;
+        private Exception error;
+        private boolean published;
+
+        private SpecPublicationData(
+            final ApiSpecificationDocument localSpec,
+            final OpenApiSpecificationStatus remoteSpec,
+            final Instant lastChecked
+        ) {
+            this.localSpec = localSpec;
+            this.remoteSpec = remoteSpec;
+            this.lastChecked = lastChecked;
+        }
+
+        public static SpecPublicationData with(
+            final ApiSpecificationDocument localSpec,
+            final OpenApiSpecificationStatus remoteSpec
+        ) {
+            return new SpecPublicationData(
+                localSpec,
+                remoteSpec,
+                localSpec.getLastCheckedInstant().orElse(Instant.EPOCH)
+            );
+        }
+
+        public boolean isSpecContentChanged() {
+
+            if (specContentChanged == null) {
+
+                specContentChanged = remoteSpec.getModified().isAfter(localSpecLastCheckInstant())
+                    && specContentDiffersIgnoringVersion(
+                        remoteSpec.getSpecJson(),
+                        localSpec.getSpecJson()
+                    );
+            }
+
+            return specContentChanged;
+        }
+
+        @NotNull private Instant localSpecLastCheckInstant() {
+            final Instant cmsSpecificationLastCheckInstant =
+                localSpec.getLastCheckedInstant().orElse(Instant.EPOCH);
+            return cmsSpecificationLastCheckInstant;
+        }
+
+        private static boolean specContentDiffersIgnoringVersion(final String left, final String right) {
+            // We're ignoring version field because it often is the only piece of spec's content that actually changes.
+            // It is calculated from git tags which are incremented on each merge to master (of the API repo)
+            // and that incrementation often takes place as a result of the API itself being updated with no
+            // change to the spec itself.
+
+            final String leftSpecJsonNoVersion = VERSION_FIELD_PATTERN.matcher(left).replaceFirst("");
+            final String rightSpecJsonNoVersion = VERSION_FIELD_PATTERN.matcher(right).replaceFirst("");
+
+            return !leftSpecJsonNoVersion.equals(rightSpecJsonNoVersion);
+        }
+
+
+        private void setHtml(final String html) {
+            this.html = html;
+        }
+
+        private void setError(final String message, final Exception cause) {
+            this.error = new RuntimeException(message, cause);
+        }
+
+        private boolean noFailure() {
+            return error == null;
+        }
+
+        private void markPublished() {
+            published = true;
         }
     }
 }

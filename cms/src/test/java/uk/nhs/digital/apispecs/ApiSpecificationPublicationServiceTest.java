@@ -58,7 +58,7 @@ public class ApiSpecificationPublicationServiceTest {
         final String lastApigeeModificationTimestamp = "2020-05-20T10:30:00.000Z";
         // @formatter:on
 
-        final ApiSpecificationDocument cmsSpecPublished = apiSpecDoc(specificationId);
+        final ApiSpecificationDocument cmsSpecPublished = apiSpecDoc(specificationId, "");
         when(apiSpecDocumentRepo.findAllApiSpecifications()).thenReturn(singletonList(cmsSpecPublished));
 
         final OpenApiSpecificationStatus apigeeSpec = remoteSpecStatus(specificationId, lastApigeeModificationTimestamp);
@@ -144,9 +144,6 @@ public class ApiSpecificationPublicationServiceTest {
 
         when(apigeeService.apiSpecificationJsonForSpecId(specificationId)).thenReturn(specJsonApigee);
 
-        final String specificationHtml = "<html><body> Some spec content </body></html>";
-        when(apiSpecHtmlProvider.htmlFrom(specJsonApigee)).thenReturn(specificationHtml);
-
         final Instant lastCheckTimestamp = fixNowTo("2020-05-10T10:30:00.001Z");
 
         // when
@@ -156,8 +153,8 @@ public class ApiSpecificationPublicationServiceTest {
         then(cmsSpecPublished).should().setLastCheckedTimestamp(lastCheckTimestamp);
         then(cmsSpecPublished).should().save();
 
-        then(cmsSpecPublished).should(never()).setSpecJson(specJsonApigee);
-        then(cmsSpecPublished).should(never()).setHtml(specificationHtml);
+        then(cmsSpecPublished).should(never()).setSpecJson(any());
+        then(cmsSpecPublished).should(never()).setHtml(any());
         then(cmsSpecPublished).should(never()).saveAndPublish();
     }
 
@@ -353,6 +350,9 @@ public class ApiSpecificationPublicationServiceTest {
     }
 
     private OpenApiSpecificationStatus remoteSpecStatus(final String specificationId, final String lastModifiedInstant) {
-        return new OpenApiSpecificationStatus(specificationId, lastModifiedInstant);
+        final OpenApiSpecificationStatus openApiSpecificationStatus = new OpenApiSpecificationStatus(specificationId, lastModifiedInstant);
+        openApiSpecificationStatus.setApigeeService(apigeeService);
+
+        return openApiSpecificationStatus;
     }
 }

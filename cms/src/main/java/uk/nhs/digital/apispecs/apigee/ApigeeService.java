@@ -1,6 +1,7 @@
 package uk.nhs.digital.apispecs.apigee;
 
 import static java.util.Collections.unmodifiableList;
+import static java.util.stream.Collectors.toList;
 
 import org.onehippo.cms7.crisp.api.broker.ResourceServiceBroker;
 import org.onehippo.cms7.crisp.api.resource.Resource;
@@ -81,6 +82,12 @@ public class ApigeeService implements OpenApiSpecificationRepository {
                 .getResourceBeanMapper(RESOURCE_NAMESPACE_APIGEE_MANAGEMENT_API)
                 .map(resource, ApigeeSpecificationsStatuses.class)
                 .getContents()
+                .stream()
+                    .map(openApiSpecificationStatus -> {
+                        openApiSpecificationStatus.setApigeeService(this);
+                        return openApiSpecificationStatus;
+                    })
+                .collect(toList())
         );
 
         log.debug("Found {} specifications.", openApiSpecificationStatuses.size());

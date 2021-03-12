@@ -28,8 +28,7 @@ public class ApiSpecificationDocument {
     }
 
     public String getHtml() {
-        Optional<String> html = jcrDocument().getStringProperty(HTML.jcrName(), PUBLISHED);
-        return html.orElse("");
+        return jcrDocument().getStringProperty(HTML.jcrName(), PUBLISHED).orElse("");
     }
 
     public void setHtml(final String html) {
@@ -37,8 +36,7 @@ public class ApiSpecificationDocument {
     }
 
     public String getSpecJson() {
-        Optional<String> json = jcrDocument().getStringProperty(JSON.jcrName(), PUBLISHED);
-        return json.orElse("");
+        return jcrDocument().getStringProperty(JSON.jcrName(), PUBLISHED).orElse("");
     }
 
     public void setSpecJson(final String specificationJson) {
